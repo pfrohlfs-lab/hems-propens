@@ -637,7 +637,7 @@ function flowSVG(theme) {
   const node = (x, y, label, val, col, act) => `<g transform="translate(${x},${y})"><circle r="23" fill="${c.node}" stroke="${act ? col : c.line}" stroke-width="${act ? 2 : 1.5}"/><text text-anchor="middle" y="-3" style="font-size:9px;fill:${c.sub}">${label}</text><text text-anchor="middle" y="11" style="font-size:11px;fill:${c.txt};font-weight:500">${val}</text></g>`;
   const line = (d, col, on, rev) => `<path class="ln" d="${d}" stroke="${c.line}"/>${on ? `<path class="on" d="${d}" stroke="${col}" style="${rev ? 'animation-direction:reverse' : ''}"/>` : ''}`;
   const Y = '#e0a800', G = L ? '#1f8a52' : '#3fd38a', B = '#3d7be0', O = '#e8850c';
-  return `<svg viewBox="0 0 300 214" role="img" aria-label="Energy flow right now">
+  return `<svg viewBox="0 0 300 228" role="img" aria-label="Energy flow right now">
     ${line('M150 48 V86', Y, pv > 0.05)}
     ${line('M51 106 H126', B, Math.abs(grid) > 0.05, grid < 0)}
     ${line('M62 172 Q100 150 130 122', G, Math.abs(batt) > 0.05, batt < 0)}
