@@ -473,12 +473,12 @@ function ruleCompare() {
 function requests() {
   if (S.level === 'manual') return [];
   const L = [], lv = S.level; const ev = evPlan();
-  if (ev.pick.length && ev.pick[0] > 0) L.push({ id: 'ev', title: `Charge the car from ${hrs[ev.pick[0]]} instead of now?`, body: `Cheapest hours before ${dep()}; ${tgt()} % guaranteed.`, save: ev.save });
+  if (S.decisions.ev || (ev.pick.length && ev.pick[0] > 0)) L.push({ id: 'ev', title: `Charge the car ${S.chargeNow ? 'in the cheapest hours' : 'from ' + hrs[ev.pick[0]]} instead of now?`, body: `Cheapest hours before ${dep()}; ${tgt()} % guaranteed.`, save: ev.save });
   const ch = P.chp.map((v, i) => v > 0.1 && i < 12 ? i : -1).filter(i => i >= 0);
   if (ch.length) L.push({ id: 'chp', title: `Run the CHP ${hrs[ch[0]]}–${endOf(ch[ch.length - 1])}?`, body: `${fmt(P.da[ch[0]], 1)} ct and ${fmt(P.temp[ch[0]], 1)} °C outside. Heat and power from gas; the heat pump waits.`, save: null });
   if (S.dips) { let best = -1; P.hp.forEach((v, i) => { if (v > 0.3 && (best < 0 || P.da[i] > P.da[best])) best = i; });
     if (best >= 0) L.push({ id: 'dip', title: `Pause the heat pump ${hrs[best]}–${endOf(best)}?`, body: `Peak price ${fmt(P.da[best], 1)} ct. Room stays above ${fmt(S.tDay - 0.5, 1)} °C.`, save: P.hp[best] * P.buy[best] / 100 }); }
-  return L.filter(q => q.save == null || q.save >= S.askAbove || lv === 'auto').map(q => ({ ...q, st: lv === 'auto' ? 'auto' : (S.decisions[q.id] || 'pending') }));
+  return L.filter(q => q.save == null || q.save >= S.askAbove || lv === 'auto' || S.decisions[q.id]).map(q => ({ ...q, st: lv === 'auto' ? 'auto' : (S.decisions[q.id] || 'pending') }));
 }
 function decide(id, v) {
   S.decisions[id] = v;
@@ -497,7 +497,7 @@ function nudge() {
 function dishwasher() {
   const l = S.loads[0]; if (!l.on) return null;
   const a = toH(l.from), b = toH(l.to); let best = null;
-  for (let i = 0; i < 23; i++) { const h = +hh(i); const ok = a > b ? (h >= a || h + l.dur <= b) : (h >= a && h + l.dur <= b); if (!ok) continue; const c = P.da[i] + P.da[i + 1]; if (!best || c < best.c) best = { i, c }; }
+  for (let i = 0; i < 23; i++) { const h = +hh(i); const ok = a > b ? (h >= a || h + l.dur <= b) : (h >= a && h + l.dur <= b); if (!ok) continue; const c = effCt(i, S.p) + effCt(i + 1, S.p); if (!best || c < best.c) best = { i, c }; }
   return best;
 }
 const planCost = () => F.planCost + evPlan().cost;
@@ -778,9 +778,9 @@ function wOverview() {
   const ev = evPlan(), [h, b] = nowSentence(), cmds = commands().filter(c => c.i > 0).slice(0, 6), v = cumSavings(12), pl = planFor(S.p);
   return `
   <div class="wtop"><div><h2>Good evening.</h2><p>Sunday, 8 November, ${hrs[NOW]}. ${S.level === 'auto' ? 'Autopilot is on. Nothing needs your attention.' : S.level === 'manual' ? 'Running on your rules.' : (requests().some(x => x.st === 'pending') ? 'The Copilot has a few questions for you.' : 'Copilot is on. Nothing open.')}</p></div><span class="tag"><i></i>Local grid: normal · 48 % renewable</span></div>
-  ${S.level === 'copilot' && requests().some(x => x.st === 'pending') ? `<div class="wc"><h3>Waiting for your OK<span class="r"><a href="#" data-page="goals" style="color:inherit">All decisions ›</a></span></h3><div>${reqList(requests().filter(x => x.st === 'pending'))}</div></div>` : ''}
+  ${S.level === 'copilot' && requests().length ? `<div class="wc"><h3>${requests().some(x => x.st === 'pending') ? 'Waiting for your OK' : 'Your decisions for the next 24 h'}<span class="r"><a href="#" data-page="goals" style="color:inherit">All decisions ›</a></span></h3><div>${reqList(requests())}</div></div>` : ''}
   <div class="wgrid">
-    <div class="wc c3"><h3>Saved in 2025</h3><div class="kpi"><span class="n">${fmt(v[12])}<small>€</small></span><span class="d up">▲ ${fmt((SC.ist.cost - SC.kosten.cost) / SC.ist.cost * 100)} % vs. before</span></div></div>
+    <div class="wc c3"><h3>Saved in 2025</h3><div class="kpi"><span class="n">${fmt(SC.ist.cost - SC[pl].cost)}<small>€</small></span><span class="d up">▲ ${fmt((SC.ist.cost - SC[pl].cost) / SC.ist.cost * 100)} % vs. before</span></div></div>
     <div class="wc c3"><h3>CO2 avoided in 2025</h3><div class="kpi"><span class="n">${fmt(SC.ist.co2 - SC[pl].co2, 1)}<small>t</small></span><span class="d">${fmt(SC.ist.co2, 1)} t → ${fmt(SC[pl].co2, 1)} t</span></div></div>
     <div class="wc c3"><h3>Next 24 hours</h3><div class="kpi"><span class="n">${fmt(planCost(), 2)}<small>€</small></span><span class="d">energy cost incl. car</span></div></div>
     <div class="wc c3"><h3>Car</h3><div class="kpi"><span class="n">${S.evNow}<small>%</small></span><span class="d">${tgt()} % by ${dep()} · from ${ev.pick.length ? hrs[ev.pick[0]] : '—'}</span></div></div>
@@ -811,7 +811,7 @@ function wPlan() {
   </div>`;
 }
 function reqList(q, dark) {
-  return q.map(x => `<div class="req"><span><b>${x.title}</b><small>${x.body}${x.save != null ? ` · <span class="save">${fmt(x.save, 2)} € saved</span>` : ''}</small></span>${x.st === 'pending' ? `<span class="acts"><button class="btn o" type="button" data-dec="${x.id}:no">Not now</button><button class="btn" type="button" data-dec="${x.id}:yes">Approve</button></span>` : `<span class="st ${x.st}">${{ yes: 'Approved', no: 'Declined', auto: 'Done automatically' }[x.st]}</span>`}</div>`).join('');
+  return q.map(x => `<div class="req"><span><b>${x.title}</b><small>${x.body}${x.save != null ? ` · <span class="save">${fmt(x.save, 2)} € saved</span>` : ''}</small></span>${x.st === 'pending' ? `<span class="acts"><button class="btn o" type="button" data-dec="${x.id}:no">Not now</button><button class="btn" type="button" data-dec="${x.id}:yes">Approve</button></span>` : `<span class="acts"><span class="st ${x.st}">${{ yes: 'Approved', no: 'Declined', auto: 'Done automatically' }[x.st]}</span>${x.st !== 'auto' ? `<button class="btn o" type="button" data-undo="${x.id}" aria-label="Undo: ${x.title.replace(/"/g, '')}">Undo</button>` : ''}</span>`}</div>`).join('');
 }
 function wLevelDetail() {
   if (S.level === 'manual') {
@@ -1122,9 +1122,10 @@ function aReqs() {
   if (S.level === 'manual') { const r = S.rules; return `<div class="acard"><h4><span>Your rules</span></h4><div class="sub">Car below ${r.evBelow} ct · CHP above ${r.chpAbove} ct and below ${r.chpTemp} °C · battery from grid below ${r.batBelow} ct. Edit on the website.</div></div>`; }
   const q = requests(), n = nudge();
   if (S.level === 'auto') return q.length ? `<div class="acard"><h4><span>Decided for you</span></h4><div class="adone">${q.map(x => `<span>${x.title.replace('?', '')}</span>`).join('')}</div></div>` : '';
-  const open = q.filter(x => x.st === 'pending');
+  const open = q.filter(x => x.st === 'pending'), done = q.filter(x => x.st === 'yes' || x.st === 'no');
   return (n ? `<div class="areq"><b>${n}</b><div class="acts"><button type="button" data-level="copilot">Keep asking</button><button class="y" type="button" data-level="auto">Autopilot</button></div></div>` : '') +
-    open.map(x => `<div class="areq"><b>${x.title}</b><small>${x.body}${x.save != null ? ` <span class="aup">${fmt(x.save, 2)} € saved</span>` : ''}</small><div class="acts"><button type="button" data-dec="${x.id}:no">Not now</button><button class="y" type="button" data-dec="${x.id}:yes">Approve</button></div></div>`).join('');
+    open.map(x => `<div class="areq"><b>${x.title}</b><small>${x.body}${x.save != null ? ` <span class="aup">${fmt(x.save, 2)} € saved</span>` : ''}</small><div class="acts"><button type="button" data-dec="${x.id}:no">Not now</button><button class="y" type="button" data-dec="${x.id}:yes">Approve</button></div></div>`).join('') +
+    (done.length ? `<div class="acard"><h4><span>Decided</span></h4><div class="alist">${done.map(x => `<div class="arow"><span class="l"><b>${x.title.replace('?', '')}</b><small>${x.st === 'yes' ? 'Approved' : 'Declined'}</small></span><button class="pill" type="button" data-undo="${x.id}">Undo</button></div>`).join('')}</div></div>` : '');
 }
 function aCar() {
   const ev = evPlan(), n = Math.min(16, ev.last + 1), W = 280, H = 66, X = i => 8 + i * (W - 16) / 15;
@@ -1147,7 +1148,7 @@ function aCar() {
 }
 function aImpact() {
   const pl = planFor(S.p), r = iRange(), A = agg(pl, r.a, r.b), O = agg('ist', r.a, r.b);
-  const saved = O.cost - A.cost, av = O.co2 - A.co2, don = S.donate ? A.rev / 25 : 0, net = A.co2 - (S.credits ? A.cf + A.chg + A.chs : 0) - don;
+  const saved = O.cost - A.cost, av = O.co2 - A.co2, don = S.donate ? A.rev / 25 : 0, net = A.co2 - (S.credits ? A.cf + A.chs : 0) - don;
   return `
     <div class="top"><span class="tt">Impact</span><span style="display:flex;gap:4px;align-items:center"><button class="demo" type="button" data-istep="-1" ${S.ipos <= 0 ? 'disabled' : ''} aria-label="Previous">‹</button><span class="sub" style="min-width:86px;text-align:center">${r.label.replace(' 2025', '')}</span><button class="demo" type="button" data-istep="1" ${S.ipos >= IMAX[S.iper] ? 'disabled' : ''} aria-label="Next">›</button></span></div>
     ${periodNav(true)}
@@ -1159,7 +1160,7 @@ function aImpact() {
       <div class="acard" style="padding:10px;gap:2px"><span class="sub">Heat pump</span><b style="font-size:19px;font-weight:400">${fmt((A.hpTh + A.hs) / Math.max(1, A.hpTh + A.hs + A.chpTh) * 100)} %</b><span class="sub" style="font-size:10.5px">of heat</span></div>
     </div>
     <div class="acard"><h4><span>Climate balance</span><span>${net < 0 ? '−' : ''}${fmt(Math.abs(net), 1)} t</span></h4>
-      <div class="aled"><div><span>Emitted</span><span>${fmt(A.co2, 2)} t</span></div>${S.credits ? `<div><span>Solar credits</span><span class="aup">− ${fmt(A.cf + A.chg + A.chs, 2)} t</span></div>` : ''}${S.donate ? `<div><span>Biochar</span><span class="aup">− ${fmt(don, 2)} t</span></div>` : ''}</div></div>
+      <div class="aled"><div><span>Emitted</span><span>${fmt(A.co2, 2)} t</span></div>${S.credits ? `<div><span>Solar credits</span><span class="aup">− ${fmt(A.cf + A.chs, 2)} t</span></div>` : ''}${S.donate ? `<div><span>Biochar</span><span class="aup">− ${fmt(don, 2)} t</span></div>` : ''}</div></div>
     <div class="alist">${asw('donate', S.donate, 'Donate feed-in revenue', `${fmt(A.rev)} € → ${fmt(A.rev / 25, 1)} t biochar`)}</div>
     <div class="webhint">Details per day, heat and money on <b>hems.local</b></div>`;
 }
@@ -1187,7 +1188,7 @@ function notifs() {
   if (ch.length) L.push({ time: 'Sun ' + hrs[ch[0]], title: 'Expensive night', body: `${fmt(P.da[ch[0]], 1)} ct. The CHP covers heat and power until ${endOf(ch[ch.length - 1])}; the heat pump waits.` });
   L.push({ time: 'Mon 06:40', title: 'Local grid busy', body: `Bayernwerk asks to reduce load until 07:00. Heat pump paused, room stays above ${fmt(S.tDay - 0.5, 1)} °C.`, acts: [['Keep heating', 'boost'], ['OK', '']] });
   L.push({ time: 'Mon 07:15', title: 'Car ready · cabin warming', body: `${tgt()} % charged for your ${dep()} departure.` });
-  if (dw) L.push({ time: 'Mon 07:16', title: 'Dishwasher done', body: `Ran at ${hrs[dw.i]} for ${fmt((P.da[dw.i] + P.da[dw.i + 1]) / 2, 1)} ct.` });
+  if (dw) L.push({ time: 'Mon 07:16', title: 'Dishwasher done', body: `Ran at ${hrs[dw.i]} for ${fmt((P.buy[dw.i] + P.buy[dw.i + 1]) / 2, 1)} ct.` });
   return L;
 }
 function renderLock() {
@@ -1199,7 +1200,7 @@ function renderLock() {
     n('Sun ' + hrs[0], `Car plugged in · ${S.evNow} %`, S.chargeNow ? 'Charging now, as you asked.' : `Charging to ${tgt()} % from ${ev.pick.length ? hrs[ev.pick[0]] : '—'}, when power is cheapest. ${fmt(ev.save, 2)} € less than charging now.`, S.chargeNow ? null : ['Charge now', 'OK']) +
     (ch.length ? n('Sun ' + hrs[ch[0]], 'Expensive night', `${fmt(P.da[ch[0]], 1)} ct. The CHP covers heat and power until ${endOf(ch[ch.length - 1])}; the heat pump waits.`) : '') +
     n('Mon 07:15', 'Car ready · cabin warming', `${tgt()} % charged for your ${dep()} departure.`) +
-    (dw ? n('Mon 07:16', 'Dishwasher done', `Ran at ${hrs[dw.i]} for ${fmt((P.da[dw.i] + P.da[dw.i + 1]) / 2, 1)} ct.`) : '');
+    (dw ? n('Mon 07:16', 'Dishwasher done', `Ran at ${hrs[dw.i]} for ${fmt((P.buy[dw.i] + P.buy[dw.i + 1]) / 2, 1)} ct.`) : '');
 }
 
 // ---------------- events (one handler for web and app) ----------------
@@ -1213,6 +1214,7 @@ document.addEventListener('click', e => {
   const d = b.dataset;
   if (d.level) { S.level = d.level; if (d.level !== 'copilot') { if (S.decisions.ev === 'no') S.chargeNow = false; } }
   else if (d.dec) { const [id, v] = d.dec.split(':'); decide(id, v); }
+  else if (d.undo) { delete S.decisions[d.undo]; if (d.undo === 'ev') S.chargeNow = false; }
   else if (d.mode) { S.mode = d.mode; const m = MODES[d.mode]; S.p = m.p; S.grid = m.grid; S.dips = m.dips; S.gridEur = m.gridW || (S.gridEur > 0.1 ? 0.05 : S.gridEur); }
   else if (d.p) { S.p = +d.p; custom(); }
   else if (d.diph) S.dipH = +d.diph;
