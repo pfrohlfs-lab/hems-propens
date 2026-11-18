@@ -33,16 +33,6 @@ button, input, select { font: inherit; color: inherit; }
 .switch button svg { width: 15px; height: 15px; }
 .wrap { max-width: 1360px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 @media (min-width: 900px) { .wrap { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); } }
-.intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding-block: 44px 32px; align-items: end; }
-.intro h1 { margin: 0; font-weight: 500; font-size: clamp(32px, 3.8vw, 50px); line-height: 1.04; letter-spacing: -0.025em; text-wrap: balance; }
-.intro h1 span { display: block; color: var(--grey); }
-.jobs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
-.jobs > div { border-top: 1px solid var(--ink); padding-top: 10px; display: grid; gap: 6px; cursor: pointer; }
-.jobs > div[aria-current="true"] { border-top-width: 3px; padding-top: 8px; }
-.jobs b { font-weight: 500; font-size: 15px; display: flex; gap: 8px; align-items: center; }
-.jobs b i { width: 9px; height: 9px; background: var(--yellow); outline: 1px solid var(--ink); }
-.jobs p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
-.jobs ul { margin: 0; padding-left: 16px; color: var(--muted); font-size: 13px; display: grid; gap: 2px; }
 
 /* ---------- browser frame + website ---------- */
 .browser { border: 1px solid #cfcfcb; border-radius: 12px; overflow: hidden; background: var(--w-bg); box-shadow: 0 30px 60px -30px rgba(0,0,0,.25); }
@@ -338,7 +328,7 @@ table.rv td:first-child, table.rv th:first-child { text-align: left; padding-lef
 @media (max-width: 1200px) { .appv { grid-template-columns: repeat(2, minmax(0, 1fr)); } .modes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 1100px) { .c3 { grid-column: span 6; } .c4, .c5, .c7, .c8 { grid-column: span 12; } .c6 { grid-column: span 12; } }
 @media (max-width: 900px) {
-  .intro, .sec-h { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .sec-h { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .web { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .wside { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--w-line); padding: 10px; gap: 2px; }
   .wlogo, .wside .sep, .wside .mode { display: none; }
@@ -351,7 +341,7 @@ table.rv td:first-child, table.rv th:first-child { text-align: left; padding-lef
   .brand small { display: none; }
 }
 @media (max-width: 700px) { .levels { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 520px) { .jobs { grid-template-columns: minmax(0, 1fr); gap: 14px; } .switch button { padding: 7px 12px; } .modes { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) { .switch button { padding: 7px 12px; } .modes { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 <header class="head">
@@ -365,14 +355,6 @@ table.rv td:first-child, table.rv th:first-child { text-align: left; padding-lef
 </header>
 
 <main class="wrap">
-  <section class="intro">
-    <h1>One system, two surfaces.<span id="intro-sub">The website is where you set things up and understand them.</span></h1>
-    <div class="jobs">
-      <div data-view="web" aria-current="true"><b><i></i>Web · set up and understand</b><p>Minutes, on a laptop, a few times a year.</p><ul><li>Devices, tariff, house data</li><li>Goals with the trade-off visible</li><li>24 h plan with commands per device</li><li>Reports, credits, donation, data sharing</li></ul></div>
-      <div data-view="app"><b><i></i>App · check and react</b><p>Seconds, on the phone, mostly via notifications.</p><ul><li>What the house is doing now</li><li>"Charge now", "Heat now"</li><li>Tomorrow's departure and charge</li><li>One number for impact</li></ul></div>
-    </div>
-  </section>
-
   <section id="v-web">
     <div class="browser">
       <div class="bbar"><span class="dots"><i></i><i></i><i></i></span><span class="url" id="url">hems.local/flex/overview</span><span></span></div>
@@ -1255,9 +1237,7 @@ document.addEventListener('change', e => {
 // ---------------- view switch ----------------
 function setView(v) {
   document.querySelectorAll('.switch button').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === v));
-  document.querySelectorAll('.jobs > div').forEach(d => d.setAttribute('aria-current', d.dataset.view === v));
   $('#v-web').hidden = v !== 'web'; $('#v-app').hidden = v !== 'app';
-  $('#intro-sub').textContent = v === 'web' ? 'The website is where you set things up and understand them.' : 'The app is where you check and react, in seconds.';
   try { if (location.hash !== '#phone') history.replaceState(null, '', '#' + v); } catch (e) {}
 }
 
