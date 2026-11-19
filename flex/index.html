@@ -386,7 +386,7 @@ table.rv td:first-child, table.rv th:first-child { text-align: left; padding-lef
 @media (max-width: 1100px) { .stack { grid-column: span 12; } .browser .wc.wide .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .browser .wc.wide .checks { grid-template-columns: minmax(0, 1fr); } }
 /* ---------- live page (sidebar "Live"; lives next to #wmain so the page diffing never wipes a running plan) ---------- */
-.web[data-page="live"] #wmain, .web:not([data-page="live"]) #live { display: none; }
+.web[data-aktiv="live"] #wmain, .web:not([data-aktiv="live"]) #live { display: none; }
 .lv-bar { gap: 14px; }
 .lv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .lv-go { border: 1px solid var(--ink); background: var(--ink); color: #fff; padding: 9px 16px; font-size: 13.5px; cursor: pointer; }
@@ -1234,7 +1234,7 @@ function renderWeb() {
   const m = $('#wmain'), act = document.activeElement, key = act && m.contains(act) ? (act.dataset.r || act.dataset.t || act.dataset.wt) : null;
   if (S.page !== 'dev') jsonHTML();
   morph(m, WSCR[S.page]());
-  m.parentElement.dataset.page = S.page;
+  m.parentElement.dataset.aktiv = S.page;
   if (key) { const n = m.querySelector(`[data-r="${key}"],[data-t="${key}"],[data-wt="${key}"]`); if (n) n.focus(); }
 }
 
