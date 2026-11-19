@@ -372,8 +372,11 @@ table.rv td:first-child, table.rv th:first-child { text-align: left; padding-lef
 .browser input[type="range"].wr::-webkit-slider-runnable-track { height: 2px; border-radius: 0; background: linear-gradient(90deg, var(--ink) var(--p), #d4d4d4 var(--p)); }
 .browser input[type="range"].wr::-moz-range-track { height: 2px; border-radius: 0; background: #d4d4d4; }
 .browser input[type="range"].wr::-moz-range-progress { height: 2px; border-radius: 0; }
-.browser input[type="range"].wr::-webkit-slider-thumb { width: 14px; height: 14px; border-radius: 0; border: 1.5px solid var(--ink); margin-top: -6px; }
-.browser input[type="range"].wr::-moz-range-thumb { width: 11px; height: 11px; border-radius: 0; border: 1.5px solid var(--ink); }
+.browser input[type="range"].wr { height: 30px; touch-action: pan-y; }
+.browser input[type="range"].wr::-webkit-slider-thumb { width: 16px; height: 16px; border-radius: 0; border: 1.5px solid var(--ink); margin-top: -7px; cursor: grab; }
+.browser input[type="range"].wr::-moz-range-thumb { width: 13px; height: 13px; border-radius: 0; border: 1.5px solid var(--ink); cursor: grab; }
+.browser input[type="range"].wr:active::-webkit-slider-thumb { cursor: grabbing; background: var(--ink); }
+.browser input[type="range"].wr:active::-moz-range-thumb { cursor: grabbing; background: var(--ink); }
 .browser .sw { border-radius: 0; width: 40px; height: 22px; }
 .browser .sw::after { border-radius: 0; box-shadow: none; width: 16px; height: 16px; }
 .browser .wc.wide .checks { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 32px; }
@@ -1113,11 +1116,38 @@ function wDev() {
   </div>`;
 }
 const WSCR = { overview: wOverview, plan: wPlan, goals: wGoals, prefs: wPrefs, impact: wImpact, setup: wSetup, dev: wDev };
+// DOM abgleichen statt innerHTML: ein gezogener Regler bleibt dasselbe Element und verliert den Griff nicht
+function morph(root, html) { const t = document.createElement('template'); t.innerHTML = html; mKids(root, t.content); }
+function mKey(n) { return n && n.nodeType === 1 ? n.getAttribute('data-r') : null; }
+function mKids(a, b) {
+  const nk = [...b.childNodes]; let i = 0;
+  for (const n of nk) {
+    let o = a.childNodes[i]; const k = mKey(n);
+    if (k && mKey(o) !== k) { for (let j = i + 1; j < a.childNodes.length; j++) if (mKey(a.childNodes[j]) === k) { o = a.insertBefore(a.childNodes[j], o); break; } }
+    if (!o) a.appendChild(n);
+    else if (o.nodeType !== n.nodeType || o.nodeName !== n.nodeName || (mKey(o) || k) && mKey(o) !== k) a.replaceChild(n, o);
+    else if (o.nodeType === 1) mNode(o, n);
+    else if (o.nodeValue !== n.nodeValue) o.nodeValue = n.nodeValue;
+    i++;
+  }
+  while (a.childNodes.length > i) a.removeChild(a.lastChild);
+}
+function mNode(o, n) {
+  for (const { name } of [...o.attributes]) if (!n.hasAttribute(name)) o.removeAttribute(name);
+  for (const { name, value } of [...n.attributes]) if (o.getAttribute(name) !== value) o.setAttribute(name, value);
+  mKids(o, n);
+  if (o.tagName === 'INPUT' && o !== document.activeElement) {
+    if (o.type === 'checkbox' || o.type === 'radio') o.checked = n.hasAttribute('checked');
+    else if (o.value !== (n.getAttribute('value') || '')) o.value = n.getAttribute('value') || '';
+  } else if (o.tagName === 'SELECT' && o !== document.activeElement) {
+    const s = n.querySelector('option[selected]'); if (s) o.value = s.getAttribute('value') ?? s.textContent;
+  }
+}
 function renderWeb() {
   renderSide();
   const m = $('#wmain'), act = document.activeElement, key = act && m.contains(act) ? (act.dataset.r || act.dataset.t || act.dataset.wt) : null;
   if (S.page !== 'dev') jsonHTML();
-  m.innerHTML = WSCR[S.page]();
+  morph(m, WSCR[S.page]());
   if (key) { const n = m.querySelector(`[data-r="${key}"],[data-t="${key}"],[data-wt="${key}"]`); if (n) n.focus(); }
 }
 
@@ -1200,7 +1230,7 @@ phones.forEach(ph => {
 });
 function renderPhone(ph) {
   const y = ph.scr.scrollTop, act = document.activeElement, key = act && ph.el.contains(act) ? (act.dataset.r || act.dataset.wt) : null;
-  FULL = ph.full; ph.scr.innerHTML = ASCR[ph.screen](); FULL = false;
+  FULL = ph.full; morph(ph.scr, ASCR[ph.screen]()); FULL = false;
   ph.scr.scrollTop = y;
   ph.tabs.innerHTML = [['home', 'Home'], ['car', 'Car'], ['impact', 'Impact']].map(([k, l]) => `<button type="button" role="tab" data-go="${k}" aria-selected="${ph.screen === k}">${AIC[k]}${l}</button>`).join('');
   if (key) { const n = ph.scr.querySelector(`[data-r="${key}"],[data-wt="${key}"]`); if (n) n.focus(); }
