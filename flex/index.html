@@ -342,50 +342,6 @@ table.rv td:first-child, table.rv th:first-child { text-align: left; padding-lef
 }
 @media (max-width: 700px) { .levels { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 520px) { .switch button { padding: 7px 12px; } .modes { grid-template-columns: minmax(0, 1fr); } }
-/* ---------- live test (below the fixed example; same rules as the results site: square, flat, hairlines) ---------- */
-#live { margin-top: 56px; }
-.lv-bar { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px 28px; align-items: center; }
-.lv-go { border: 1px solid var(--ink); background: var(--ink); color: #fff; padding: 10px 18px; font-size: 14px; cursor: pointer; }
-.lv-go:disabled { background: #fff; color: var(--grey); border-color: var(--line); cursor: default; }
-.lv-co2 { font-size: 13px; color: var(--muted); }
-.lv-steps { grid-column: 1 / -1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 24px; }
-.lv-steps li { border-top: 1px solid var(--line); padding-top: 8px; display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 2px 8px; font-size: 13px; }
-.lv-steps li i { width: 8px; height: 8px; margin-top: 6px; background: var(--line); grid-row: span 2; }
-.lv-steps li small { color: var(--grey); font-size: 12px; }
-.lv-steps li[data-st="run"] { border-top-color: var(--ink); }
-.lv-steps li[data-st="run"] i { background: var(--yellow); outline: 1px solid var(--ink); animation: lvblink 1s steps(2) infinite; }
-.lv-steps li[data-st="ok"] { border-top-color: var(--ink); }
-.lv-steps li[data-st="ok"] i { background: var(--ink); }
-.lv-steps li[data-st="err"] i { background: #d9452f; }
-@keyframes lvblink { 50% { opacity: .35; } }
-@media (prefers-reduced-motion: reduce) { .lv-steps li[data-st="run"] i { animation: none; } }
-#lv-out { display: grid; gap: 20px; }
-.lv-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
-.lv-kpis > div { border-top: 1px solid var(--ink); padding-top: 10px; display: grid; gap: 4px; }
-.lv-kpis span { font-size: 12px; color: var(--muted); }
-.lv-kpis b { font-size: 30px; font-weight: 300; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
-.lv-kpis b small { font-size: 13px; color: var(--grey); letter-spacing: 0; margin-left: 3px; font-weight: 400; }
-.lv-kpis em { font-style: normal; font-size: 12px; color: var(--grey); }
-.lv-card { border-top: 1px solid var(--ink); padding-top: 12px; display: grid; gap: 12px; align-content: start; min-width: 0; }
-.lv-card h3 { margin: 0; font-size: 13px; font-weight: 500; display: flex; justify-content: space-between; gap: 8px; }
-.lv-card h3 .r { font-weight: 400; color: var(--grey); font-size: 12px; }
-.lv-chart svg { display: block; width: 100%; height: auto; }
-.lv-chart text { font-family: var(--sans); font-size: 11px; fill: #8a8a86; }
-.lv-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; }
-table.lvc { border-collapse: collapse; width: 100%; font-size: 12.5px; font-variant-numeric: tabular-nums; }
-table.lvc th, table.lvc td { text-align: left; padding: 7px 10px; border-top: 1px solid var(--line); vertical-align: top; }
-table.lvc th { border-top: 0; font-weight: 400; color: var(--grey); font-size: 12px; }
-table.lvc td:first-child, table.lvc th:first-child { padding-left: 0; white-space: nowrap; }
-table.lvc code { font-family: var(--mono); font-size: 11.5px; background: var(--panel); padding: 2px 6px; white-space: nowrap; }
-.lv-notes { display: grid; font-size: 13px; }
-.lv-notes > div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); }
-.lv-notes > div:first-child { border-top: 0; padding-top: 0; }
-.lv-notes > div > span:first-child { color: var(--grey); }
-.lv-err { font-size: 13px; color: #d9452f; }
-@media (max-width: 1000px) { .lv-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .lv-grid { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 640px) { .lv-steps { grid-template-columns: minmax(0, 1fr); gap: 10px; } .lv-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .lv-bar { grid-template-columns: minmax(0, 1fr); } }
-#lv-out[data-prov="true"] .lv-kpis b, #lv-out[data-prov="true"] .lv-chart, #lv-out[data-prov="true"] table.lvc { opacity: .4; transition: opacity .2s; }
-#lv-out[data-prov="true"] .lv-kpis > div:first-child em::after { content: " · provisional"; color: var(--ink); }
 /* ---------- design pass: web view follows the results site (square, flat, neutral greys, black hairlines) ---------- */
 :root { --w-bg: #f4f4f4; --w-line: #e8e8e8; --w-soft: #f4f4f4; }
 .browser { border-radius: 0; box-shadow: none; border: 1px solid var(--panel-line); }
@@ -429,6 +385,48 @@ table.lvc code { font-family: var(--mono); font-size: 11.5px; background: var(--
 .ld + .ld { border-top: 1px solid var(--w-line); padding-top: 12px; }
 @media (max-width: 1100px) { .stack { grid-column: span 12; } .browser .wc.wide .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .browser .wc.wide .checks { grid-template-columns: minmax(0, 1fr); } }
+/* ---------- live page (sidebar "Live"; lives next to #wmain so the page diffing never wipes a running plan) ---------- */
+.web[data-page="live"] #wmain, .web:not([data-page="live"]) #live { display: none; }
+.lv-bar { gap: 14px; }
+.lv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.lv-go { border: 1px solid var(--ink); background: var(--ink); color: #fff; padding: 9px 16px; font-size: 13.5px; cursor: pointer; }
+.lv-go:disabled { background: #fff; color: var(--grey); border-color: var(--panel-line); cursor: default; }
+.lv-co2 { font-size: 13px; color: var(--muted); }
+.lv-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 20px; }
+.lv-steps li { border-top: 1px solid var(--panel-line); padding-top: 8px; display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 2px 8px; font-size: 13px; }
+.lv-steps li i { width: 8px; height: 8px; margin-top: 6px; background: var(--panel-line); grid-row: span 2; }
+.lv-steps li small { color: var(--grey); font-size: 12px; }
+.lv-steps li[data-st="run"], .lv-steps li[data-st="ok"] { border-top-color: var(--ink); }
+.lv-steps li[data-st="run"] i { background: var(--yellow); outline: 1px solid var(--ink); animation: lvblink 1s steps(2) infinite; }
+.lv-steps li[data-st="ok"] i { background: var(--ink); }
+.lv-steps li[data-st="err"] i { background: #d9452f; }
+@keyframes lvblink { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .lv-steps li[data-st="run"] i { animation: none; } }
+#lv-out { display: grid; gap: 16px; }
+#lv-out[hidden] { display: none; }
+.lv-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+.lv-kpis > div { background: var(--w-card); border-top: 1px solid var(--ink); padding: 14px 18px 16px; display: grid; gap: 4px; }
+.lv-kpis span { font-size: 13px; font-weight: 500; }
+.lv-kpis b { font-size: 30px; font-weight: 300; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.lv-kpis b small { font-size: 13px; color: var(--grey); letter-spacing: 0; margin-left: 3px; font-weight: 400; }
+.lv-kpis em { font-style: normal; font-size: 12px; color: var(--muted); }
+.lv-chart svg { display: block; width: 100%; height: auto; }
+.lv-chart text { font-family: var(--sans); font-size: 11px; fill: #8a8a86; }
+.lv-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: start; }
+table.lvc { border-collapse: collapse; width: 100%; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+table.lvc th, table.lvc td { text-align: left; padding: 7px 10px; border-top: 1px solid var(--w-line); vertical-align: top; }
+table.lvc th { border-top: 0; font-weight: 400; color: var(--grey); font-size: 12px; }
+table.lvc td:first-child, table.lvc th:first-child { padding-left: 0; white-space: nowrap; }
+table.lvc code { font-family: var(--mono); font-size: 11.5px; background: var(--w-soft); padding: 2px 6px; white-space: nowrap; }
+.lv-notes { display: grid; font-size: 13px; }
+.lv-notes > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 7px 0; border-top: 1px solid var(--w-line); }
+.lv-notes > div:first-child { border-top: 0; padding-top: 0; }
+.lv-notes > div > span:first-child { color: var(--grey); }
+.lv-err { margin: 0; font-size: 13px; color: #d9452f; }
+#lv-out[data-prov="true"] .lv-kpis b, #lv-out[data-prov="true"] .lv-chart, #lv-out[data-prov="true"] table.lvc { opacity: .4; transition: opacity .2s; }
+#lv-out[data-prov="true"] .lv-kpis > div:first-child em::after { content: " · provisional"; color: var(--ink); }
+@media (max-width: 1200px) { .lv-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .lv-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) { .lv-steps { grid-template-columns: minmax(0, 1fr); gap: 10px; } .lv-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>
 
 <header class="head">
@@ -448,6 +446,30 @@ table.lvc code { font-family: var(--mono); font-size: 11.5px; background: var(--
       <div class="web">
         <nav class="wside" id="wside" aria-label="Website sections"></nav>
         <div class="wmain" id="wmain"></div>
+        <div class="wmain lv-page" id="live">
+          <div class="wtop"><div><h2>Live</h2><p>The other pages show a fixed example from 8 November. Here the house plans the next 48 hours with today's day-ahead prices and weather forecast, using the same optimisation model. It runs on your device; nothing is sent anywhere.</p></div></div>
+          <div class="wc lv-bar">
+            <div class="lv-row"><button class="lv-go" type="button" id="lv-go">Plan the next 48 hours</button><span class="lv-co2" id="lv-co2"></span></div>
+            <ol class="lv-steps" id="lv-steps">
+              <li data-s="price"><i></i><span>Day-ahead prices</span><small>aWATTar · EPEX Spot DE-LU</small></li>
+              <li data-s="weather"><i></i><span>Weather and PV forecast</span><small>Open-Meteo · Munich region</small></li>
+              <li data-s="solve"><i></i><span>Optimisation</span><small>HiGHS in the browser · same model as the example</small></li>
+            </ol>
+          </div>
+          <div id="lv-out" hidden>
+            <div class="lv-kpis" id="lv-kpis"></div>
+            <div class="wc"><h3>Next 48 hours<span class="r" id="lv-range"></span></h3>
+              <div class="keys"><span><i style="background:#d9d9d9"></i>Day-ahead price</span><span><i style="background:#fff;outline:1px dashed #b5b5b5"></i>Estimated (not yet published)</span><span><i class="l" style="background:#1f8a52"></i>Grid CO2 (typical for this hour)</span></div>
+              <div class="lv-chart" id="lv-chart"></div>
+              <div class="lv-chart" id="lv-lanes"></div>
+            </div>
+            <div class="lv-grid">
+              <div class="wc"><h3>Commands, next 24 hours<span class="r">only changes are sent</span></h3><div class="tw" id="lv-cmds"></div></div>
+              <div class="wc"><h3>How this plan was made</h3><div class="lv-notes" id="lv-notes"></div></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -459,32 +481,6 @@ table.lvc code { font-family: var(--mono); font-size: 11.5px; background: var(--
       <div class="shot"><div class="cap"><b>Car</b><p>Departure and charge level. The plan picks the hours; the minimum is protected.</p></div><div class="phone" data-start="car"></div></div>
       <div class="shot"><div class="cap"><b>Impact</b><p>Saved euros and avoided tonnes, like a portfolio. Details live on the website.</p></div><div class="phone" data-start="impact"></div></div>
       <div class="shot"><div class="cap"><b>Notifications</b><p>The app mostly speaks first: a decision, the reason, one action.</p></div><div class="lock" id="lock"></div></div>
-    </div>
-  </section>
-
-  <section class="sec" id="live">
-    <div class="sec-h"><h2>Live test.<span>Today's prices and weather, planned in your browser.</span></h2>
-      <p>Everything above is a fixed example from 8 November. This section fetches the current day-ahead prices and the weather forecast and solves the same optimisation model for the next 48 hours, right here on your device. Nothing is sent anywhere.</p></div>
-    <div class="lv-bar">
-      <button class="lv-go" type="button" id="lv-go">Plan the next 48 hours</button>
-      <span class="lv-co2" id="lv-co2"></span>
-      <ol class="lv-steps" id="lv-steps">
-        <li data-s="price"><i></i><span>Day-ahead prices</span><small>aWATTar · EPEX Spot DE-LU</small></li>
-        <li data-s="weather"><i></i><span>Weather and PV forecast</span><small>Open-Meteo · Munich region</small></li>
-        <li data-s="solve"><i></i><span>Optimisation</span><small>HiGHS in the browser · same model as the example</small></li>
-      </ol>
-    </div>
-    <div id="lv-out" hidden>
-      <div class="lv-kpis" id="lv-kpis"></div>
-      <div class="lv-card"><h3>Next 48 hours<span class="r" id="lv-range"></span></h3>
-        <div class="keys"><span><i style="background:#d9d9d9"></i>Day-ahead price</span><span><i style="background:#fff;outline:1px dashed #b5b5b5"></i>Estimated (not yet published)</span><span><i class="l" style="background:#1f8a52"></i>Grid CO2 (typical for this hour)</span></div>
-        <div class="lv-chart" id="lv-chart"></div>
-        <div class="lv-chart" id="lv-lanes"></div>
-      </div>
-      <div class="lv-grid">
-        <div class="lv-card"><h3>Commands, next 24 hours<span class="r">only changes are sent</span></h3><div class="tw" id="lv-cmds"></div></div>
-        <div class="lv-card"><h3>How this plan was made</h3><div class="lv-notes" id="lv-notes"></div></div>
-      </div>
     </div>
   </section>
 </main>
@@ -758,6 +754,7 @@ function cumSavings(n) { const M = F.monthly; let cum = 0; const v = [0]; for (l
 
 // ---------------- WEBSITE ----------------
 const WIC = {
+  live: '<path d="M2 10h3l2-5 3 10 2-6 1.5 3H18" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   overview: '<path d="M3 10l7-6 7 6v7h-5v-5H8v5H3z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>',
   plan: '<path d="M3 15l4-5 3 3 7-8" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   goals: '<circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>',
@@ -766,7 +763,7 @@ const WIC = {
   setup: '<path d="M3 6h14v9H3z M7 18h6" stroke="currentColor" stroke-width="1.5" fill="none"/>',
   dev: '<path d="M7 6l-4 4 4 4M13 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
 };
-const WPAGES = [['overview', 'Overview'], ['plan', 'Plan & commands'], ['goals', 'Goals'], ['prefs', 'Comfort & car'], ['impact', 'Impact'], ['sep'], ['setup', 'Devices & tariff'], ['dev', 'For developers']];
+const WPAGES = [['overview', 'Overview'], ['plan', 'Plan & commands'], ['goals', 'Goals'], ['prefs', 'Comfort & car'], ['impact', 'Impact'], ['live', 'Live'], ['sep'], ['setup', 'Devices & tariff'], ['dev', 'For developers']];
 function renderSide() {
   $('#wside').innerHTML = `<div class="wlogo"><svg width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" fill="#000"/><rect x="11" y="3" width="6" height="6" fill="#ffcf22"/><rect x="3" y="13" width="14" height="2" fill="#fff"/></svg>HEMS</div>` +
     WPAGES.map(([k, l]) => k === 'sep' ? '<div class="sep"></div>' : `<button type="button" data-page="${k}" aria-current="${S.page === k ? 'page' : 'false'}"><svg viewBox="0 0 20 20">${WIC[k]}</svg>${l}</button>`).join('') +
@@ -1185,7 +1182,7 @@ function wDev() {
       <div class="g" style="font-size:12px">Comfort is a constraint, not a weight: pricing a 1 °C dip in €/K·h would need a heat-load model of the house. Open question for owner: should the feed-in credit enter the objective, so exports shift into dirty hours?</div></div>
   </div>`;
 }
-const WSCR = { overview: wOverview, plan: wPlan, goals: wGoals, prefs: wPrefs, impact: wImpact, setup: wSetup, dev: wDev };
+const WSCR = { overview: wOverview, plan: wPlan, goals: wGoals, prefs: wPrefs, impact: wImpact, setup: wSetup, dev: wDev, live: () => '' };
 // DOM abgleichen statt innerHTML: ein gezogener Regler bleibt dasselbe Element und verliert den Griff nicht
 function morph(root, html) { const t = document.createElement('template'); t.innerHTML = html; mKids(root, t.content); }
 function mKey(n) { return n && n.nodeType === 1 ? n.getAttribute('data-r') : null; }
@@ -1218,6 +1215,7 @@ function renderWeb() {
   const m = $('#wmain'), act = document.activeElement, key = act && m.contains(act) ? (act.dataset.r || act.dataset.t || act.dataset.wt) : null;
   if (S.page !== 'dev') jsonHTML();
   morph(m, WSCR[S.page]());
+  m.parentElement.dataset.page = S.page;
   if (key) { const n = m.querySelector(`[data-r="${key}"],[data-t="${key}"],[data-wt="${key}"]`); if (n) n.focus(); }
 }
 
@@ -1679,13 +1677,17 @@ function lvCo2Label() { lv('lv-co2').textContent = `CO2 priced at ${lvf(lvLam())
 lvCo2Label();
 document.addEventListener('click', lvCo2Label); document.addEventListener('input', lvCo2Label);
 
-async function lvJson(url) {
+async function lvJson(url, tries = 2) {   // one automatic retry: the public APIs drop out for a few minutes now and then
   const host = new URL(url).hostname;
-  let r;
-  try { r = await fetch(url, { signal: AbortSignal.timeout(20000) }); }
-  catch (e) { throw new Error(`${host} did not answer${e.name === 'TimeoutError' ? ' within 20 s' : ''}`); }
-  if (!r.ok) throw new Error(`${host} answered HTTP ${r.status}`);
-  return r.json();
+  for (let k = 1; ; k++) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(12000) });
+      if (r.ok) return r.json();
+      if (k >= tries) throw new Error(`${host} answered HTTP ${r.status}`);
+    } catch (e) {
+      if (k >= tries) throw e.name === 'TimeoutError' || e.name === 'TypeError' ? new Error(`${host} did not answer (tried ${tries}×)`) : e;
+    }
+  }
 }
 async function lvPrices(t0) {
   const d = await lvJson(`https://api.awattar.de/v1/marketdata?start=${t0 - 8 * 864e5}&end=${t0 + 49 * 36e5}`);
@@ -1706,7 +1708,7 @@ async function lvWeather() {
   return { temp, gti };
 }
 
-// Solver in a worker: stage 1 = quick plan (4 s), stage 2 = proven optimum (up to 90 s, MIP gap as in Python)
+// Solver in a worker: stage 1 = quick plan (4 s), stage 2 = optimum (MIP gap as in Python), capped at 25 s
 const LV_WORKER = `importScripts(${JSON.stringify(LIVE.highs + 'highs.js')});
 ${liveModel.toString()}
 onmessage = async e => {
@@ -1714,7 +1716,7 @@ onmessage = async e => {
   try {
     const solver = await Module({ locateFile: f => ${JSON.stringify(LIVE.highs)} + f });
     const m = liveModel(rows, z, p, lam), t = Date.now();
-    const sol = solver.solve(m.lp, stage === 1 ? { time_limit: 4 } : { time_limit: 90, mip_rel_gap: 1e-3, mip_abs_gap: 0.05 });
+    const sol = solver.solve(m.lp, stage === 1 ? { time_limit: 4 } : { time_limit: 25, mip_rel_gap: 1e-3, mip_abs_gap: 0.05 });
     const ok = isFinite(sol.ObjectiveValue) && sol.Columns && Object.keys(sol.Columns).length;
     postMessage(ok ? { stage, status: sol.Status, x: m.read(sol), sec: (Date.now() - t) / 1000 } : { stage, status: sol.Status, none: true });
   } catch (err) { postMessage({ stage, error: String(err && err.message || err) }); }
