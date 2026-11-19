@@ -342,6 +342,46 @@ table.rv td:first-child, table.rv th:first-child { text-align: left; padding-lef
 }
 @media (max-width: 700px) { .levels { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 520px) { .switch button { padding: 7px 12px; } .modes { grid-template-columns: minmax(0, 1fr); } }
+/* ---------- design pass: web view follows the results site (square, flat, neutral greys, black hairlines) ---------- */
+:root { --w-bg: #f4f4f4; --w-line: #e8e8e8; --w-soft: #f4f4f4; }
+.browser { border-radius: 0; box-shadow: none; border: 1px solid var(--panel-line); }
+.browser [style*="border-radius"] { border-radius: 0 !important; }
+.browser .chart rect, .browser .keys i, .browser .dot { rx: 0; ry: 0; border-radius: 0; }
+.bbar { background: #fff; border-bottom: 1px solid var(--panel-line); }
+.dots i { border-radius: 0; width: 9px; height: 9px; background: #d9d9d9; }
+.url { border-radius: 0; background: var(--panel); }
+.wside { border-right-color: var(--panel-line); padding: 20px 14px; }
+.wside button { border-radius: 0; }
+.wside .mode { border-radius: 0; background: none; border-top: 1px solid var(--ink); padding: 10px 10px 0; }
+.wside .mode b i { border-radius: 0; box-shadow: none; outline: 1px solid var(--ink); }
+.wmain { padding: 30px 32px 44px; gap: 20px; }
+.wtop h2 { font-size: 30px; letter-spacing: -0.02em; }
+.wtop p { margin-top: 6px; }
+.browser .wc { border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding: 14px 18px 18px; }
+.browser .wc h3 { color: var(--ink); }
+.browser .donate h3 { color: #fff; }
+.browser .tag, .browser .tag i, .browser .req .st { border-radius: 0; }
+.browser .btn { border-radius: 0; }
+.browser .btn.o { border-color: var(--panel-line); }
+.browser .seg { border-radius: 0; padding: 0; gap: 0; background: #fff; border: 1px solid var(--panel-line); }
+.browser .seg button { border-radius: 0; padding: 6px 12px; }
+.browser .seg button + button { border-left: 1px solid var(--panel-line); }
+.browser .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; box-shadow: none; }
+.browser .tm, .browser .mcard, .browser .lvl, .browser .lvl .bars i, .browser .checks .ok, .browser .dev .ic, .browser .tou i,
+.browser table.cmd code, .browser pre.json { border-radius: 0; }
+.browser input[type="range"].wr::-webkit-slider-runnable-track { height: 2px; border-radius: 0; background: linear-gradient(90deg, var(--ink) var(--p), #d4d4d4 var(--p)); }
+.browser input[type="range"].wr::-moz-range-track { height: 2px; border-radius: 0; background: #d4d4d4; }
+.browser input[type="range"].wr::-moz-range-progress { height: 2px; border-radius: 0; }
+.browser input[type="range"].wr::-webkit-slider-thumb { width: 14px; height: 14px; border-radius: 0; border: 1.5px solid var(--ink); margin-top: -6px; }
+.browser input[type="range"].wr::-moz-range-thumb { width: 11px; height: 11px; border-radius: 0; border: 1.5px solid var(--ink); }
+.browser .sw { border-radius: 0; width: 40px; height: 22px; }
+.browser .sw::after { border-radius: 0; box-shadow: none; width: 16px; height: 16px; }
+.browser .wc.wide .checks { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 32px; }
+.stack { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.ld { display: grid; gap: 8px; }
+.ld + .ld { border-top: 1px solid var(--w-line); padding-top: 12px; }
+@media (max-width: 1100px) { .stack { grid-column: span 12; } .browser .wc.wide .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .browser .wc.wide .checks { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 <header class="head">
@@ -616,7 +656,7 @@ function flowSVG(theme) {
   const i = NOW, pv = P.pv[i], hp = P.hp[i], chp = P.chp[i], soc0 = P.soc[i], batt = soc0 - P.soc[i + 1], grid = P.grid[i] - P.feed[i];
   const ev = evPlan(), evkw = ev.pick.includes(i) ? ev.kw[0] : 0, load = P.load[i] + evkw;
   const c = L ? { bg: '#fff', node: '#fff', line: '#e3e3df', txt: '#1a1a1a', sub: '#8a8a86', house: '#111', hs: '#fff' } : { bg: '#0b0b0d', node: '#17171b', line: '#2a2a31', txt: '#f4f4f6', sub: '#8c8c95', house: '#f4f4f6', hs: '#0b0b0d' };
-  const node = (x, y, label, val, col, act) => `<g transform="translate(${x},${y})"><circle r="23" fill="${c.node}" stroke="${act ? col : c.line}" stroke-width="${act ? 2 : 1.5}"/><text text-anchor="middle" y="-3" style="font-size:9px;fill:${c.sub}">${label}</text><text text-anchor="middle" y="11" style="font-size:11px;fill:${c.txt};font-weight:500">${val}</text></g>`;
+  const node = (x, y, label, val, col, act) => `<g transform="translate(${x},${y})">${L ? '<rect x="-23" y="-23" width="46" height="46"' : '<circle r="23"'} fill="${c.node}" stroke="${act ? col : c.line}" stroke-width="${act ? 2 : 1.5}"/><text text-anchor="middle" y="-3" style="font-size:9px;fill:${c.sub}">${label}</text><text text-anchor="middle" y="11" style="font-size:11px;fill:${c.txt};font-weight:500">${val}</text></g>`;
   const line = (d, col, on, rev) => `<path class="ln" d="${d}" stroke="${c.line}"/>${on ? `<path class="on" d="${d}" stroke="${col}" style="${rev ? 'animation-direction:reverse' : ''}"/>` : ''}`;
   const Y = '#e0a800', G = L ? '#1f8a52' : '#3fd38a', B = '#3d7be0', O = '#e8850c';
   return `<svg viewBox="0 0 300 228" role="img" aria-label="Energy flow right now">
@@ -626,7 +666,7 @@ function flowSVG(theme) {
     ${line('M249 106 H174', O, hp > 0.05, true)}
     ${line('M238 172 Q200 150 170 122', L ? '#111' : '#f4f4f6', evkw > 0, true)}
     ${line('M150 186 V128', O, chp > 0.05)}
-    <g transform="translate(150,106)"><rect x="-23" y="-21" width="46" height="42" rx="11" fill="${c.house}"/><path d="M-10 3 L0 -8 L10 3 V13 H-10Z" fill="none" stroke="${c.hs}" stroke-width="2" stroke-linejoin="round"/></g>
+    <g transform="translate(150,106)"><rect x="-23" y="-21" width="46" height="42" rx="${L ? 0 : 11}" fill="${c.house}"/><path d="M-10 3 L0 -8 L10 3 V13 H-10Z" fill="none" stroke="${c.hs}" stroke-width="2" stroke-linejoin="round"/></g>
     <text x="178" y="140" style="font-size:10px;fill:${c.sub}">${fmt(load + hp, 1)} kW in use</text>
     ${node(150, 25, 'Solar', fmt(pv, 1) + ' kW', Y, pv > 0.05)}
     ${node(28, 106, 'Grid', fmt(Math.abs(grid), 1) + ' kW', B, Math.abs(grid) > 0.05)}
@@ -655,9 +695,9 @@ const WIC = {
 };
 const WPAGES = [['overview', 'Overview'], ['plan', 'Plan & commands'], ['goals', 'Goals'], ['prefs', 'Comfort & car'], ['impact', 'Impact'], ['sep'], ['setup', 'Devices & tariff'], ['dev', 'For developers']];
 function renderSide() {
-  $('#wside').innerHTML = `<div class="wlogo"><svg width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" rx="5" fill="#000"/><rect x="11" y="3" width="6" height="6" fill="#ffcf22"/><rect x="3" y="13" width="14" height="2" fill="#fff"/></svg>HEMS</div>` +
+  $('#wside').innerHTML = `<div class="wlogo"><svg width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" fill="#000"/><rect x="11" y="3" width="6" height="6" fill="#ffcf22"/><rect x="3" y="13" width="14" height="2" fill="#fff"/></svg>HEMS</div>` +
     WPAGES.map(([k, l]) => k === 'sep' ? '<div class="sep"></div>' : `<button type="button" data-page="${k}" aria-current="${S.page === k ? 'page' : 'false'}"><svg viewBox="0 0 20 20">${WIC[k]}</svg>${l}</button>`).join('') +
-    `<button class="mode" type="button" data-page="goals"><b><i></i>${LV[S.level].label} · ${MODES[S.mode] ? MODES[S.mode].label : 'Custom'}</b><span class="g">${fmt(S.p)} €/t CO2 · ${NAME[planFor(S.p)]}</span></button>`;
+    `<button class="mode" type="button" data-page="goals"><b><i></i>${LV[S.level].label} · ${MODES[S.mode] ? MODES[S.mode].label : 'Custom'}</b><span class="g">CO2 price ${fmt(S.p)} €/t</span></button>`;
   $('#url').textContent = 'hems.local/flex/' + S.page;
 }
 const sw = (id, on, label, sub, dis) => `<div class="tg"><span class="l">${label}${sub ? `<small>${sub}</small>` : ''}</span><button class="sw" role="switch" aria-checked="${on}" data-sw="${id}" aria-label="${label}" ${dis ? 'disabled' : ''}></button></div>`;
@@ -783,12 +823,12 @@ function wPlan() {
   return `
   <div class="wtop"><div><h2>Plan & commands</h2><p>The optimiser's hourly result, translated into the commands each device receives. The Supervisor checks every schedule against the constraints before it is sent. Click an hour.</p></div><span class="tag ${ok === nck ? '' : 'y'}"><i></i>${ok} of ${nck} checks passed · ${ck.length - nck} value open</span></div>
   <div class="wgrid">
-    <div class="wc c8"><h3>8–9 November · financial optimum · live prices<span class="r">${hrs[sel]}–${endOf(sel)} selected</span></h3>
+    <div class="wc c12"><h3>8–9 November · financial optimum · live prices<span class="r">${hrs[sel]}–${endOf(sel)} selected</span></h3>
       <div class="keys"><span><i style="background:#e9e9e4"></i>Day-ahead price</span><span><i style="background:#111"></i>Car charging</span><span><i class="l" style="background:#1f8a52"></i>Grid CO2</span></div>
-      <div class="chart" data-hrchart>${priceCO2Chart(760, 190, sel)}</div>
-      <div class="chart" data-hrchart>${lanesSVG(760)}</div>
+      <div class="chart" data-hrchart>${priceCO2Chart(1120, 210, sel)}</div>
+      <div class="chart" data-hrchart>${lanesSVG(1120)}</div>
     </div>
-    <div class="wc c4"><h3>Constraint check<span class="r">The owner's constraint sheet</span></h3><div class="checks">${ck.map(([ty, t, v, o]) => `<div><span class="ok ${o === false ? 'bad' : ''}" style="${o === null ? 'background:#ececea;color:#8a8a86' : ''}">${o === null ? '?' : o ? '✓' : '!'}</span><span>${t}<small>${v}</small></span><span class="tag" style="font-size:11px;padding:2px 8px;${ty === 'Must' ? 'background:#111;color:#fff' : ''}">${ty}</span></div>`).join('')}</div>
+    <div class="wc c12 wide"><h3>Constraint check<span class="r">The owner's constraint sheet</span></h3><div class="checks">${ck.map(([ty, t, v, o]) => `<div><span class="ok ${o === false ? 'bad' : ''}" style="${o === null ? 'background:#ececea;color:#8a8a86' : ''}">${o === null ? '?' : o ? '✓' : '!'}</span><span>${t}<small>${v}</small></span><span class="tag" style="font-size:11px;padding:2px 8px;${ty === 'Must' ? 'background:#111;color:#fff' : ''}">${ty}</span></div>`).join('')}</div>
       <div class="g" style="font-size:12px">${hrs[sel]}: ${fmt(P.da[sel], 1)} ct · ${fmt(P.co2[sel])} g · ${fmt(P.temp[sel], 1)} °C · battery ${Math.round(P.soc[sel] / F.batKwh * 100)} % · buffer ${fmt(P.buf[sel])} kWh</div></div>
     <div class="wc c12"><h3>Command schedule<span class="r">${cmds.length} commands from the owner's list · only changes are sent · ${rc.ready} writable today, ${rc.pending} need interface setup, ${rc.blocked} not controllable yet</span></h3>
       <div class="tw"><table class="cmd"><thead><tr><th>Time</th><th>Device</th><th>Command (owner)</th><th>Value</th><th>Interface</th><th>Ready?</th><th>Why</th></tr></thead><tbody>${cmds.map(c => `<tr class="${c.i === sel ? 'hl' : ''}" data-hr="${c.i}" style="cursor:pointer"><td>${hrs[c.i]}</td><td>${c.asset}</td><td><code>${c.label}</code><span class="g" style="display:block;font-size:11px">${c.sv}</span></td><td>${c.v}</td><td class="why">${c.iface}</td><td>${rtag(c)}</td><td class="why">${c.why}</td></tr>`).join('')}</tbody></table></div></div>
@@ -851,20 +891,21 @@ function wPrefs() {
   return `
   <div class="wtop"><div><h2>Comfort & car</h2><p>These are limits, not wishes. The optimiser never breaks them; it only chooses how to meet them.</p></div></div>
   <div class="wgrid">
-    <div class="wc c6"><h3>Heating and hot water</h3>
+    <div class="c6 stack"><div class="wc"><h3>Heating and hot water</h3>
       <div class="fld"><div class="top"><span>Room never below, by day</span><b>${fmt(S.tDay, 1)} °C</b></div>${rng('tDay', 18, 24, 0.5, S.tDay)}</div>
       <div class="fld"><div class="top"><span>At night, 22–06</span><b>${fmt(S.tNight, 1)} °C</b></div>${rng('tNight', 15, 21, 0.5, S.tNight)}</div>
       <div>${sw('dips', S.dips, 'Eco dips', 'Heat pump may pause at price spikes. Never more than 1 °C below your minimum.')}
       ${S.dips ? `<div style="padding-bottom:8px"><div class="seg">${[1, 2, 3].map(h => `<button type="button" data-diph="${h}" aria-pressed="${S.dipH === h}">up to ${h} h</button>`).join('')}</div></div>` : ''}
       <div class="tg"><span class="l">Hot water at 55 °C by<small>Weekly 60 °C hygiene cycle runs by itself</small></span><input class="tm" type="time" data-t="dhw" value="${S.dhw}" aria-label="Hot water ready by"></div></div>
     </div>
+    <div class="wc"><h3>Flexible appliances<span class="r">The house picks the hour inside your window</span></h3>
+      <div>${S.loads.map((l, k) => `<div class="ld">${sw('load' + k, l.on, l.name, `${fmt(l.kwh, 1)} kWh · ${l.dur} h${k === 0 && dw && l.on ? ` · tonight at ${hrs[dw.i]}` : ''}`)}${l.on ? `<div style="display:flex;gap:8px;align-items:center;font-size:13px;color:#555">Window <input class="tm" type="time" data-lf="${k}" value="${l.from}" aria-label="${l.name} from"> to <input class="tm" type="time" data-lt="${k}" value="${l.to}" aria-label="${l.name} to"></div>` : ''}</div>`).join('')}</div>
+    </div>
+    </div>
     <div class="wc c6"><h3>Car · 77 kWh, 11 kW wallbox</h3>
       <table class="week"><thead><tr><th>Day</th><th>Leave at</th><th>Charged to</th><th></th></tr></thead><tbody>${S.week.map((w, i) => `<tr class="${w ? '' : 'off'}"><td>${DAYS[i]}</td><td>${w ? `<input class="tm" type="time" data-wt="${i}" value="${w[0]}" aria-label="${DAYS[i]} departure">` : 'no trip'}</td><td>${w ? `<select class="tm" data-ws="${i}" aria-label="${DAYS[i]} target">${[60, 70, 80, 90, 100].map(v => `<option ${v === w[1] ? 'selected' : ''}>${v}</option>`).join('')}</select> %` : ''}</td><td style="text-align:right"><button class="sw" role="switch" aria-checked="${!!w}" data-wd="${i}" aria-label="${DAYS[i]} trip"></button></td></tr>`).join('')}</tbody></table>
       <div class="fld"><div class="top"><span>Never below</span><b>${S.evMin} %</b></div>${rng('evMin', 0, 80, 5, S.evMin)}<span class="h">Charged right away if lower, at any price. For the unplanned trip.</span></div>
       <div>${sw('precond', S.precond, 'Pre-heat the cabin', '15 min before departure, from the house battery if possible')}${sw('evSolar', S.evSolar, 'Above the minimum: solar only', 'May miss the target on grey days')}${sw('v2h', S.v2h, 'Let the car power the house', 'Vehicle-to-home · needs a bidirectional wallbox', true)}</div>
-    </div>
-    <div class="wc c12"><h3>Flexible appliances<span class="r">Start in remote mode; the house picks the hour inside your window</span></h3>
-      <div class="wgrid">${S.loads.map((l, k) => `<div class="c6" style="display:grid;gap:8px">${sw('load' + k, l.on, l.name, `${fmt(l.kwh, 1)} kWh · ${l.dur} h${k === 0 && dw && l.on ? ` · tonight at ${hrs[dw.i]}` : ''}`)}${l.on ? `<div style="display:flex;gap:8px;align-items:center;font-size:13px;color:#555">Window <input class="tm" type="time" data-lf="${k}" value="${l.from}" aria-label="${l.name} from"> to <input class="tm" type="time" data-lt="${k}" value="${l.to}" aria-label="${l.name} to"></div>` : ''}</div>`).join('')}</div>
     </div>
   </div>`;
 }
