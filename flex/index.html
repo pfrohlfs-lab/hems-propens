@@ -567,11 +567,18 @@ function ruleCompare() {
   return { ev, evRule: ev.cost, evOpt: opt, chpRule, chpOpt, batRule };
 }
 // requests the Copilot asks before acting (only what you would notice)
+// first contiguous CHP run that starts within the next 12 h (hour indices), [] if none
+function chpBlock() {
+  const s = P.chp.findIndex(v => v > 0.1);
+  if (s < 0 || s >= 12) return [];
+  let e = s; while (e + 1 < P.chp.length && P.chp[e + 1] > 0.1) e++;
+  return Array.from({ length: e - s + 1 }, (_, k) => s + k);
+}
 function requests() {
   if (S.level === 'manual') return [];
   const L = [], lv = S.level; const ev = evPlan();
   if (S.decisions.ev || (ev.pick.length && ev.pick[0] > 0)) L.push({ id: 'ev', title: `Charge the car ${S.chargeNow ? 'in the cheapest hours' : 'from ' + hrs[ev.pick[0]]} instead of now?`, body: `Cheapest hours before ${dep()}; ${tgt()} % guaranteed.`, save: ev.save });
-  const ch = P.chp.map((v, i) => v > 0.1 && i < 12 ? i : -1).filter(i => i >= 0);
+  const ch = chpBlock();
   if (ch.length) L.push({ id: 'chp', title: `Run the CHP ${hrs[ch[0]]}–${endOf(ch[ch.length - 1])}?`, body: `${fmt(P.da[ch[0]], 1)} ct and ${fmt(P.temp[ch[0]], 1)} °C outside. Heat and power from gas; the heat pump waits.`, save: null });
   if (S.dips) { let best = -1; P.hp.forEach((v, i) => { if (v > 0.3 && (best < 0 || P.da[i] > P.da[best])) best = i; });
     if (best >= 0) L.push({ id: 'dip', title: `Pause the heat pump ${hrs[best]}–${endOf(best)}?`, body: `Peak price ${fmt(P.da[best], 1)} ct. Room stays above ${fmt(S.tDay - 0.5, 1)} °C.`, save: P.hp[best] * P.buy[best] / 100 }); }
@@ -1324,7 +1331,7 @@ function renderPhone(ph) {
 }
 function notifs() {
   const ev = evPlan(), dw = dishwasher();
-  const ch = P.chp.map((v, i) => v > 0.1 && i < 12 ? i : -1).filter(i => i >= 0);
+  const ch = chpBlock();
   const L = [];
   L.push({ time: 'Sun ' + hrs[0], title: `Car plugged in · ${S.evNow} %`, body: S.chargeNow ? 'Charging now, as you asked.' : `Charging to ${tgt()} % from ${ev.pick.length ? hrs[ev.pick[0]] : '—'}, when power is cheapest. ${fmt(ev.save, 2)} € less than charging now.`, acts: S.chargeNow ? null : [['Charge now', 'chargeNow'], ['OK', '']] });
   if (ch.length) L.push({ time: 'Sun ' + hrs[ch[0]], title: 'Expensive night', body: `${fmt(P.da[ch[0]], 1)} ct. The CHP covers heat and power until ${endOf(ch[ch.length - 1])}; the heat pump waits.` });
@@ -1335,7 +1342,7 @@ function notifs() {
 }
 function renderLock() {
   const ev = evPlan(), dw = dishwasher();
-  const ch = P.chp.map((v, i) => v > 0.1 && i < 12 ? i : -1).filter(i => i >= 0);
+  const ch = chpBlock();
   const ic = '<svg width="16" height="16" viewBox="0 0 20 20"><rect x="11" y="3" width="6" height="6" fill="#ffcf22"/><rect x="3" y="13" width="14" height="2" fill="#fff"/></svg>';
   const n = (time, title, body, acts) => `<div class="ntf"><span class="ic">${ic}</span><span><span class="hd"><span>HEMS</span><span>${time}</span></span><b>${title}</b>${body}${acts ? `<span class="acts">${acts.map(a => `<span>${a}</span>`).join('')}</span>` : ''}</span></div>`;
   $('#lock').innerHTML = `<div class="clk">07:18</div><div class="dt">Monday, 9 November</div>` +
