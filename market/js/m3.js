@@ -706,6 +706,9 @@
     
     if (pp) pp.innerHTML = ptWorst + ptProf + (pu.length ? `<li><b>${esc(pu.join(', '))}</b>unverified profit</li>` : '');
     
+    const lg = $('m3-pr-legend'); /* colour key for the type squares next to each name */
+    if (lg) lg.innerHTML = UI.ARCH.filter((a) => rows.some((r) => r.c.archetype === a.id))
+      .map((a) => `<span><i style="background:${C(a.tok)}"></i>${esc(a.label)}</span>`).join('');
     drawBars($('m3-pr-big'), big, 'Groups and large entities, millions');
     drawBars($('m3-pr-small'), small, 'Specialists and start-ups, millions (separate scale)');
   }

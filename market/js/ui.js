@@ -57,13 +57,15 @@
     map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
   document.addEventListener('DOMContentLoaded', toc);
-  /* split exhibits: headline (takeaway) + chart description go above the chart, full width (26.11.2026) */
+  /* split and wide exhibits: headline (takeaway) + chart description go above the chart, full width (26.11.2026) */
   function headlines() {
-    document.querySelectorAll('.exhibit.split > .side').forEach((side) => {
+    document.querySelectorAll('.exhibit.split > .side, .exhibit.wide > .side').forEach((side) => {
       const fig = side.parentElement;
       if (fig.querySelector(':scope > .xhead')) return;
+      const parts = side.querySelectorAll(':scope > .xno, :scope > h3, :scope > .sub, :scope > .m1-brand');
+      if (!parts.length) return; /* e.g. the app mock-ups: no headline to move */
       const head = document.createElement('div'); head.className = 'xhead';
-      side.querySelectorAll(':scope > .xno, :scope > h3, :scope > .sub, :scope > .m1-brand').forEach((el) => head.appendChild(el));
+      parts.forEach((el) => head.appendChild(el));
       fig.insertBefore(head, fig.firstChild);
     });
   }

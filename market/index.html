@@ -449,7 +449,7 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
     <div class="side">
       <span class="xno"></span>
       <h3 id="m3-pr-title">12 of 13 HEMS-relevant companies with available results are loss-making</h3>
-      <p class="sub">Net income in the latest reported year, millions in reporting currency · red = loss, green = profit, dashed = unverified; square = company type</p>
+      <p class="sub">Net income in the latest reported year, millions in reporting currency · red = loss, green = profit, dashed = unverified; square colour = company type</p>
       <ul class="pts" id="m3-pr-pts">
         <li><b>−405 m USD</b>largest loss: SolarEdge, 2025</li>
         <li><b>Enphase</b>the only verified profit</li>
@@ -461,6 +461,7 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
       </details>
     </div>
     <div class="body">
+      <div class="legend" id="m3-pr-legend" aria-label="Company type"></div>
       <div class="m3-cq">
         <div class="m3-pr2">
           <div class="m3-chart" id="m3-pr-big"></div>
@@ -489,6 +490,7 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
 .m3-chip i { width: 8px; height: 8px; display: inline-block; flex: none; }
 .m3-chip small { color: var(--grey); font-size: 11px; }
 .m3-lg { margin-bottom: 10px; }
+#m3-pr-legend { margin-bottom: 12px; }
 .m3-lg b { font-weight: 600; color: var(--ink); }
 /* 5b small multiples */
 .m3-sm { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }

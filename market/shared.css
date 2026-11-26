@@ -241,6 +241,10 @@ details.fold > .fold-body { padding-bottom: 16px; display: grid; gap: 20px; }
 
 /* headline above the chart (26.11.2026, team member: every chart needs a headline with the takeaway) */
 .exhibit.split > .xhead { grid-column: 1 / -1; grid-row: 1; display: grid; gap: 4px; max-width: 80ch; }
+/* wide exhibits use the same headline row; below it the points run as one strip across the full width */
+.exhibit.wide > .xhead { display: grid; gap: 4px; max-width: 80ch; }
+.exhibit.wide > .xhead + .side { grid-template-columns: minmax(0, 1fr); }
+.exhibit.wide > .xhead + .side > .pts { grid-column: 1; grid-row: auto; }
 .exhibit.split > .side { grid-row: 2; }
 .exhibit.split > .body { grid-row: 2; }
 .xhead h3, .exhibit.wide > .side > h3 { font-size: 21px; line-height: 1.25; letter-spacing: -0.008em; text-wrap: balance; }
