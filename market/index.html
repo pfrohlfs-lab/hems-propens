@@ -41,30 +41,13 @@
 #summary { scroll-margin-top: calc(var(--head) + 16px); }
 #summary h1 { max-width: 25ch; }
 #summary .lede { max-width: 70ch; }
-.m0-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
-.m0-kpis > * { display: grid; gap: 4px; align-content: start; padding: 14px 18px 4px 0; text-decoration: none; }
-.m0-kpis > * + * { padding-left: 18px; border-left: 1px solid var(--line); }
-.m0-kpis a:hover .m0-v { text-decoration: underline; text-decoration-thickness: 1px; }
-.m0-v { font-size: clamp(22px, 2.4vw, 30px); font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--ink); }
-.m0-l { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
-.m0-l b { font-weight: 500; color: var(--ink); }
 #summary .sowhat { max-width: none; }
 #summary .sowhat p { font-size: 15.5px; }
-@media (max-width: 900px) { .m0-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .m0-kpis > :nth-child(3) { padding-left: 0; border-left: 0; } .m0-kpis > :nth-child(n+3) { border-top: 1px solid var(--line); } }
-@media (max-width: 480px) { .m0-kpis { grid-template-columns: minmax(0, 1fr); } .m0-kpis > *, .m0-kpis > * + * { padding-left: 0; border-left: 0; } .m0-kpis > * + * { border-top: 1px solid var(--line); } }
 </style>
 
 <section class="hero" id="summary">
   <span class="eyebrow">German HEMS market and competitors · November 2026</span>
   <h1>Basic HEMS is turning into a free add-on, while the value moves to flexibility</h1>
-
-  <div class="m0-kpis" aria-label="Headline numbers">
-    <a href="#x-pools"><span class="m0-v">€1.15–1.35 bn</span><span class="m0-l">German HEMS <b>flexibility pool 2035</b>, up from €10–20 M (BCG)</span></a>
-    <div title="Source: own count from Energy-Charts day-ahead prices DE-LU (Fraunhofer ISE; data Bundesnetzagentur | SMARD.de), mean of daily max − min hourly price; 2026 = 01.01.–24.11."><span class="m0-v">€30 → €157</span><span class="m0-l"><b>average daily day-ahead price spread</b> per MWh, 2019 → 2026 (to 24 Nov)</span></div>
-    <a href="#x-pools" title="Source: BCG, flexibility level I (dynamic-tariff optimisation), single-family home, 2025"><span class="m0-v">€350–450 / year</span><span class="m0-l"><b>flexibility value per home</b> today (BCG)</span></a>
-    <a href="#x-m3-landscape"><span class="m0-v">€4.99 / month</span><span class="m0-l"><b>median paid HEMS fee</b>; 9 of 32 offers charge none</span></a>
-  </div>
-
 </section>
 
 <style>
