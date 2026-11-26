@@ -692,20 +692,9 @@
   function drawProfit() {
     const rows = profitRows(); if (!rows.length) return;
     const big = rows.filter((r) => Math.abs(r.v) >= 5), small = rows.filter((r) => Math.abs(r.v) < 5);
-    const loss = rows.filter((r) => r.v < 0), prof = rows.filter((r) => r.v > 0);
+    const loss = rows.filter((r) => r.v < 0);
     const t = $('m3-pr-title');
-    const and = (a) => a.join(', ').replace(/, ([^,]*)$/, ' and $1');
-    const pv = prof.filter((r) => !r.low).sort((a, b) => b.v - a.v).map((r) => r.name);
-    const pu = prof.filter((r) => r.low).sort((a, b) => b.v - a.v).map((r) => r.name);
-    /* title must keep starting with "N of M": m4.js reads it for the summary count */
     if (t) t.textContent = `${loss.length} of ${rows.length} HEMS-relevant companies with available results are loss-making`;
-    const pp = $('m3-pr-pts'), worst = loss[0]; /* rows are sorted ascending: loss[0] = largest loss */
-    const ptWorst = worst ? `<li><b>${fmt(worst.v, 0).replace('-', '−')} m ${esc(worst.n.currency)}</b>largest loss: ${esc(worst.name)}, ${esc(worst.n.year)}</li>` : '';
-    const ptProf = pv.length ? `<li><b>${esc(and(pv))}</b>the only verified profit${pv.length > 1 ? 's' : ''}</li>` : '<li><b>None</b>posted a verified profit</li>';
-    
-    
-    if (pp) pp.innerHTML = ptWorst + ptProf + (pu.length ? `<li><b>${esc(pu.join(', '))}</b>unverified profit</li>` : '');
-    
     const lg = $('m3-pr-legend'); /* colour key for the type squares next to each name */
     if (lg) lg.innerHTML = UI.ARCH.filter((a) => rows.some((r) => r.c.archetype === a.id))
       .map((a) => `<span><i style="background:${C(a.tok)}"></i>${esc(a.label)}</span>`).join('');
