@@ -556,17 +556,19 @@
   /* =====================================================================================
      (c) Feature heatmap
      ===================================================================================== */
+  /* Core view for end consumers (team member 26.11.2026): only app features and device connections.
+     Removed from the exhibit (data kept): sales channels, system type, immersion heater, EV via API,
+     §9 EEG, protocol-level interfaces, DIN-rail, ISO 27001, plan for the grid operator. */
   const COLS = [
-    ['Sales channel', [['White-label (B2B)', [0]], ['Installer / direct', [1]], ['Wholesale', [2]], ['Private customers', [56]], ['Open source', [57]]]],
-    ['System type', [['Local HEMS', [13]], ['Cloud HEMS', [14]], ['Vendor-independent', [15]]]],
     ['Forecast', [['PV forecast', [20]], ['Load forecast', [21]]]],
-    ['PV surplus', [['Battery', [3]], ['Heat pump', [6]], ['Wallbox', [4]], ['Immersion heater', [7]], ['EV via API', [5]]]],
-    ['Dynamic tariff', [['Any device', [8, 9, 10, 11, 12, 35]], ['Battery', [8]], ['Heat pump', [11]], ['Wallbox', [9]]]],
-    ['EV charging', [['1/3-phase switching', [16]], ['Car SoC', [17]]]],
-    ['Grid rules', [['§14a via EEBUS', [22]], ['§14a via relay', [45, 23]], ['§9 EEG control', [25, 46]], ['Variable grid fees', [24, 36, 37]]]],
-    ['Interfaces', [['EEBUS (devices)', [26, 28, 43]], ['Modbus', [27, 29, 30, 31, 32, 39, 41, 47]], ['OCPP', [33]], ['Cloud API', [38, 40, 42]], ['Local API / MQTT', [49, 50, 51, 52, 53]]]],
-    ['Other', [['DIN-rail', [44]], ['ISO 27001', [55]]]],
+    ['PV surplus to', [['Battery', [3]], ['Heat pump', [6]], ['Wallbox', [4]]]],
+    ['Dynamic tariff', [['Battery', [8]], ['Heat pump', [11]], ['Wallbox', [9]]]],
+    ['EV charging', [['Car SoC', [17]], ['1/3-phase switching', [16]]]],
+    ['Grid rules', [['§14a dimming', [22, 45, 23]], ['Variable grid fees', [24, 36, 37]]]],
+    ['Connects to', [['Battery / inverter', [28, 29, 30, 40, 41, 51, 61, 65, 66, 71]], ['Heat pump', [18, 19, 26, 27, 38, 39, 47, 48, 49, 50, 54, 58, 59, 60, 63, 64, 70]], ['Wallbox', [31, 32, 33, 42, 43, 52, 53, 62, 67, 68, 69, 72]], ['Smart plugs', [34, 35]]]],
+    ['Connection', [['Local (Modbus, EEBUS, API)', [26, 27, 28, 29, 30, 31, 32, 39, 41, 43, 47, 49, 50, 51, 52, 53]], ['Cloud API', [38, 40, 42]]]],
   ];
+  const MISS_SHOW = ['CHP (BHKW) optimisation', 'Buffer tank', 'Schedule as start view'];
   let hmSort = 'n';
   function hmData() {
     const M = MD.matrix, P = (X.m2_producers && X.m2_producers.producers) || {};
@@ -583,6 +585,8 @@
     const miss = X.m2_missing || { columns: [], rows: [] };
     const missBy = Object.fromEntries(miss.rows.map((r) => [r.key, r]));
     const flat = COLS.flatMap(([g, cs]) => cs.map(([lab, idx]) => ({ g, lab, idx, prev: rows.filter((r) => idx.some((i) => r.f.has(i))).length / nP })));
+    rows.forEach((r) => { r.nc = flat.filter((c) => c.idx.some((i) => r.f.has(i))).length; });
+    const mk = miss.columns.map((c, k) => k).filter((k) => MISS_SHOW.includes(miss.columns[k]));
     const featName = (i) => { const f = MD.matrix.features[i]; return `${f.cat}: ${f.name}`; };
     // our TUM HEMS: value per hems-finder feature index (1 / 0.5 / 'a' / missing = no); column = best of its fields
     const OF = X.m2_ours_features || null;
@@ -590,44 +594,45 @@
     const rank = (v) => (v === 1 ? 3 : v === 0.5 ? 2 : v === 'a' ? 1 : 0);
     const ourVal = (idx) => idx.map(ourF).reduce((a, b) => (rank(b) > rank(a) ? b : a), 0);
     const ourN = OF ? Object.values(OF.v).reduce((s, v) => { s.full += v === 1; s.part += v === 0.5; s.plan += v === 'a'; return s; }, { full: 0, part: 0, plan: 0 }) : null;
+    const ourCore = OF ? flat.filter((c) => ourVal(c.idx) === 1).length : null;
     let order = rows.slice();
-    if (hmSort === 'n') order.sort((a, b) => b.n - a.n || d3.ascending(a.short.toLowerCase(), b.short.toLowerCase()));
+    if (hmSort === 'n') order.sort((a, b) => b.nc - a.nc || d3.ascending(a.short.toLowerCase(), b.short.toLowerCase()));
     if (hmSort === 'name') order.sort((a, b) => d3.ascending(a.short.toLowerCase(), b.short.toLowerCase()));
     const archOrder = ARCH_IDS.concat(['other']);
-    if (hmSort === 'arch') order.sort((a, b) => archOrder.indexOf(a.arch) - archOrder.indexOf(b.arch) || b.n - a.n);
+    if (hmSort === 'arch') order.sort((a, b) => archOrder.indexOf(a.arch) - archOrder.indexOf(b.arch) || b.nc - a.nc);
     const cellMiss = (v) => v === 1 ? 'on' : v === 0.5 ? 'half' : v === 'a' ? 'ann' : v === 0 ? 'no' : 'na';
     const missText = (v) => v === 1 ? 'yes' : v === 0.5 ? 'partly' : v === 'a' ? 'announced, not shipped' : v === 0 ? 'no' : 'not researched';
     const narrow = (host.clientWidth || 800) < 520, RW = narrow ? 132 : 196, GW = 14,
-      CW = narrow ? 18 : Math.max(18, Math.min(30, Math.floor(((host.clientWidth || 800) - RW - GW - 4) / (flat.length + miss.columns.length)))), TW = RW + flat.length * CW + GW + miss.columns.length * CW;
-    let h = `<table class="m2-hm" style="width:${TW}px"><colgroup><col style="width:${RW}px">${flat.map(() => `<col style="width:${CW}px">`).join('')}<col style="width:${GW}px">${miss.columns.map(() => `<col style="width:${CW}px">`).join('')}</colgroup><thead><tr class="grp"><th class="rowh"></th>`;
+      CW = narrow ? 18 : Math.max(18, Math.min(30, Math.floor(((host.clientWidth || 800) - RW - GW - 4) / (flat.length + mk.length)))), TW = RW + flat.length * CW + GW + mk.length * CW;
+    let h = `<table class="m2-hm" style="width:${TW}px"><colgroup><col style="width:${RW}px">${flat.map(() => `<col style="width:${CW}px">`).join('')}<col style="width:${GW}px">${mk.map(() => `<col style="width:${CW}px">`).join('')}</colgroup><thead><tr class="grp"><th class="rowh"></th>`;
     COLS.forEach(([g, cs], gi) => { h += `<th colspan="${cs.length}"><span class="${gi % 2 ? 'lo' : 'hi'}">${esc(g)}</span></th>`; });
-    h += `<th class="gap"></th><th colspan="${miss.columns.length}"><span class="${COLS.length % 2 ? 'lo' : 'hi'}" style="color:var(--ink)">Not on hems-finder</span></th></tr><tr class="cols"><th class="rowh" style="vertical-align:bottom;padding-bottom:6px;font-weight:500;font-size:11px;color:var(--muted)">Vendor <span style="float:right">features of ${nF}</span></th>`;
+    h += `<th class="gap"></th><th colspan="${mk.length}"><span class="${COLS.length % 2 ? 'lo' : 'hi'}" style="color:var(--ink)">Not on hems-finder</span></th></tr><tr class="cols"><th class="rowh" style="vertical-align:bottom;padding-bottom:6px;font-weight:500;font-size:11px;color:var(--muted)">Vendor <span style="float:right">core of ${flat.length}</span></th>`;
     flat.forEach((c, j) => {
       h += `<th class="c" data-j="${j}"><span class="lb">${esc(c.lab)}</span><span class="pv"><b style="height:${(c.prev * 100).toFixed(1)}%"></b></span><span class="pc">${Math.round(c.prev * 100)}</span></th>`;
     });
     h += '<th class="gap"></th>';
-    miss.columns.forEach((c) => { h += `<th class="c miss"><span class="lb">${esc(c)}</span><span class="pv"></span><span class="pc">–</span></th>`; });
+    mk.forEach((k) => { const c = miss.columns[k]; h += `<th class="c miss"><span class="lb">${esc(c)}</span><span class="pv"></span><span class="pc">–</span></th>`; });
     h += '</tr></thead><tbody>';
     const rowHtml = (r, cls, cells, missRow) => {
-      let s = `<tr class="${cls}" data-p="${esc(r.prod || '')}"><td class="rowh" title="${esc(r.prod || r.short)}"><i style="background:var(${r.arch === 'ours' ? '--accent' : archTok(r.arch)})"></i><span class="nm" style="max-width:${narrow ? 84 : 150}px">${esc(r.short)}</span><span class="n">${r.n == null ? '' : r.n}</span></td>`;
+      let s = `<tr class="${cls}" data-p="${esc(r.prod || '')}"><td class="rowh" title="${esc(r.prod || r.short)}"><i style="background:var(${r.arch === 'ours' ? '--accent' : archTok(r.arch)})"></i><span class="nm" style="max-width:${narrow ? 84 : 150}px">${esc(r.short)}</span><span class="n">${r.nc == null ? '' : r.nc}</span></td>`;
       s += cells; s += '<td class="gap"></td>';
-      miss.columns.forEach((_, k) => { const v = missRow ? missRow.v[k] : null; s += `<td class="c" data-m="${k}"><span class="${cellMiss(v)}"></span></td>`; });
+      mk.forEach((k) => { const v = missRow ? missRow.v[k] : null; s += `<td class="c" data-m="${k}"><span class="${cellMiss(v)}"></span></td>`; });
       return s + '</tr>';
     };
     // our TUM HEMS on top of every sort order (benchmark row, team member 26.11.2026); values = own assessment, data/m2_ours_features.json
     const ours = missBy.ours;
     if (ours && OF) {
       const oursCells = flat.map((c, j) => `<td class="c" data-j="${j}"><span class="${cellMiss(ourVal(c.idx))}"></span></td>`).join('');
-      h += `<tr class="gh ours-gh"><td class="rowh">Our prototype</td><td colspan="${flat.length + 1 + miss.columns.length}"></td></tr>`;
-      h += rowHtml({ short: narrow ? 'TUM HEMS' : (OF.label || 'TUM HEMS (ours)'), arch: 'ours', n: ourN.full, prod: '' }, 'ours', oursCells, ours);
-      if (hmSort !== 'arch') h += `<tr class="gh"><td class="rowh">Market (${nP} vendors)</td><td colspan="${flat.length + 1 + miss.columns.length}"></td></tr>`;
+      h += `<tr class="gh ours-gh"><td class="rowh">Our prototype</td><td colspan="${flat.length + 1 + mk.length}"></td></tr>`;
+      h += rowHtml({ short: narrow ? 'TUM HEMS' : (OF.label || 'TUM HEMS (ours)'), arch: 'ours', nc: ourCore, prod: '' }, 'ours', oursCells, ours);
+      if (hmSort !== 'arch') h += `<tr class="gh"><td class="rowh">Market (${nP} vendors)</td><td colspan="${flat.length + 1 + mk.length}"></td></tr>`;
     }
     let lastArch = null;
     order.forEach((r) => {
       if (hmSort === 'arch' && r.arch !== lastArch) {
         lastArch = r.arch;
         const cnt = order.filter((q) => q.arch === r.arch).length;
-        h += `<tr class="gh"><td class="rowh">${esc(archLabel(r.arch))} (${cnt})</td><td colspan="${flat.length + 1 + miss.columns.length}"></td></tr>`;
+        h += `<tr class="gh"><td class="rowh">${esc(archLabel(r.arch))} (${cnt})</td><td colspan="${flat.length + 1 + mk.length}"></td></tr>`;
       }
       const cells = flat.map((c, j) => `<td class="c" data-j="${j}"><span class="${c.idx.some((i) => r.f.has(i)) ? 'on' : 'off'}"></span></td>`).join('');
       const hl = r.provider === 'gridX GmbH' || r.provider === 'Consolinno Energy GmbH';
@@ -648,9 +653,9 @@
       const r = byProd.get(tr.dataset.p);
       const isOurs = tr.classList.contains('ours');
       if (td.classList.contains('rowh')) {
-        if (isOurs) { UI.tip(`<b>TUM HEMS (ours): Flexibility Manager prototype</b><br>Own assessment against the hems-finder list, not a hems-finder entry<br>${ourN.full} of ${nF} features built, ${ourN.part} partly, ${ourN.plan} planned`, ev); return; }
+        if (isOurs) { UI.tip(`<b>TUM HEMS (ours): Flexibility Manager prototype</b><br>Own assessment against the hems-finder list, not a hems-finder entry<br>${ourCore} of ${flat.length} core features built<br>Full hems-finder list: ${ourN.full} of ${nF} built, ${ourN.part} partly, ${ourN.plan} planned`, ev); return; }
         if (!r) { UI.tip(null); return; }
-        UI.tip(`<b>${esc(r.prod)}</b><br>${esc(archLabel(r.arch))}<br>Systems: ${r.sys.map(esc).join(', ')}<br>${r.n} of ${nF} hems-finder features claimed`, ev); return;
+        UI.tip(`<b>${esc(r.prod)}</b><br>${esc(archLabel(r.arch))}<br>Systems: ${r.sys.map(esc).join(', ')}<br>${r.nc} of ${flat.length} core features claimed (${r.n} of ${nF} on hems-finder)`, ev); return;
       }
       if (td.dataset.m != null) {
         const k = +td.dataset.m; const mr = isOurs ? missBy.ours : (r ? missBy[r.provider] : null);

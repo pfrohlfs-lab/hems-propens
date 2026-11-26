@@ -173,6 +173,8 @@
 .pts.m1-why .m1-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 .pts.m1-why .m1-ic.m1-ic-up { background: var(--accent); color: var(--accent-ink); }
 .m1-brand img { display: block; height: 20px; width: auto; background: #fff; padding: 3px 5px; box-sizing: content-box; }
+/* value-pool chart height follows this list (drawPools), so list starts flush with the chart top */
+#x-pools .pts.m1-why { margin-top: 0; }
 </style>
 
 
@@ -361,15 +363,15 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
     <div class="side">
       <span class="xno"></span>
       <h3>Base functions are near-universal; CHP and buffer tanks have no category</h3>
-      <p class="sub">Rows = 80 vendors, columns = 32 of 73 features, grouped by category; dark square = feature claimed on hems-finder.org; bars on top = share of vendors. Yellow row on top = our TUM HEMS prototype as a benchmark (own assessment)</p>
+      <p class="sub">Rows = 80 vendors, columns = 18 core app features and device connections that matter to a household (of 73 on hems-finder.org); dark square = claimed; bars on top = share of vendors. Yellow row on top = our TUM HEMS prototype as a benchmark (own assessment)</p>
       <ul class="pts">
         <li><b>94 %</b>claim PV-surplus control of a battery</li>
         <li><b>93 %</b>claim PV-surplus control of a heat pump</li>
-        <li><b>91 %</b>claim dynamic-tariff optimisation</li>
+        <li><b>86 %</b>claim dynamic-tariff control of a battery</li>
       </ul>
       <details class="more"><summary>Sources &amp; notes</summary>
-        <p>Feature claims per vendor (all systems of a vendor combined), 32 decision-relevant of 73 hems-finder features in 9 groups; bars in the header = share of the 80 vendors. Right block: four capabilities hems-finder does not track, filled only where we researched them.</p>
-        <p class="src"><b>Source:</b> hems-finder.org (Hochschule Ansbach), 83 system pages read 20.11.2026; strategic groups from the entrants research (20 vendors without a match = "Other"); right block from our competitor analysis (wiki, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026). <b>Note:</b> All hems-finder entries are vendor self-declarations and unaudited; gridX ticks every one of the first 34 features. "Any" columns combine several hems-finder fields (dynamic tariff: 6 device fields; §9 EEG: EEBUS or relay; grid fees: postcode, price curve or manual; interfaces: any device type). Consolinno's half mark: CHP only in its commercial product CEMS/FlexA; hatched mark: 24–48 h schedules announced for homes ("HEMS Vision 2026", 19.01.2026), not shipped. Our TUM HEMS (Flexibility Manager) is a prototype and not listed on hems-finder; its row is our own assessment against the same 73 features (26.11.2026): full mark = built and running in model, schedule or shadow operation, half = modelled or mapped to commands without device integration, hatched = planned (concept). Sales channels are "no" because the prototype is not sold. Vendor rows are marketing claims, ours is a stricter self-check, so the comparison favours the vendors.</p>
+        <p>Feature claims per vendor (all systems of a vendor combined), 18 columns built from the 73 hems-finder features, limited to what a household uses in the app and which devices it can connect (team member, 26.11.2026); the number next to each name = core columns claimed. Left out of the exhibit, data kept: sales channels, system type, immersion heater, EV via car API, §9 EEG, single protocols (OCPP, MQTT …), DIN-rail, ISO 27001, plan for the grid operator. Right block: three capabilities hems-finder does not track, filled only where we researched them.</p>
+        <p class="src"><b>Source:</b> hems-finder.org (Hochschule Ansbach), 83 system pages read 20.11.2026; strategic groups from the entrants research (20 vendors without a match = "Other"); right block from our competitor analysis (wiki, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026). <b>Note:</b> All hems-finder entries are vendor self-declarations and unaudited; gridX ticks every one of the first 34 features. Combined columns: §14a = EEBUS or relay; grid fees = postcode, price curve or manual input; "Connects to" = any interface for that device type (incl. proprietary, cloud, KNX, CAN); "Local" = Modbus, EEBUS, local API or MQTT for any device. Consolinno's half mark: CHP only in its commercial product CEMS/FlexA; hatched mark: 24–48 h schedules announced for homes ("HEMS Vision 2026", 19.01.2026), not shipped. Our TUM HEMS (Flexibility Manager) is a prototype and not listed on hems-finder; its row is our own assessment against the same hems-finder features (26.11.2026): full mark = built and running in model, schedule or shadow operation, half = modelled or mapped to commands without device integration, hatched = planned (concept). Vendor rows are marketing claims, ours is a stricter self-check, so the comparison favours the vendors.</p>
       </details>
     </div>
     <div class="body">
@@ -634,7 +636,6 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
 <section class="chapter" id="whitespace">
   <header>
     <span class="no">3</span>
-    <h2>Product positioning: nobody plans heat and power together or shares the plan</h2>
   </header>
 
   <figure class="exhibit split" id="x-positioning">
@@ -813,14 +814,10 @@ dialog.dd-dlg img { width: 100%; min-width: 900px; height: auto; display: block;
     <span class="no">4</span>
     <h2>gridX has scale, Consolinno the fuse box; both lose money</h2>
   </header>
-  <figure class="exhibit split" id="x-profile">
+  <figure class="exhibit wide" id="x-profile">
     <div class="side"><span class="xno"></span>
       <h3>Founded eight months apart; by 2024 gridX had ~190 staff, Consolinno 71</h3>
       <p class="sub">Company profiles side by side: latest value per key figure, with date</p>
-      <ul class="pts">
-        <li><b>−€16.1 m</b>gridX net loss 2024; revenue not disclosed</li>
-        <li><b>−€1.31 m</b>Consolinno net loss 2024 on €2.84 m revenue</li>
-      </ul>
       <details class="more"><summary>Sources &amp; notes</summary>
         <p>Company profiles, latest available value with date</p>
         <p class="src"><b>Source:</b> northdata register data; gridX press releases and KPI block (gridx.ai, 11/2026); gridX annual accounts 2020–2024 via group research (consistency-checked, Bundesanzeiger original not read); Consolinno annual accounts 2024 (HGB, lobby register); consolinno.de (about us); pv magazine; solaranlage-tipps; App Store (25.11.2026). <b>Note:</b> gridX revenue 2021 is a Munich Startup estimate. The €4.99 E.ON Home fee has no primary source.</p>

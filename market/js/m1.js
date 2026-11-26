@@ -423,7 +423,20 @@
      ===================================================================== */
   function drawPools() {
     const el = $('m1-pools'); if (!el) return;
-    const w = width(el), h = 290;
+    // height = right-hand list (.m1-why), so chart and list start and end on the same line (26.11.)
+    const why = el.closest('.exhibit')?.querySelector('.m1-why');
+    // side column is sticky, so measure the list relative to its own column (both columns start on the same grid row)
+    const side = why && why.closest('.side');
+    const listBottom = () => (why && why.offsetParent === side ? why.offsetTop + why.offsetHeight : 0); // sticky .side is the offsetParent
+    const besideList = side && side.getBoundingClientRect().left >= el.getBoundingClientRect().right;
+    const h = besideList && listBottom() ? Math.max(260, Math.round(listBottom())) : 290;
+    drawPools.lastB = listBottom();
+    // redraw when the list end moves (headline moved out of .side by ui.js, fonts loaded, text wraps)
+    if (side && !drawPools.ro && window.ResizeObserver) {
+      drawPools.ro = new ResizeObserver(() => { if (Math.abs(listBottom() - drawPools.lastB) > 2) drawPools(); });
+      drawPools.ro.observe(side); drawPools.ro.observe(why);
+    }
+    const w = width(el);
     const narrow = w < 440;
     const m = { t: 22, r: narrow ? 12 : 92, b: 24, l: 46 };
     const svg = mkSvg(el, w, h, 'BCG value pools Germany 2025-2035');
