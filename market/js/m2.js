@@ -558,15 +558,14 @@
      ===================================================================================== */
   /* Core view for end consumers (team member 26.11.2026): only app features and device connections.
      Removed from the exhibit (data kept): sales channels, system type, immersion heater, EV via API,
-     §9 EEG, protocol-level interfaces, DIN-rail, ISO 27001, plan for the grid operator. */
+     §9 EEG, DIN-rail, ISO 27001, plan for the grid operator. */
   const COLS = [
     ['Forecast', [['PV forecast', [20]], ['Load forecast', [21]]]],
-    ['PV surplus to', [['Battery', [3]], ['Heat pump', [6]], ['Wallbox', [4]]]],
+    ['PV surplus to', [['Battery', [3]], ['Heat pump', [6]], ['Wallbox', [4]], ['Smart plugs', [34]]]],
     ['Dynamic tariff', [['Battery', [8]], ['Heat pump', [11]], ['Wallbox', [9]]]],
     ['EV charging', [['Car SoC', [17]], ['1/3-phase switching', [16]]]],
     ['Grid rules', [['§14a dimming', [22, 45, 23]], ['Variable grid fees', [24, 36, 37]]]],
-    ['Connects to', [['Battery / inverter', [28, 29, 30, 40, 41, 51, 61, 65, 66, 71]], ['Heat pump', [18, 19, 26, 27, 38, 39, 47, 48, 49, 50, 54, 58, 59, 60, 63, 64, 70]], ['Wallbox', [31, 32, 33, 42, 43, 52, 53, 62, 67, 68, 69, 72]], ['Smart plugs', [34, 35]]]],
-    ['Connection', [['Local (Modbus, EEBUS, API)', [26, 27, 28, 29, 30, 31, 32, 39, 41, 43, 47, 49, 50, 51, 52, 53]], ['Cloud API', [38, 40, 42]]]],
+    ['Device connection', [['Modbus', [27, 29, 30, 31, 32, 39, 41, 47]], ['EEBUS', [26, 28, 43]], ['OCPP (wallbox)', [33]], ['Cloud API', [38, 40, 42]], ['Local API / MQTT', [49, 50, 51, 52, 53]]]],
   ];
   const MISS_SHOW = ['CHP (BHKW) optimisation', 'Buffer tank', 'Schedule as start view'];
   let hmSort = 'n';
