@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>German HEMS Market 2026</title>
+<meta name="project team:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="shared.css">
+
+<header class="head">
+  <span class="brand"><i></i>HEMS market study</span>
+  <nav aria-label="Pages">
+    <a href="../">Project</a>
+    <a href="../competitors/">Competitor page</a>
+    <a href="index.html" aria-current="page">Market</a>
+    <a href="deep-dive.html">Deep dive gridX vs. Consolinno</a>
+  </nav>
+</header>
+
+<div class="frame">
+  <aside class="toc" aria-label="Contents">
+    <div class="lbl">Contents</div>
+    <a href="#summary"><span class="no">0</span><span>Executive summary</span></a>
+    <a href="#definition"><span class="no">1</span><span>Market definition</span></a>
+    <a href="#size"><span class="no">2</span><span>Size &amp; growth</span></a>
+    <a href="#drivers"><span class="no">3</span><span>Drivers &amp; regulation</span></a>
+    <a href="#landscape"><span class="no">4</span><span>Competitive landscape</span></a>
+    <a href="#pricing"><span class="no">5</span><span>Business models &amp; pricing</span></a>
+    <a href="#trends"><span class="no">6</span><span>Trends &amp; consolidation</span></a>
+    <a href="#whitespace"><span class="no">7</span><span>White spaces for us</span></a>
+    <a href="#appendix"><span class="no">A</span><span>Method &amp; sources</span></a>
+  </aside>
+
+  <main class="main">
+    <div class="wrap">
+<style>
+/* ---- m0: executive summary (hero). Selectors prefixed m0- or scoped to #summary ---- */
+/* consistency: exhibits are <figure>; reset the browser's default figure margin page-wide so all chapters align */
+.main figure.exhibit { margin: 0; }
+#summary { scroll-margin-top: calc(var(--head) + 16px); }
+#summary h1 { max-width: 25ch; }
+#summary .lede { max-width: 70ch; }
+.m0-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.m0-kpis a { display: grid; gap: 4px; align-content: start; padding: 14px 18px 4px 0; text-decoration: none; }
+.m0-kpis a + a { padding-left: 18px; border-left: 1px solid var(--line); }
+.m0-kpis a:hover .m0-v { text-decoration: underline; text-decoration-thickness: 1px; }
+.m0-v { font-size: clamp(22px, 2.4vw, 30px); font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--ink); }
+.m0-v.m0-ours { box-shadow: inset 0 -0.32em 0 var(--accent); justify-self: start; }
+.m0-l { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.m0-l b { font-weight: 500; color: var(--ink); }
+#summary .keys3 .t { font-size: 17px; }
+#summary .keys3 p { line-height: 1.5; }
+#summary .keys3 p b { font-weight: 500; color: var(--ink); }
+.m0-go { font-size: 12.5px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); justify-self: start; margin-top: 4px; }
+.m0-go:hover { background: var(--panel); }
+#summary .sowhat { max-width: none; }
+#summary .sowhat p { font-size: 15.5px; }
+@media (max-width: 900px) { .m0-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .m0-kpis a:nth-child(3) { padding-left: 0; border-left: 0; } .m0-kpis a:nth-child(n+3) { border-top: 1px solid var(--line); } }
+@media (max-width: 480px) { .m0-kpis { grid-template-columns: minmax(0, 1fr); } .m0-kpis a, .m0-kpis a + a { padding-left: 0; border-left: 0; } .m0-kpis a + a { border-top: 1px solid var(--line); } }
+</style>
+
+<section class="hero" id="summary">
+  <span class="eyebrow">German HEMS market · November 2026</span>
+  <h1>Basic home energy management is turning into a free add-on; the open space is a 48-hour heat plan the grid operator can see</h1>
+  <p class="lede">We mapped <span data-m2n="prov">71</span> providers, the feature claims of 83 systems on hems-finder.org, the business models of 37 players and the size and results of <span data-m2n="comp">19</span> companies, and had a second agent fact-check every key number (25.11.2026). The market grows with heat pumps, batteries and new price rules, while the money moves from boxes to flexibility. No product on sale plans a heat pump, buffer tank and CHP together or shares its plan with the grid operator in advance.</p>
+
+  <div class="m0-kpis" aria-label="Headline numbers">
+    <a href="#x-pools"><span class="m0-v">€1.15–1.35 bn</span><span class="m0-l">German HEMS <b>flexibility pool in 2035</b>, up from €10–20 M in 2025 (BCG)</span></a>
+    <a href="#x-feature-heatmap"><span class="m0-v">94 %</span><span class="m0-l">of 80 vendors claim <b>PV-surplus battery control</b>; base functions are standard</span></a>
+    <a href="#x-m3-landscape"><span class="m0-v">€4.99 / month</span><span class="m0-l"><b>median paid HEMS fee</b>; 9 of 32 offers charge no separate fee</span></a>
+    <a href="#x-positioning"><span class="m0-v m0-ours">0 of 16</span><span class="m0-l">products on sale that we positioned <b>plan CHP or a buffer tank</b>, or share a plan with the grid operator</span></a>
+  </div>
+
+  <div class="keys3">
+    <div>
+      <span class="k">1 · Market</span>
+      <span class="t">The market grows with heat pumps, batteries and new price rules, and the money moves from hardware to flexibility</span>
+      <p>Heat-pump sales rose <b>55 % to 299,000</b> in 2025, and since 2025 every supplier must offer a dynamic tariff. On BCG's figures the flex pool overtakes HEMS hardware and software <b>around 2032</b> (our interpolation). The bottleneck is the smart meter: only <b>~0.25 M</b> German prosumers can trade on prices today (own estimate).</p>
+      <a class="m0-go" href="#definition">Chapters 1–3</a>
+    </div>
+    <div>
+      <span class="k">2 · Competition</span>
+      <span class="t">Base functions are a commodity, prices head toward zero and the field consolidates at a loss</span>
+      <p><b>10 of 12</b> paid HEMS fees lie between €4 and €7 a month, and utilities give the HEMS away with their tariff. <b><span id="m0-loss">12 of 13</span></b> HEMS-relevant companies with available results lost money in their latest year; since 09/2024 five storage makers and installers stopped or filed for insolvency, sonnen among them (10/2026).</p>
+      <a class="m0-go" href="#landscape">Chapters 4–6</a>
+    </div>
+    <div>
+      <span class="k">3 · White space</span>
+      <span class="t">Nobody plans heat and power together or shares the plan with the grid operator, but the window is closing</span>
+      <p>CHP and buffer tanks are not even a category on hems-finder. Of 16 products on sale that we positioned, <b>4 show a forward schedule</b> and <b>none shares it</b> with the grid operator. Consolinno announced 24–48 h FlexA schedules for homes in <b>01/2026</b>; it has not shipped them yet.</p>
+      <a class="m0-go" href="#whitespace">Chapter 7</a>
+    </div>
+  </div>
+
+  <aside class="sowhat"><span class="lbl">So what for us</span>
+    <p>Build the Flexibility Manager as a 48-hour heat-side planning module for heat-pump homes with a buffer tank, with CHP hybrids like our reference house as the proof case. Sell it through a utility, heating OEM or existing gateway at a price near €5–15 a month rather than our €25 working assumption, and test with one grid operator whether a shared plan has value before Consolinno ships FlexA for homes.</p>
+  </aside>
+</section>
+
+<style>
+/* ---- m1: chapters 1-3 (definition, size, drivers). All selectors prefixed m1- ---- */
+#definition figure.exhibit, #size figure.exhibit, #drivers figure.exhibit { margin: 0; }
+.m1-def { display: grid; grid-template-columns: minmax(0, 1.1fr) repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.m1-def > div { padding: 14px 16px 16px 0; display: grid; gap: 6px; align-content: start; }
+.m1-def > div + div { padding-left: 16px; border-left: 1px solid var(--line); }
+.m1-def .m1-k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.m1-def h4 { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.3; }
+.m1-def p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+.m1-def .m1-n { font-size: 12.5px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.m1-scope { display: inline-flex; gap: 3px; align-items: center; }
+.m1-scope i { width: 14px; height: 6px; background: var(--panel-2); display: inline-block; }
+.m1-scope i.on { background: var(--ink); }
+@media (max-width: 860px) { .m1-def { grid-template-columns: minmax(0, 1fr); } .m1-def > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 14px; } }
+
+/* value chain */
+.m1-vc { container-type: inline-size; }
+.m1-vcg { display: grid; gap: 0; }
+.m1-card { display: grid; gap: 0; min-width: 0; }
+.m1-cell { padding: 10px 10px 10px 0; font-size: 12.5px; line-height: 1.4; border-top: 1px solid var(--line); min-width: 0; }
+.m1-cell .m1-il { display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); margin-bottom: 2px; }
+.m1-rl { font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); padding: 10px 10px 10px 0; border-top: 1px solid var(--line); }
+.m1-chev { background: var(--ink); color: var(--bg); padding: 9px 18px 9px 22px; min-height: 56px; display: grid; align-content: center; gap: 1px;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); margin-right: -6px; }
+.m1-card:last-child .m1-chev { margin-right: 0; }
+.m1-card:first-child .m1-chev, .m1-card.m1-first .m1-chev { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); padding-left: 12px; }
+.m1-chev .m1-no { font-size: 10.5px; opacity: .65; font-variant-numeric: tabular-nums; }
+.m1-chev b { font-weight: 500; font-size: 13.5px; line-height: 1.2; }
+.m1-card.m1-flexl .m1-chev { background: var(--ink); box-shadow: inset 0 -4px 0 var(--accent); }
+.m1-kpi { font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.2; font-variant-numeric: tabular-nums; display: block; }
+.m1-kpi-t { color: var(--muted); font-size: 11.5px; display: block; margin-top: 2px; }
+.m1-trend { display: inline-flex; gap: 5px; align-items: center; font-size: 11.5px; color: var(--ink); margin-top: 4px; font-weight: 500; }
+.m1-trend .m1-ar { font-size: 13px; line-height: 1; }
+.m1-trend.down .m1-ar { color: var(--bad); } .m1-trend.up .m1-ar { color: var(--good); } .m1-trend.flat .m1-ar { color: var(--grey); }
+.m1-chips { display: flex; flex-wrap: wrap; gap: 4px 4px; }
+.m1-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; line-height: 1.3; padding: 2px 6px 2px 4px; background: var(--bg); border: 1px solid var(--line); transition: opacity .15s; }
+.m1-chip i { width: 8px; height: 8px; flex: none; display: inline-block; }
+.m1-chip.m1-dim { opacity: .22; }
+.m1-ours { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--ink); background: var(--accent); color: var(--accent-ink); padding: 2px 7px; margin-top: 6px; }
+.m1-pools { display: grid; gap: 0; margin-top: 6px; }
+.m1-pool { border-top: 2px solid var(--ink); padding: 6px 8px 0 0; font-size: 11.5px; color: var(--ink); position: relative; margin-right: 10px; }
+.m1-pool::before, .m1-pool::after { content: ""; position: absolute; top: -2px; width: 2px; height: 8px; background: var(--ink); }
+.m1-pool::before { left: 0; } .m1-pool::after { right: 0; }
+.m1-pool span { display: block; color: var(--muted); }
+.m1-pool.m1-out { border-top: 1px dashed var(--grey); color: var(--grey); }
+.m1-pool.m1-out::before, .m1-pool.m1-out::after { display: none; }
+.m1-pooltag { display: none; font-size: 11px; color: var(--muted); margin-top: 6px; }
+/* wide container: 7-column chain */
+@container (min-width: 880px) {
+  .m1-vcg { grid-template-columns: 76px repeat(7, minmax(0, 1fr)); grid-template-rows: repeat(6, auto); }
+  .m1-card { grid-row: 1 / span 6; grid-template-rows: subgrid; }
+  .m1-cell .m1-il { display: none; }
+  .m1-pools { grid-template-columns: 76px repeat(7, minmax(0, 1fr)); }
+}
+/* narrow container: list of cards */
+@container (max-width: 879.98px) {
+  .m1-vcg { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .m1-rlcol, .m1-pools { display: none; }
+  .m1-card { grid-template-columns: 150px repeat(2, minmax(0, 1fr)); column-gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+  .m1-card .m1-chev { grid-row: 1 / span 3; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 50% 100%, 0 calc(100% - 10px)) !important; padding: 10px 12px 18px; margin: 0; align-content: start; }
+  .m1-card .m1-cell { border-top: 0; padding: 0 0 8px; }
+  .m1-card .m1-c-players { grid-column: 2 / span 2; }
+  .m1-pooltag { display: block; }
+}
+@container (max-width: 560px) {
+  .m1-card { grid-template-columns: minmax(0, 1fr); }
+  .m1-card .m1-chev { grid-row: auto; padding-bottom: 14px; min-height: 0; margin-bottom: 8px; clip-path: none !important; }
+  .m1-card .m1-c-players { grid-column: auto; }
+}
+.m1-tools { margin-bottom: 14px; }
+.m1-tools .m1-tl { color: var(--muted); }
+.m1-seg button i { width: 8px; height: 8px; display: inline-block; margin-right: 6px; vertical-align: 0; }
+
+/* chart helpers */
+.m1-panel-h { font-size: 12px; font-weight: 500; color: var(--ink); margin: 0 0 2px; }
+.m1-panel-t { font-size: 12px; color: var(--muted); margin: 0 0 8px; line-height: 1.4; min-height: 3.6em; }
+.m1-two { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 28px; }
+@media (max-width: 1100px) { .m1-two { grid-template-columns: minmax(0, 1fr); } }
+.m1-sm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px 26px; }
+@media (max-width: 1100px) { .m1-sm { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .m1-sm { grid-template-columns: minmax(0, 1fr); } }
+.m1-key { font-size: 12px; color: var(--muted); display: grid; gap: 8px; align-content: start; border-top: 1px solid var(--line); padding-top: 10px; }
+.m1-key svg { display: inline-block; vertical-align: middle; margin-right: 6px; }
+.m1-key div { display: flex; align-items: center; }
+.m1-detail { margin-top: 14px; background: var(--bg); border: 1px solid var(--line); padding: 12px 14px; display: grid; gap: 6px; font-size: 13px; }
+.m1-detail .m1-dh { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.m1-detail b { font-weight: 500; font-size: 14px; }
+.m1-detail p { margin: 0; color: var(--muted); }
+.m1-detail p strong { color: var(--ink); font-weight: 500; }
+.m1-st { font-size: 10.5px; padding: 1px 6px; border: 1px solid var(--ink); white-space: nowrap; color: var(--ink); }
+.m1-st.planned { border-style: dashed; }
+.m1-st.not_passed { border: 1px dashed var(--bad); color: var(--bad); }
+.m1-st.abolished { border-color: var(--grey); color: var(--grey); text-decoration: line-through; }
+.m1-list { display: grid; gap: 0; }
+.m1-list .m1-yr { font-size: 12px; font-weight: 600; color: var(--ink); padding: 12px 0 4px; border-bottom: 1px solid var(--ink); }
+.m1-li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.m1-li .m1-dot { width: 12px; height: 12px; margin-top: 4px; border: 2px solid var(--ink); }
+.m1-li .m1-dot.in_force { background: var(--ink); }
+.m1-li .m1-dot.not_passed { border-style: dashed; border-color: var(--bad); }
+.m1-li .m1-dot.abolished { background: var(--grey); border-color: var(--grey); }
+.m1-li.m1-keyi .m1-dot { box-shadow: 0 0 0 3px var(--accent); }
+.m1-li .m1-meta { font-size: 11.5px; color: var(--grey); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.m1-li p { margin: 2px 0 0; color: var(--muted); font-size: 12.5px; }
+.m1-li b { font-weight: 500; }
+.m1-svg-tap { cursor: pointer; }
+.m1-legend { margin-bottom: 12px; }
+.m1-legend svg { display: inline-block; }
+</style>
+
+<section class="chapter" id="definition">
+  <header>
+    <span class="no">1</span>
+    <h2>A HEMS is a stack of seven layers, and value is moving away from boxes and apps toward flexibility marketing</h2>
+    <p>There is no single definition of a home energy management system. We use a working definition and map the value chain from device to installation: what each layer does, how it earns money and who keeps the margin. The same company often plays several layers.</p>
+  </header>
+
+  <div class="m1-def" aria-label="Definition of HEMS">
+    <div>
+      <span class="m1-k">Working definition</span>
+      <h4>A HEMS measures, forecasts and controls at least two flexible assets in a home (PV, battery, heat pump, EV) against price or grid signals.</h4>
+      <p>Market numbers differ by a factor of about 4 depending on which definition a source uses. Every exhibit names its definition.</p>
+    </div>
+    <div>
+      <span class="m1-k">Berg Insight <span class="m1-scope" title="broad"><i class="on"></i><i class="on"></i><i class="on"></i></span> broad</span>
+      <p>Any PV + battery system with an app or portal counts.</p>
+      <span class="m1-n">3.8 M in Europe, ~1.9 M in Germany (end 2024; DE value derived, <span class="conf low">low</span>)</span>
+    </div>
+    <div>
+      <span class="m1-k">Hochschule Ansbach <span class="m1-scope" title="medium"><i class="on"></i><i class="on"></i><i></i></span> medium</span>
+      <p>At least two flexible technologies plus an optimisation.</p>
+      <span class="m1-n">~45 providers (2025); 83 systems on HEMS-Finder (Nov 2026)</span>
+    </div>
+    <div>
+      <span class="m1-k">BCG <span class="m1-scope" title="narrow"><i class="on"></i><i></i><i></i></span> narrow</span>
+      <p>Can optimise against dynamic electricity prices.</p>
+      <span class="m1-n">~0.5 M in Germany (2025), ~10 M expected by 2035</span>
+    </div>
+  </div>
+
+  <figure class="exhibit" id="x-valuechain">
+    <div class="xh"><span class="xno"></span>
+      <h3>Devices, gateways and apps face falling prices, while flexibility marketing is the only layer whose value pool BCG expects to grow more than tenfold by 2035</h3>
+      <p class="sub">HEMS value chain, Germany 2026: function, revenue model, value capture and example players per layer; players coloured by strategic group. Click a group to see how far it reaches along the chain.</p>
+    </div>
+    <div class="body">
+      <div class="tools m1-tools"><span class="m1-tl">Highlight group</span><div class="seg m1-seg" id="m1-vc-seg" role="group" aria-label="Highlight strategic group"></div></div>
+      <div class="m1-vc" id="m1-vc"></div>
+    </div>
+    <p class="src"><b>Source:</b> business-model research stream (BCG <i>Energy Management Systems</i>, Nov 2025; BNetzA Monitoringbericht 2025; SMA Annual Report 2025; Consolinno annual accounts 2024; Enpal FY24 statements; pv magazine price reports 2025–2026), fact-checked 25.11.2026. <b>Note:</b> value-capture arrows are our reading of the evidence, not a sourced score. Retail margin €180 is our calculation (4,000 kWh × 4.45 ct/kWh, includes sales cost). gridX is 100 % owned by E.ON since 12/2022. Example players are illustrative, not exhaustive.</p>
+  </figure>
+
+  <aside class="sowhat"><span class="lbl">So what for us</span>
+    <p>Our Flexibility Manager sits in the optimisation layer, where most pure plays lose money (Consolinno: −€1.3 M on €2.8 M revenue in 2024). Standalone app or gateway sales will not carry it. It needs a route into the flexibility and tariff layers: white-label to a utility or VPP that monetises the schedule, or a grid-operator use case built on the plan we can share ex ante.</p>
+  </aside>
+</section>
+
+<section class="chapter" id="size">
+  <header>
+    <span class="no">2</span>
+    <h2>The installed base is already large, but the money that matters is the flexibility pool, which grows from €10–20 M today to over €1 bn by 2035</h2>
+    <p>Counts of installed HEMS range from 0.5 M to almost 2 M in Germany depending on the definition. Heat pumps, batteries, electric cars and smart meters grew in 2025; home-rooftop PV additions fell. The bottleneck is the smart meter: about 0.25 M German prosumers can use price-based optimisation today (own estimate, low confidence).</p>
+  </header>
+
+  <figure class="exhibit" id="x-definitions">
+    <div class="xh"><span class="xno"></span>
+      <h3>Germany has 1.1–1.9 M HEMS if any energy management counts, but only about 0.5 M that can optimise against dynamic prices</h3>
+      <p class="sub">Installed HEMS, million systems. Left: Germany, latest value per definition. Right: development 2021–2035 by source; solid = reported, hollow and dashed = estimate or forecast.</p>
+    </div>
+    <div class="body">
+      <div class="m1-two">
+        <div><p class="m1-panel-h">Germany, latest count by definition</p><div id="m1-defbars"></div></div>
+        <div>
+          <div class="tools" style="justify-content: space-between"><p class="m1-panel-h" style="margin:0">Development by source</p>
+            <div class="seg" id="m1-def-scale" role="group" aria-label="Y scale"><button aria-pressed="true" data-v="log">Log scale</button><button aria-pressed="false" data-v="lin">Linear</button></div></div>
+          <div id="m1-deflines"></div>
+        </div>
+      </div>
+    </div>
+    <p class="src"><b>Source:</b> Berg Insight HEMS reports 1st–3rd ed. (press summaries 2023–2025); LCP Delta via pv magazine (15.07.2024); EUPD Research / Lichtblick Prosumer Reports 2022–2025 via pv magazine; BCG <i>Energy Management Systems</i> (Nov 2025). <b>Note:</b> Berg Germany ~1.9 M is derived from “close to half” of 3.8 M (low confidence); EUPD 2021, 2022 and 2024 counts are derived from shares × ~11 M PV-suitable homes (low). Berg counts any PV + battery + app; BCG counts only dynamic-price-capable systems; values must not be added or chained.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-drivers">
+    <div class="xh"><span class="xno"></span>
+      <h3>Heat-pump sales (+55 %), BEV registrations (+43 %), the battery stock (+31 %) and smart meters grew in 2025, while home-rooftop PV additions fell from 6.8 to 5.2 GWp</h3>
+      <p class="sub">Asset drivers of HEMS demand, Germany 2019–2026; unit per panel</p>
+    </div>
+    <div class="body"><div class="m1-sm" id="m1-drivers"></div></div>
+    <p class="src"><b>Source:</b> heat pumps: BWP/BDH via UBA (02.06.2026), BWP forecast via solarserver (01.12.2025), H1 2026 solarserver (06.08.2026); PV: Energy-Charts / Fraunhofer ISE based on MaStR (API, 25.11.2026), home segment BSW-Solar via pv magazine (05.01.2026); batteries: BSW-Solar Speicherbilanz and factsheets 2021–2026; BEV: KBA via electrive (2025, 2026); smart meters: BNetzA iMSys statistics (updated 21.09.2026). <b>Note:</b> PV additions are year-end stock differences (DC); BNetzA first-vintage values are not mixed in. BSW batteries = home storage ≤20 kWh. KBA stock is as of 1 January and shifted to the previous year end; 2019–2021 KBA values are not re-verified (low, hollow). Smart-meter quota = share of mandatory installation cases (&gt;6,000 kWh/yr and §14a), a different base from all metering points.</p>
+  </figure>
+
+  <div class="grid2">
+    <figure class="exhibit" id="x-pools">
+      <div class="xh"><span class="xno"></span>
+        <h3>BCG expects the flex pool to overtake classic HEMS hardware and software around 2032 and to reach €1.15–1.35 bn by 2035</h3>
+        <p class="sub">German HEMS value pools, € million per year; bands show BCG’s min–max range, line the midpoint</p>
+      </div>
+      <div class="body"><div id="m1-pools"></div></div>
+      <p class="src"><b>Source:</b> BCG, <i>Energy Management Systems</i> (Nov 2025), Exhibit 7. <b>Note:</b> classic pool = EMS hardware + software incl. installation; flex pool = revenue from lowering customer energy costs (day-ahead, intraday, balancing). BCG body text says flex “up to €1,150–1,400 M”. Crossover year is our linear interpolation between BCG points (2031–2033 across the ranges); midpoints are our calculation.</p>
+    </figure>
+
+    <figure class="exhibit" id="x-funnel">
+      <div class="xh"><span class="xno"></span>
+        <h3>About 2.9 M German homes have the assets a HEMS can optimise, but only around 0.25 M PV homes have the smart meter needed to trade on prices</h3>
+        <p class="sub">Market funnel, German 1–2 family homes, million; end 2024/2025. Own estimate, low confidence for the lower steps.</p>
+      </div>
+      <div class="body"><div id="m1-funnel"></div></div>
+      <p class="src"><b>Source:</b> EUPD Research / Lichtblick Prosumer Report via pv magazine (13.05.2025); BSW-Solar factsheets (2025, 2026); BNetzA Monitoringbericht 2025 (Tab. 46 and §14a counts, not re-checked); BCG (Nov 2025). <b>Note:</b> steps 3–5 are our order-of-magnitude estimates (hatched, whiskers = range). TAM = PV homes with a battery, heat pump or EV. SAM = PV prosumers (7–25 kW) with a smart meter (iMSys), not strictly a subset of the TAM. Homes with micro-CHP, the core of our hybrid-heat niche, could not be sized from the data collected.</p>
+    </figure>
+  </div>
+
+  <aside class="sowhat"><span class="lbl">So what for us</span>
+    <p>Do not size our opportunity on the headline HEMS count. The relevant numbers are the ~0.25 M prosumers with a smart meter today (own estimate) and the flex pool BCG puts at €1.15–1.35 bn in 2035. Heat pumps are the fastest-growing asset (299,000 sold in 2025, +55 %), which supports our heat-side optimisation. Our CHP + heat pump + buffer niche is still unsized; the next step is a MaStR query for CHP units ≤50 kW in homes.</p>
+  </aside>
+</section>
+
+<section class="chapter" id="drivers">
+  <header>
+    <span class="no">3</span>
+    <h2>Regulation now supplies the price signals a HEMS needs, and wider daily price spreads raise the value of planning ahead</h2>
+    <p>Since 2024 Germany has added controllable-device rules (§14a), dynamic tariffs for every supplier, time-variable grid fees and 15-minute day-ahead prices. Two big files are still open in November 2026: the EEG 2027 reform and the AgNes grid-fee system planned for 2029.</p>
+  </header>
+
+  <figure class="exhibit" id="x-regulation">
+    <div class="xh"><span class="xno"></span>
+      <h3>Most HEMS-relevant rules since 2023 are already in force; EEG 2027 is not passed and the AgNes grid-fee system is planned for 2029</h3>
+      <p class="sub">Regulatory milestones relevant for HEMS in Germany and the EU, 2023–2029, by area; status as of 25.11.2026. Hover or tap a milestone for its impact on HEMS.</p>
+    </div>
+    <div class="body">
+      <div class="legend m1-legend" id="m1-reg-legend"></div>
+      <div id="m1-reg"></div>
+      <div class="m1-detail" id="m1-reg-detail" aria-live="polite"></div>
+    </div>
+    <p class="src"><b>Source:</b> regulation research stream, fact-checked 25.11.2026: BNetzA (§14a, iMSys, AgNes press release 06.08.2026, Rundschreiben 4/2026), gesetze-im-internet.de (§41a EnWG), Bundesregierung (GModG), Bundestag hib 701/2026 and boerse-express (EEG 2027 draft), cleanthinking and ZfK (coalition deal), European Commission (25.09.2026), ZfK (Steuerbox), pv magazine. <b>Note:</b> the 2029 AgNes mark is the planned start of the new grid-fee system, not a passed rule. Solarspitzengesetz details are medium confidence; the GNDEW date (27.05.2023) and the 15-minute go-live date were not re-checked. Month-only dates are drawn at mid-month.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-prices">
+    <div class="xh"><span class="xno"></span>
+      <h3>Negative-price hours fell in 2026 (475 h to 24 Nov vs 576 h in 2025), yet the average daily price spread rose for the third year in a row, to €157/MWh in 2026 to date</h3>
+      <p class="sub">German day-ahead market (DE-LU), hours per year with negative hourly price, and average daily spread between highest and lowest hourly price, €/MWh</p>
+    </div>
+    <div class="body">
+      <div class="tools m1-tools"><div class="seg" id="m1-price-view" role="group" aria-label="View"><button aria-pressed="true" data-v="year">By year 2019–2026</button><button aria-pressed="false" data-v="month">By month, 2025 vs 2026</button></div></div>
+      <div id="m1-prices"></div>
+    </div>
+    <p class="src"><b>Source:</b> own calculation from Energy-Charts API (Fraunhofer ISE; data BNetzA/SMARD, CC BY 4.0), downloaded 25.11.2026; cross-checked with pv magazine (29.12.2025: 457 h 2024) and Berliner Zeitung (573 h 2025, other counting method). <b>Note:</b> 2026 = 01.01.–24.11.2026. 2025 had no negative hours after 24 Nov, so 576 h is also its same-period value. Since 01.10.2025 the 15-minute prices are averaged to hours. 2022 spread reflects the gas-price crisis.</p>
+  </figure>
+
+  <aside class="sowhat"><span class="lbl">So what for us</span>
+    <p>The signals our 48 h optimisation needs now exist by law: a dynamic tariff from every supplier, Modul 3 grid fees and 15-minute prices. Wider spreads raise the value of a good schedule even as negative hours fall. AgNes (planned for 2029) and the end of the §14a transition at the end of 2028 move toward measured, grid-oriented control, which favours plans shared with the grid operator in advance. Risk to watch: the coalition deal on EEG 2027 keeps feed-in tariffs for PV &lt;25 kW, which weakens the self-consumption push.</p>
+  </aside>
+</section>
+
+<style>
+/* part m2: chapter 4 competitive landscape. All selectors prefixed m2- */
+.m2-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; font-size: 12px; }
+.m2-play { display: inline-flex; align-items: center; gap: 8px; min-width: 128px; justify-content: center; }
+.m2-play svg { width: 10px; height: 10px; fill: currentColor; }
+.m2-range { display: inline-flex; align-items: center; gap: 10px; flex: 1 1 260px; min-width: 200px; }
+.m2-range input { flex: 1; min-width: 120px; }
+.m2-range output { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; min-width: 36px; }
+.m2-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.m2-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--bg); padding: 4px 9px; font-size: 11.5px; cursor: pointer; }
+.m2-chip i { width: 9px; height: 9px; display: inline-block; flex: none; }
+.m2-chip[aria-pressed="false"] { color: var(--grey); background: transparent; }
+.m2-chip[aria-pressed="false"] i { opacity: .25; }
+.m2-chip:hover { border-color: var(--ink); }
+.m2-mapgrid { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(220px, 1fr); gap: 22px; align-items: start; margin-top: 14px; }
+@media (max-width: 720px) { .m2-mapgrid { grid-template-columns: minmax(0, 1fr); } }
+.m2-side { display: grid; gap: 14px; font-size: 12.5px; align-content: start; }
+.m2-big { display: flex; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.m2-big .y { font-size: 44px; font-weight: 500; letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.m2-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.m2-kpis div { display: grid; gap: 1px; }
+.m2-kpis b { font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.m2-kpis span { font-size: 11px; color: var(--muted); line-height: 1.3; }
+.m2-h { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); margin: 0 0 6px; }
+.m2-list { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 0; list-style: none; }
+.m2-list li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; cursor: default; }
+.m2-list li.off { color: var(--grey); }
+.m2-list li.off .m2-dot { opacity: .3; }
+.m2-dot { width: 9px; height: 9px; border-radius: 50% !important; display: inline-block; flex: none; border: 1.5px solid currentColor; }
+.m2-x { color: var(--bad); font-weight: 600; }
+.m2-marks { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 11.5px; color: var(--muted); }
+.m2-marks span { display: inline-flex; align-items: center; gap: 6px; }
+.m2-marks svg { width: 14px; height: 14px; overflow: visible; }
+.m2-unknown { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; font-size: 12px; }
+.m2-unknown .m2-list li { cursor: pointer; }
+.m2-unknown .m2-list li:hover { text-decoration: underline; }
+.m2-tl { margin-top: 6px; }
+.m2-tl .yr { cursor: pointer; }
+.m2-note { font-size: 11.5px; color: var(--muted); margin: 0; }
+/* heatmap */
+.m2-hmwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+table.m2-hm { border-collapse: separate; border-spacing: 0; font-size: 11.5px; table-layout: fixed; }
+table.m2-hm th, table.m2-hm td { padding: 0; }
+table.m2-hm th.rowh, table.m2-hm td.rowh { position: sticky; left: 0; z-index: 2; background: var(--panel); text-align: left; padding-right: 10px; white-space: nowrap; overflow: hidden; }
+table.m2-hm td.rowh { font-weight: 400; height: 15px; line-height: 15px; }
+table.m2-hm td.rowh .nm { display: inline-block; max-width: 150px; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }
+table.m2-hm td.rowh i { display: inline-block; width: 7px; height: 7px; margin-right: 6px; vertical-align: 1px; }
+table.m2-hm td.rowh .n { float: right; color: var(--grey); font-variant-numeric: tabular-nums; margin-left: 8px; }
+table.m2-hm .grp th { height: 34px; position: relative; font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 500; text-align: left; padding: 0; white-space: nowrap; overflow: visible; }
+table.m2-hm .grp th:not(.rowh):not(.gap)::after { content: ""; position: absolute; left: 2px; right: 2px; bottom: 0; border-bottom: 1px solid var(--ink); }
+table.m2-hm .grp th span { position: absolute; left: 2px; }
+table.m2-hm .grp th span.hi { top: 2px; }
+table.m2-hm .grp th span.lo { top: 17px; }
+table.m2-hm .grp th.gap, table.m2-hm td.gap, table.m2-hm th.gap { border: 0; }
+table.m2-hm .cols th.c { vertical-align: bottom; height: 132px; font-weight: 400; }
+table.m2-hm .cols th.c .lb { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-size: 11px; color: var(--ink); display: inline-block; margin: 0 auto 4px; }
+table.m2-hm .cols th.c .pv { display: block; width: 13px; height: 22px; margin: 0 auto 2px; background: var(--panel-2); position: relative; }
+table.m2-hm .cols th.c .pv b { position: absolute; left: 0; right: 0; bottom: 0; background: var(--grey); }
+table.m2-hm .cols th.c .pc { display: block; font-size: 9.5px; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; padding-bottom: 3px; }
+table.m2-hm .cols th.c.miss .lb { color: var(--ink); font-weight: 600; }
+table.m2-hm td.c { height: 15px; text-align: center; }
+table.m2-hm td.c span { display: block; width: 13px; height: 12px; margin: 0 auto; }
+table.m2-hm td.c span.on { background: var(--ink); opacity: .82; }
+table.m2-hm td.c span.off { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+table.m2-hm td.c span.no { background: transparent; box-shadow: inset 0 0 0 1.5px var(--muted); }
+table.m2-hm td.c span.half { background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); box-shadow: inset 0 0 0 1px var(--ink); }
+table.m2-hm td.c span.ann { box-shadow: inset 0 0 0 1.5px var(--ink); background: repeating-linear-gradient(135deg, transparent 0 2px, var(--line) 2px 3px); outline: 1px dashed var(--ink); outline-offset: -1px; }
+table.m2-hm td.c span.na { background: transparent; height: 1px; width: 7px; margin-top: 6px; background-color: var(--line); }
+table.m2-hm td.c span.nl { background: repeating-linear-gradient(135deg, transparent 0 3px, var(--line) 3px 4px); }
+table.m2-hm tr.hl td.rowh { font-weight: 600; }
+table.m2-hm tr.hl td { background: var(--panel-2); }
+table.m2-hm tr.hl td.rowh { background: var(--panel-2); box-shadow: inset 3px 0 0 var(--ink); }
+table.m2-hm tr.ours td { background: color-mix(in srgb, var(--accent) 22%, var(--panel)); }
+table.m2-hm tr.ours td.rowh { background: color-mix(in srgb, var(--accent) 22%, var(--panel)); box-shadow: inset 3px 0 0 var(--accent); font-weight: 600; }
+table.m2-hm tr.ours td.c span.on { background: var(--ink); opacity: 1; }
+table.m2-hm tr.gh td { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 8px 0 2px; border-bottom: 1px solid var(--line); }
+table.m2-hm tr.gh td.rowh { padding-top: 8px; }
+table.m2-hm tbody tr:not(.gh):hover td { background: var(--panel-2); }
+table.m2-hm tbody tr:not(.gh):hover td.rowh { background: var(--panel-2); }
+.m2-hmkey { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11.5px; color: var(--muted); }
+.m2-hmkey span { display: inline-flex; align-items: center; gap: 6px; }
+.m2-hmkey em { display: inline-block; width: 13px; height: 12px; font-style: normal; }
+/* strategic groups */
+.m2-sgwrap { overflow-x: auto; }
+table.m2-sg { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 12px; }
+table.m2-sg th { font-weight: 500; text-align: center; vertical-align: bottom; padding: 0 4px 8px; border-bottom: 1px solid var(--ink); font-size: 12px; }
+table.m2-sg th.l { text-align: left; }
+table.m2-sg th .vc { display: block; font-weight: 400; font-size: 10.5px; color: var(--muted); line-height: 1.3; margin-top: 4px; min-height: 40px; }
+table.m2-sg th.flex { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+table.m2-sg td { border-bottom: 1px solid var(--line); padding: 7px 4px; text-align: center; vertical-align: middle; }
+table.m2-sg td.l { text-align: left; min-width: 210px; max-width: 280px; }
+table.m2-sg td.l b { font-weight: 500; display: block; }
+table.m2-sg td.l small { color: var(--muted); font-size: 11px; line-height: 1.35; display: block; }
+table.m2-sg td.flex { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+table.m2-sg .cv { display: inline-grid; place-items: center; gap: 2px; }
+table.m2-sg .cv i { display: block; border-radius: 50% !important; }
+table.m2-sg .cv small { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
+table.m2-sg tr.ours td { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+table.m2-sg tr.ours td.l b { font-weight: 600; }
+</style>
+
+<section class="chapter" id="landscape">
+  <header>
+    <span class="no">4</span>
+    <h2>The field is crowded, consolidating and mostly unprofitable, and no HEMS we checked plans combined heat and power or shares its plan with the grid operator</h2>
+    <p>We mapped <span data-m2n="prov">74</span> providers that sell a home energy management system (HEMS) in Germany, the feature claims of 80 vendors on hems-finder.org and the headcount and results of <span data-m2n="comp">26</span> companies. Market entry peaked in 2023–2024. Since 2025 the news has been insolvencies and takeovers. Base functions are standard everywhere, so a new product has to win on assets and services the market does not yet cover.</p>
+  </header>
+
+  <figure class="exhibit" id="x-entry-map">
+    <div class="xh">
+      <span class="xno"></span>
+      <h3>Two in five dated HEMS launches (20 of 50) came in 2023–2024; since 2025 only 6 providers entered while 4 went insolvent or stopped selling</h3>
+      <p class="sub">HEMS providers active in Germany by headquarters and year of HEMS market launch, coloured by strategic group; n = <span data-m2n="prov">74</span> providers, <span data-m2n="dated">50</span> with a dated launch. Press play to watch the market fill up from 2011.</p>
+    </div>
+    <div class="body">
+      <div class="m2-tools" id="m2-entry-tools">
+        <button type="button" class="btn m2-play" id="m2-play" aria-label="Play market entries 2011 to 2026"></button>
+        <label class="m2-range"><span class="muted">Year</span><input type="range" id="m2-year" min="2011" max="2026" step="1" value="2026" aria-label="Year"><output id="m2-year-out">2026</output></label>
+      </div>
+      <div class="m2-chips" id="m2-chips" role="group" aria-label="Filter by strategic group" style="margin-top:10px"></div>
+      <div class="m2-mapgrid">
+        <div id="m2-map" aria-label="Map of HEMS providers by headquarters"></div>
+        <div class="m2-side" id="m2-side"></div>
+      </div>
+      <div class="m2-tl" id="m2-timeline"></div>
+      <div class="m2-unknown" id="m2-unknown"></div>
+    </div>
+    <p class="src"><b>Source:</b> project research on market entrants (<span data-m2n="prov">74</span> providers, <span data-m2n="events">54</span> events from press releases, pv magazine, company sites), fact-checked 25.11.2026; hems-finder.org (20.11.2026). <b>Note:</b> Launch year = first documented HEMS product in the DACH market; hollow dots are the oldest source found (latest possible year), so early years are a lower bound. Locations are city centres; co-located dots are spread apart. The research summary states "24 of 50" launches in 2023–2024; the provider list gives 8 + 12 = 20. Exits: insolvency filings and SENEC's stop of new-customer sales; Zolar (installer) added from the event list. Rings mark a takeover by a larger group; hollow bars mark every change of owner, including the 2026 sale of sonnen to a family office. Dashed outline = low-confidence launch year. The EKD insolvency is not shown because its link to a HEMS is not in the source.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-company-size">
+    <div class="xh">
+      <span class="xno"></span>
+      <h3 id="m2-bub-title">All 4 HEMS-focused companies with known results lose money, and company size spans three orders of magnitude, from 5 to 24,000 employees</h3>
+      <p class="sub" id="m2-bub-sub">Employees (log scale) against latest annual revenue in M EUR (log scale), coloured by strategic group; 19 companies with a headcount from a public source.</p>
+    </div>
+    <div class="body">
+      <div class="m2-tools">
+        <div class="seg" role="group" aria-label="Y axis" id="m2-bub-mode">
+          <button type="button" data-v="rev" aria-pressed="true">Revenue</button>
+          <button type="button" data-v="ni" aria-pressed="false">Net income</button>
+        </div>
+        <div class="m2-marks" id="m2-bub-key"></div>
+      </div>
+      <div id="m2-bubble" style="margin-top:10px"></div>
+    </div>
+    <p class="src"><b>Source:</b> project research on company size (annual accounts via lobbyregister.bundestag.de, SEC filings, company reports and press releases, trade press, company registers), fact-checked 25.11.2026. <b>Note:</b> Latest actual year per company (2023–2025; no forecasts). FX fixed at 1 USD = 0.88 EUR, 1 GBP = 1.18 EUR (rounded 2025 averages). Scope differs: Vaillant, sonnen and the thermondo loss are single-entity accounts, Bosch is the Home Comfort division, Fronius includes welding. thermondo's loss is the audited −43.2 M EUR of thermondo GmbH. Only companies with a headcount from a public source are shown; dots have equal size because total funding raised is not public for most of them. Dashed outline = low confidence (gridX loss is a team figure, register not read; headcounts of neoom (group, 08/2024), Zerofy (register, Q1/2025) and Eniris (11.1 FTE in filed accounts) are low confidence; FENECON headcount from its press release of 30.06.2025). HEMS-focused = hems_role "core" in the research; of these, gridX, Consolinno, 1KOMMA5° and sonnen have published results. Not shown for lack of a public headcount or own figures in our research: Tibber, Kiwigrid, Solar Manager, Podero, Emulate, Wendeware, Powernaut, SENEC, E3/DC, KOSTAL, Huawei, Viessmann, EcoFlow, clever-PV, SMARTFOX.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-feature-heatmap">
+    <div class="xh">
+      <span class="xno"></span>
+      <h3>Base functions are near-universal: of the 80 vendors, 94 % claim PV-surplus control of a battery, 93 % of a heat pump and 91 % dynamic-tariff optimisation; combined heat and power and buffer tanks are not even a category</h3>
+      <p class="sub">Feature claims per vendor (all systems of a vendor combined), 32 decision-relevant of 73 hems-finder features in 9 groups; bars in the header = share of the 80 vendors. Right block: four capabilities hems-finder does not track, filled only where we researched them.</p>
+    </div>
+    <div class="body">
+      <div class="m2-tools">
+        <span class="muted">Sort</span>
+        <div class="seg" role="group" aria-label="Sort rows" id="m2-hm-sort">
+          <button type="button" data-v="n" aria-pressed="true">Most features</button>
+          <button type="button" data-v="name" aria-pressed="false">Name</button>
+          <button type="button" data-v="arch" aria-pressed="false">Strategic group</button>
+        </div>
+        <div class="m2-hmkey" id="m2-hm-key"></div>
+      </div>
+      <div class="m2-hmwrap" id="m2-heatmap" style="margin-top:12px"></div>
+    </div>
+    <p class="src"><b>Source:</b> hems-finder.org (Hochschule Ansbach), 83 system pages read 20.11.2026; strategic groups from the entrants research (20 vendors without a match = "Other"); right block from our competitor analysis (wiki, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026). <b>Note:</b> All hems-finder entries are vendor self-declarations and unaudited; gridX ticks every one of the first 34 features. "Any" columns combine several hems-finder fields (dynamic tariff: 6 device fields; §9 EEG: EEBUS or relay; grid fees: postcode, price curve or manual; interfaces: any device type). Consolinno's half mark: CHP only in its commercial product CEMS/FlexA; hatched mark: 24–48 h schedules announced for homes ("HEMS Vision 2026", 19.01.2026), not shipped. Our Flexibility Manager is a prototype and not listed on hems-finder.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-strategic-groups">
+    <div class="xh">
+      <span class="xno"></span>
+      <h3>Only 1KOMMA5° and Enpal cover all seven value-chain layers; most players sit in the app (34 of 37) and gateway (26) layers, where prices fall towards zero, while all four tariff and flex players already sit in the flex layer, the fastest-growing profit pool</h3>
+      <p class="sub" id="m2-sg-sub">Share of profiled players per strategic group that are active in each value-chain layer; n = 37 players; circle area = share, label = players active / players in group.</p>
+    </div>
+    <div class="body">
+      <div class="m2-tools">
+        <div class="seg" role="group" aria-label="View" id="m2-sg-mode">
+          <button type="button" data-v="matrix" aria-pressed="true">Coverage matrix</button>
+          <button type="button" data-v="map" aria-pressed="false">Positioning map</button>
+        </div>
+      </div>
+      <div id="m2-sg" style="margin-top:12px"></div>
+    </div>
+    <p class="src"><b>Source:</b> project research on business models (37 player profiles: company sites, price lists, annual reports; BCG "Energy management systems", Nov 2025, for profit pools; BNetzA Monitoringbericht 2025 for the retail margin), fact-checked 25.11.2026. <b>Note:</b> Layers as stated in each profile; strategic groups harmonised with the provider list (gridX, Kiwigrid, enyo = software pure play; neoom = hardware OEM; Eniris = independent HEMS specialist). Revenue-model index is our own keyword classification of each player's revenue lines: hardware, installation or rental = 0, software licence or subscription = 0.5, tariff, flex or trading = 1, averaged per player. Flexa is the Enpal/Entrix VPP joint venture. Our Flexibility Manager is a prototype covering optimisation and app; its revenue model is open.</p>
+  </figure>
+
+  <aside class="sowhat">
+    <span class="lbl">So what for us</span>
+    <p>Competing on base functions or integration breadth is a losing game: 94 % of vendors already claim PV-surplus control, gridX connects 250,000+ assets and Consolinno 200+ device brands. Our defensible space is the right-hand block of the feature heatmap, which hems-finder does not track: joint scheduling of CHP, heat pump and buffer tank, a 24–48 h plan as the start view, and a plan the grid operator can see in advance. Consolinno has announced 24–48 h schedules for homes, so this window is open but closing. Since we sit in the optimisation layer, where most pure plays lose money, our route to revenue should run through a partner that owns the tariff or flex relationship (utility, heating OEM or grid operator) rather than through homeowners directly.</p>
+  </aside>
+</section>
+
+<style>
+/* m3: chapters 5 (pricing) and 6 (trends). All selectors prefixed m3- */
+.m3-chart { width: 100%; min-width: 0; }
+.m3-chart svg { width: 100%; }
+.m3-note { font-size: 12px; color: var(--muted); margin: 0; max-width: 80ch; }
+.m3-free { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 6px; }
+.m3-free .hd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.m3-free .hd b { font-weight: 600; font-size: 14px; }
+.m3-free .hd span { font-size: 12px; color: var(--muted); }
+.m3-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.m3-chip { font-size: 12px; padding: 3px 8px 3px 6px; background: var(--bg); border: 1px solid var(--line); display: inline-flex; align-items: center; gap: 6px; cursor: default; }
+.m3-chip.low { border-style: dashed; }
+.m3-chip i { width: 8px; height: 8px; display: inline-block; flex: none; }
+.m3-chip small { color: var(--grey); font-size: 11px; }
+.m3-sm { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }
+.m3-sm .card { background: var(--bg); border: 1px solid var(--line); padding: 10px 12px 8px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.m3-sm .card .top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.m3-sm .card .nm { font-weight: 600; font-size: 13px; }
+.m3-sm .card .tg { font-size: 11px; white-space: nowrap; padding: 1px 6px; border: 1px solid var(--line); color: var(--muted); }
+.m3-sm .card .tk { font-size: 12px; color: var(--muted); line-height: 1.4; min-height: 2.8em; }
+.m3-why { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 18px; border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; align-items: start; }
+.m3-why h4 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.m3-why p { margin: 0; font-size: 12.5px; color: var(--muted); }
+@media (max-width: 700px) { .m3-why { grid-template-columns: minmax(0, 1fr); } }
+.m3-pay { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+@media (max-width: 900px) { .m3-pay { grid-template-columns: minmax(0, 1fr); } }
+.m3-pay h4 { margin: 0 0 2px; font-size: 13px; font-weight: 600; }
+.m3-pay .s { margin: 0 0 8px; font-size: 12px; color: var(--muted); }
+.m3-pay .blk + .blk { margin-top: 22px; }
+.m3-prows { display: grid; gap: 12px; }
+.m3-prow { display: grid; gap: 4px; }
+.m3-prow .lb { font-size: 12.5px; }
+.m3-prow .lb b { font-weight: 600; margin-left: 4px; }
+.m3-prow .units { display: flex; flex-wrap: wrap; gap: 2px; }
+.m3-prow .u { width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; cursor: default; }
+.m3-prow .u i, .m3-dot { width: 6px; height: 6px; border-radius: 50% !important; background: var(--bg); display: inline-block; box-shadow: 0 0 0 1px var(--ink); }
+.m3-prow .nm { font-size: 11.5px; color: var(--grey); line-height: 1.4; }
+.m3-tools { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.m3-tr { display: grid; }
+.m3-tr .row { display: grid; grid-template-columns: minmax(170px, 1.05fr) 118px minmax(0, 2.2fr) minmax(150px, 1.05fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.m3-tr .row.hd { border-bottom: 1px solid var(--ink); padding: 0 0 8px; font-size: 12px; color: var(--muted); font-weight: 500; }
+.m3-tr .nm { font-weight: 500; font-size: 14px; line-height: 1.3; }
+.m3-tr .hz { font-size: 11.5px; color: var(--grey); margin-top: 3px; }
+.m3-tr .sig { display: grid; gap: 6px; font-size: 12px; color: var(--muted); }
+.m3-tr .sig .d { display: inline-flex; align-items: center; gap: 6px; }
+.m3-tr .bars { display: inline-flex; gap: 3px; vertical-align: middle; }
+.m3-tr .bars i { width: 14px; height: 6px; background: var(--panel-2); display: inline-block; }
+.m3-tr .bars i.on { background: var(--ink); }
+.m3-tr .imp { font-size: 11px; padding: 1px 6px; border: 1px solid var(--line); justify-self: start; white-space: nowrap; }
+.m3-tr .imp.opportunity { border-color: var(--good); color: var(--good); }
+.m3-tr .imp.threat { border-color: var(--bad); color: var(--bad); }
+.m3-tr ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; font-size: 13px; }
+.m3-tr li { position: relative; padding-left: 12px; }
+.m3-tr li::before { content: ""; position: absolute; left: 0; top: .62em; width: 5px; height: 1px; background: var(--grey); }
+.m3-tr .fu { font-size: 13px; }
+.m3-tr .fu b { display: none; }
+.m3-tr .spk { margin-top: 6px; }
+@media (max-width: 760px) {
+  .m3-tr .row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .m3-tr .row.hd { display: none; }
+  .m3-tr .sig { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+  .m3-tr .fu b { display: inline; font-weight: 500; }
+}
+</style>
+
+<section class="chapter" id="pricing">
+  <header>
+    <span class="no">5</span>
+    <h2>Paid HEMS software settles at about 5 EUR a month, while utilities and tariff players give it away</h2>
+    <p>We collected 37 German HEMS offers with dated prices from 08/2021 to 11/2026 and re-checked 41 of their 66 price points against the cited source. Stand-alone devices cost about 250 to 1,000 EUR once, software subscriptions 4 to 7 EUR a month. Whoever sells electricity or trades flexibility can afford to charge nothing for the HEMS itself.</p>
+  </header>
+
+  <figure class="exhibit" id="x-m3-landscape">
+    <div class="xh"><span class="xno"></span>
+      <h3 id="m3-land-title">10 of 12 paid HEMS fees lie between 4 and 7 EUR a month, about a fifth of our 25 EUR working assumption, and 9 of 32 offers charge no separate fee</h3>
+      <p class="sub">Current price of each German HEMS offer, latest observation up to 25.11.2026. One-off price in EUR (box, device or licence) against monthly fee in EUR/month, incl. VAT. Hollow marks = low confidence. Bars = published price band.</p>
+    </div>
+    <div class="body">
+      <div class="legend" id="m3-land-legend" aria-label="Business model"></div>
+      <div class="m3-chart" id="m3-land"></div>
+      <div class="m3-free" id="m3-free"></div>
+    </div>
+    <p class="src"><b>Source:</b> provider pages, price lists and pv magazine / solarserver reports collected in our pricing research (37 offers; 41 of 66 price points re-checked against cited sources 25.11.2026); dealer prices where no list price exists (SMA, KOSTAL, SMARTFOX). <b>Note:</b> excluded are offers without a verified customer price or without HEMS logic in the fee (E.ON Home Comfort, SolarEdge ONE, Home Assistant Cloud, Viessmann Savings Assistant, SENEC.Cloud). Price bands drawn at their midpoint. E.ON Basic 4.99 EUR/month (11/2026) is unverified; the verified price until 08/2026 is 9.99. "No separate fee" offers may still require a tariff with a base fee (Tibber 5.99, thermondo 9.99, Ostrom 6.00 and Rabot 4.99 EUR/month; the Ostrom 2026 and Rabot values are unverified).</p>
+  </figure>
+
+  <figure class="exhibit" id="x-m3-history">
+    <div class="xh"><span class="xno"></span>
+      <h3>Four of nine providers with repeated prices raised a box, tariff or HEMS fee; the only fee cut, E.ON's, is unverified</h3>
+      <p class="sub">Every provider with at least two dated price observations, 2021 to 11/2026. Top row: monthly fee, EUR/month (solid = HEMS fee, dashed = tariff base fee). Bottom row: one-off price, EUR. Hollow = low confidence, P = promotion, grey ticks = announced but not charged.</p>
+    </div>
+    <div class="body">
+      <div class="m3-sm" id="m3-sm"></div>
+      <div class="m3-why">
+        <div>
+          <h4>Why we do not chart a market-wide price trend</h4>
+          <p>Before 2025 our dataset contains no verified paid HEMS subscription: the offers documented for 2022 and 2023 were all free, and 2024 has one paid subscription resting on a low-confidence snippet. A median over 2019 to 2024 would measure which offers were archived, not how prices moved. We therefore show changes per provider and the 2026 cross-section only.</p>
+        </div>
+        <div class="m3-chart" id="m3-n"></div>
+      </div>
+    </div>
+    <p class="src"><b>Source:</b> pricing research (Wayback snapshots of tibber.com and clever-pv.com, pv magazine 17.04.2025, 16.07.2025, 14.11.2025, enyo HEMS comparison 20.08.2026, 1komma5.com 25.11.2026, dv-transparenz.de, solaranlage-tipps.de, dezentralo.com). <b>Note:</b> not shown: evcc (free throughout), Home Assistant Cloud (7.50 EUR/month since 2022, buys remote access, not HEMS logic), SENEC.Cloud (27.95 EUR/month, no new contracts since 08/2026). Consolinno 625 EUR = midpoint of the 500 to 750 EUR band. sonnen's insolvency was reported on 22.10.2026, so its prices may change.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-m3-payers">
+    <div class="xh"><span class="xno"></span>
+      <h3>Most HEMS reach households through installers, tariffs or white-label deals, and the flexibility and retail margin behind a home are worth more than the app fee</h3>
+      <p class="sub">Sales channels of the 83 systems on hems-finder.org (vendor self-declaration, multiple answers), who pays for the HEMS function among 37 profiled players, and what a household is worth per year in EUR.</p>
+    </div>
+    <div class="body">
+      <div class="m3-pay">
+        <div>
+          <div class="blk">
+            <h4 id="m3-ch-title">How the 83 listed systems are sold</h4>
+            <p class="s" id="m3-ch-sub"></p>
+            <div class="m3-chart" id="m3-waffle"></div>
+          </div>
+          <div class="blk">
+            <h4>Who pays for the HEMS function</h4>
+            <p class="s">37 players profiled in our business-model research, by the payer of their main offer. Dot = also earns flexibility revenue.</p>
+            <div class="m3-chart" id="m3-payer"></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>What a household is worth per year</h4>
+          <p class="s">EUR per household per year. Bars = ranges, dots = point values. Hollow = estimate or vendor claim.</p>
+          <div class="m3-chart" id="m3-value"></div>
+        </div>
+      </div>
+    </div>
+    <p class="src"><b>Source:</b> hems-finder.org feature matrix (Hochschule Ansbach, 83 systems, read 20.11.2026); business-model research (37 players, 25.11.2026); BCG, "Energy Management Systems" (11/2025), flex value at Flex Level I; gridX Connectivity Report 2026 via pv magazine 07.09.2026 (vendor estimate); Bundesnetzagentur Monitoringbericht 2025 ("Vertrieb und Marge" 4.45 ct/kWh, band III); Tibber via electrive 11.09.2026. <b>Note:</b> 178 EUR/yr = 4.45 ct/kWh x 4,000 kWh (own calculation), includes sales cost, so it is not pure profit. Payer classes are our reading of each player's revenue model. Our working assumption of 25 EUR/month = 300 EUR/yr.</p>
+  </figure>
+
+  <aside class="sowhat"><span class="lbl">So what for us</span>
+    <p>A stand-alone fee of 25 EUR a month is five times the median paid subscription (4.99 EUR) and 1.7 times the most expensive mass-market offer (1KOMMA5° at 14.99 EUR). At 300 EUR a year it would also absorb most of the 350 to 450 EUR flexibility value BCG estimates per house. We should price the household app near 5 to 15 EUR a month, or sell the optimisation to the party that earns the tariff margin and the flex revenue: a utility, an aggregator or the grid operator who receives our ex-ante schedule.</p>
+  </aside>
+</section>
+
+<section class="chapter" id="trends">
+  <header>
+    <span class="no">6</span>
+    <h2>Storage makers and installers exit, while capital and flexibility volume concentrate on a few platforms</h2>
+    <p>Since 2024 the German HEMS market has seen insolvencies of storage makers and installers next to large funding rounds for platforms that own the customer, the tariff and a virtual power plant. Most HEMS-relevant companies with published results still lose money. Ten trends explain where the value moves.</p>
+  </header>
+
+  <figure class="exhibit" id="x-m3-consol">
+    <div class="xh"><span class="xno"></span>
+      <h3 id="m3-con-title">Since 09/2024 five storage makers and installers have stopped or filed for insolvency, while 1KOMMA5° and Enpal raised 85 % of the disclosed EUR equity since 2024</h3>
+      <p class="sub">Acquisitions, funding rounds, business stops and insolvencies of HEMS-relevant companies, 12/2017 to 11/2026. Circle area = deal or round size in millions (currency as reported), squares = amount undisclosed, diamonds = stops and insolvencies, hollow = low confidence. Colour = strategic group of the company in focus.</p>
+    </div>
+    <div class="body">
+      <div class="legend" id="m3-con-legend"></div>
+      <div class="m3-chart" id="m3-con"></div>
+    </div>
+    <p class="src"><b>Source:</b> entrants and events research (company releases, pv magazine, solarserver; re-checked 25.11.2026); Summa Equity release 10.03.2022 and tech.eu (Tibber Series C); oresundstartups.com 04.04.2025 and yespress.io (Emulate Series A); Noerr release 25.02.2025 (FENECON credit line). <b>Note:</b> 85 % = 330 of 390.5 m EUR in EUR-denominated equity rounds since 01/2024 (1KOMMA5° 150 + 70, Enpal 110, Rabot 50, amount confirmed by solarserver 16.10.2026, closing date not stated, Podero 5.5, Emulate 5); FENECON's 40 m EUR is debt. Carrier/Viessmann (about 12 bn EUR) is drawn off scale. EKD insolvency confirmed, its link to a Kiwigrid HEMS is not. No FX conversion for sizes.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-m3-profit">
+    <div class="xh"><span class="xno"></span>
+      <h3 id="m3-pr-title">12 of 13 HEMS-relevant companies with available results lost money in their latest year; only Enphase posted a verified profit</h3>
+      <p class="sub">Net income in the latest reported year (losses red), millions in the reporting currency. Groups and large entities first, then HEMS specialists and start-ups on their own scale. Hollow = unverified (single secondary source).</p>
+    </div>
+    <div class="body">
+      <div class="grid2">
+        <div class="m3-chart" id="m3-pr-big"></div>
+        <div class="m3-chart" id="m3-pr-small"></div>
+      </div>
+    </div>
+    <p class="src"><b>Source:</b> annual accounts via lobbyregister.bundestag.de (1KOMMA5°, Enpal, sonnen, thermondo, Vaillant, Consolinno), SMA press release 26.03.2026, SEC filings (SolarEdge, Enphase), Octopus Energy Group annual report FY25, trend.at (Fronius), drweb.de (SENEC), group research (gridX). <b>Note:</b> currencies not converted. sonnen, thermondo and Vaillant are single-entity accounts; sonnen 2024 is a draft. Octopus FY ends 30.04.2025. Fronius: year 2024 inferred from the article context. gridX loss and SENEC loss are unverified (register not accessible, single secondary article). Only companies with results from annual accounts, filings or press reports are shown; the 13 are a sample, not the market.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-m3-trends">
+    <div class="xh"><span class="xno"></span>
+      <h3>Flexibility revenue, wider price spreads and the grid's simultaneity risk favour our approach; free bundles and commoditised basics work against a stand-alone app</h3>
+      <p class="sub">Ten trends in the German HEMS market, 11/2026, with direction, strength of evidence (our assessment, 1 to 3) and the implication for the Flexibility Manager.</p>
+    </div>
+    <div class="body">
+      <div class="m3-tools"><span>Show</span><div class="seg" id="m3-tr-filter" role="group" aria-label="Filter trends"></div></div>
+      <div class="m3-tr" id="m3-tr"></div>
+    </div>
+    <p class="src"><b>Source:</b> regulation and trend research (BNetzA, Energy-Charts API own calculation, BCG 11/2025, RLI ErSiFlex 06/2026, Haupt et al. 2025 PV-Symposium survey, pv magazine, solarserver, electrive; re-checked 25.11.2026); pricing and events research. <b>Note:</b> strength and implication are our assessment. 1KOMMA5° "reached 1 GW" (not more). The regulation stream could not verify the full-year 2025 heat-pump figure, so this exhibit uses H1 2026; chapter 2 shows 299,000 (+55 %) for 2025, confirmed against the UBA chart (BWP/BDH) in the market-size check. E.ON 2026 tiers come from group research only.</p>
+  </figure>
+
+  <aside class="sowhat"><span class="lbl">So what for us</span>
+    <p>Integration breadth is where platforms such as Heartbeat, Kiwigrid or gridX win, and a student prototype will not catch up there. Our opening is a specialised optimisation module: joint CHP, heat-pump and buffer scheduling over 48 hours, with a plan the grid operator sees in advance. It answers the simultaneity risk that price-driven HEMS create, and it can plug into the platforms via EEBUS and §14a instead of competing with them for households.</p>
+  </aside>
+</section>
+
+<style>
+/* ---- m4: chapter 7 (white spaces) and appendix. All selectors prefixed m4- or scoped to #whitespace / #appendix ---- */
+#whitespace figure.exhibit, #appendix figure.exhibit { margin: 0; }
+.m4-legend { margin-bottom: 12px; }
+.m4-legend svg { display: inline-block; flex: none; }
+.m4-detail { margin-top: 14px; background: var(--bg); border: 1px solid var(--line); padding: 12px 14px; display: grid; gap: 6px; font-size: 13px; }
+.m4-detail .m4-dh { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.m4-detail b { font-weight: 500; font-size: 14px; }
+.m4-detail dl { margin: 0; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 4px 12px; }
+.m4-detail dt { color: var(--grey); font-size: 12px; }
+.m4-detail dd { margin: 0; color: var(--muted); }
+.m4-detail .m4-hint { font-size: 11.5px; color: var(--grey); }
+@media (max-width: 560px) { .m4-detail dl { grid-template-columns: minmax(0, 1fr); } .m4-detail dd { margin-bottom: 4px; } }
+.m4-chip { cursor: pointer; }
+.m4-chip:focus { outline: none; }
+.m4-chip:focus-visible rect.m4-hit { stroke: var(--ink); stroke-width: 1.5; }
+
+/* niches table */
+.m4-nt { min-width: 0; }
+.m4-nt th { white-space: nowrap; }
+.m4-nt td { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.m4-nt td.m4-nn { color: var(--ink); width: 19%; }
+.m4-nt td.m4-nn .m4-rk { display: inline-grid; place-items: center; width: 22px; height: 22px; border: 1px solid var(--ink); font-size: 12px; font-weight: 500; margin-right: 8px; vertical-align: 1px; font-variant-numeric: tabular-nums; }
+.m4-nt tr.m4-first td.m4-nn .m4-rk { background: var(--ink); color: var(--bg); }
+.m4-nt td.m4-nn b { font-weight: 500; font-size: 13.5px; }
+.m4-nt .m4-role { display: block; margin: 6px 0 0 30px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.m4-nt .m4-hv { display: flex; gap: 8px; align-items: flex-start; }
+.m4-nt .m4-hv svg { flex: none; margin-top: 1px; }
+.m4-nt td.m4-vd { color: var(--ink); width: 19%; }
+.m4-nt td.m4-vd b { font-weight: 500; }
+.m4-est { font-size: 10.5px; padding: 0 4px; border: 1px dashed var(--grey); color: var(--muted); white-space: nowrap; margin-left: 4px; }
+.m4-reco { margin-top: 16px; border-top: 1px solid var(--ink); padding-top: 10px; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; font-size: 14px; }
+.m4-reco span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); padding-top: 2px; }
+@media (max-width: 860px) {
+  .m4-nt thead { display: none; }
+  .m4-nt, .m4-nt tbody, .m4-nt tr, .m4-nt td { display: block; width: auto !important; }
+  .m4-nt tr { border-top: 1px solid var(--ink); padding: 10px 0 6px; }
+  .m4-nt td { border-bottom: 0; padding: 6px 0; }
+  .m4-nt td[data-l]::before { content: attr(data-l); display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); margin-bottom: 3px; }
+  .m4-reco { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+/* playbook */
+.m4-pb { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.25fr) minmax(0, 1fr); gap: 0; }
+.m4-pb > div { padding: 0 20px; display: grid; gap: 10px; align-content: start; }
+.m4-pb > div:first-child { padding-left: 0; }
+.m4-pb > div + div { border-left: 1px solid var(--line); }
+.m4-pb h4 { margin: 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); font-weight: 500; }
+.m4-pb ol, .m4-pb ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.m4-pb li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.45; }
+.m4-pb li > i { font-style: normal; font-size: 12px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; border-top: 2px solid var(--ink); padding-top: 2px; height: fit-content; }
+.m4-pb li.m4-key > i { border-top-color: var(--accent); }
+.m4-pb li b { display: block; color: var(--ink); font-weight: 500; font-size: 13.5px; margin-bottom: 2px; }
+.m4-pb .m4-where li { grid-template-columns: minmax(0, 1fr); }
+.m4-pb .m4-where li span { display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); }
+.m4-pb .m4-risk li > i { border-top-color: var(--bad); color: var(--bad); }
+.m4-pb .m4-sig { display: block; margin-top: 3px; font-size: 12px; color: var(--ink); }
+.m4-pb .m4-sig::before { content: "Watch: "; color: var(--grey); }
+@media (max-width: 1000px) { .m4-pb { grid-template-columns: minmax(0, 1fr); gap: 22px; } .m4-pb > div, .m4-pb > div:first-child { padding: 0; } .m4-pb > div + div { border-left: 0; border-top: 1px solid var(--line); padding-top: 16px; } }
+
+/* questions */
+.m4-qs { border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 10px; }
+.m4-qs h3 { margin: 0; font-size: 18px; font-weight: 500; }
+.m4-qs ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0; counter-reset: q; }
+.m4-qs li { counter-increment: q; padding: 10px 16px 12px 0; font-size: 13.5px; line-height: 1.45; border-top: 1px solid var(--line); }
+.m4-qs li::before { content: "Q" counter(q); display: block; font-size: 11px; color: var(--grey); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+.m4-qs li span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 4px; }
+
+/* appendix */
+.m4-meth { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.m4-meth > div { padding: 14px 18px 16px 0; display: grid; gap: 6px; align-content: start; font-size: 13px; color: var(--muted); }
+.m4-meth > div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+.m4-meth h4 { margin: 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); font-weight: 500; }
+.m4-meth p { margin: 0; }
+.m4-meth ul { margin: 0; padding-left: 16px; display: grid; gap: 3px; }
+.m4-meth b { color: var(--ink); font-weight: 500; }
+@media (max-width: 860px) { .m4-meth { grid-template-columns: minmax(0, 1fr); } .m4-meth > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
+.m4-cav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 0; padding: 0; list-style: none; }
+.m4-cav li { border-top: 1px solid var(--line); padding: 10px 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+.m4-cav li b { color: var(--ink); font-weight: 500; display: block; font-size: 13.5px; margin-bottom: 2px; }
+@media (max-width: 860px) { .m4-cav { grid-template-columns: minmax(0, 1fr); } }
+.m4-h { margin: 0; font-size: 18px; font-weight: 500; border-top: 1px solid var(--ink); padding-top: 14px; }
+.m4-src { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px 28px; }
+.m4-src section h4 { margin: 0 0 6px; font-size: 12px; font-weight: 500; color: var(--ink); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.m4-src ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 12px; color: var(--muted); line-height: 1.4; }
+.m4-src a { color: var(--ink); text-decoration-color: var(--line); overflow-wrap: anywhere; }
+.m4-src a:hover { text-decoration-color: var(--ink); }
+.m4-src li span { color: var(--grey); }
+</style>
+
+<section class="chapter" id="whitespace">
+  <header>
+    <span class="no">7</span>
+    <h2>Our opening is a 48-hour heat-side plan the grid operator can see, and Consolinno is the only competitor moving toward it</h2>
+    <p>We placed 16 products on sale, one announced product and our prototype on two axes: how many assets it optimises together and how far it shows and shares its plan. The platforms crowd into one cell. The cells for heat-side optimisation and grid-shared plans are empty except for our prototype and an announcement.</p>
+  </header>
+
+  <figure class="exhibit" id="x-positioning">
+    <div class="xh"><span class="xno"></span>
+      <h3>None of the 16 products on sale that we positioned plans CHP or a buffer tank; 4 show a forward schedule and none shares one with the grid operator</h3>
+      <p class="sub">HEMS products in Germany, November 2026. Horizontal: breadth of assets optimised together against price. Vertical: grid orientation and transparency of the plan. Placement is our scoring from the research; tap or hover a product for the reasons and the source.</p>
+    </div>
+    <div class="body">
+      <div class="legend m4-legend" id="m4-pos-legend"></div>
+      <div id="m4-pos" aria-label="Positioning matrix"></div>
+      <div class="m4-detail" id="m4-pos-detail" aria-live="polite"></div>
+    </div>
+    <p class="src"><b>Source:</b> our scoring based on hems-finder.org (83 systems, vendor self-declarations, 20.11.2026), our product research (feature checks, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026); vendor sites and manuals as listed per product. <b>Note:</b> x for hems-finder systems follows the self-declared dynamic-tariff device fields; hems-finder has no CHP or buffer category, so the right column rests on our research. "Schedule shown" means a forward plan of 12 h or more in the user interface; Tibber, Viessmann and 1KOMMA5° plan ahead but a plan view is not documented. Consolinno FlexA for homes is announced (HEMS Vision 2026, 19.01.2026), not shipped. Emulate is not placed (no device features on hems-finder, interface not researched). Our Flexibility Manager is a student prototype; its plan export has not been tested with a grid operator.</p>
+  </figure>
+
+  <figure class="exhibit" id="x-niches">
+    <div class="xh"><span class="xno"></span>
+      <h3>Heat-pump homes with a buffer tank are the best first segment; CHP hybrids prove the concept, grid operators are a second customer to test, and open platforms are a channel</h3>
+      <p class="sub">Four candidate niches, ranked. Each criterion scored 0–4, where 4 = most attractive (for competition: 4 = least crowded); scores are our judgement, the text is the evidence behind them.</p>
+    </div>
+    <div class="body">
+      <div id="m4-niches"></div>
+      <div class="m4-reco" id="m4-reco"></div>
+    </div>
+    <p class="src"><b>Source:</b> UBA heat-pump chart (BWP/BDH, 02.06.2026); solarserver (01.12.2025, 06.08.2026); BCG, <i>Energy Management Systems</i> (Nov 2025), flex values and take rates; BNetzA Monitoringbericht 2025 (§14a counts) and AgNes press release (06.08.2026); RLI ErSiFlex (29.06.2026); hems-finder.org (20.11.2026); pv magazine (13.04.2026, 18.06.2026); niche list from our competitor analysis (20.11.2026). <b>Note:</b> the share of heat pumps with a buffer tank and the number of CHP homes are not sized; CHP under 1 % of households is a group estimate that we did not re-check (marked est.). 50–110 EUR/yr is our calculation (BCG 2030 take rate × flex value per house). No source shows grid operators paying for household schedules today. The §14a count (264,874 market locations, end 2024) comes from the Monitoringbericht 2025 and was not re-checked (marked est.).</p>
+  </figure>
+
+  <figure class="exhibit" id="x-playbook">
+    <div class="xh"><span class="xno"></span>
+      <h3>We win by owning the 48-hour heat-side plan and selling it through partners, not by out-integrating platforms or charging homeowners €25 a month</h3>
+      <p class="sub">Where to play, how to win and what could close the window; our recommendation, 25.11.2026</p>
+    </div>
+    <div class="body">
+      <div class="m4-pb">
+        <div class="m4-where">
+          <h4>Where to play</h4>
+          <ul>
+            <li><span>Segment</span>Existing and new heat-pump homes with a buffer tank; CHP hybrids as lighthouse cases.</li>
+            <li><span>Customer who pays</span>A utility, Stadtwerk or heating OEM that earns the retail sales and margin share of the tariff (about €178 per household and year, own calculation) and the flex revenue; the grid operator as a second customer to test.</li>
+            <li><span>Channel</span>As a module on an existing gateway or platform via EEBUS or API, not as a new box for homeowners.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>How to win</h4>
+          <ol>
+            <li class="m4-key"><i>1</i><div><b>Make the heat-side plan the product.</b>Joint heat-pump, buffer and CHP scheduling over 48 h, shown as the start view. hems-finder does not even track CHP or buffer tanks, and BCG has no flex value for them yet: quantify it on our reference house.</div></li>
+            <li class="m4-key"><i>2</i><div><b>Turn the plan into a grid product.</b>Share the 48 h plan with one grid operator in a pilot and measure whether it reduces simultaneous peaks; position it for the end of the §14a transition (31.12.2028) and AgNes (2029).</div></li>
+            <li><i>3</i><div><b>Plug in, do not rebuild.</b>Use the open platforms (Heartbeat AI since 04/2026, Kiwigrid and Enpal VPPs since 06/2026) for device access and §14a instead of competing with gridX's 250,000 connected assets.</div></li>
+            <li><i>4</i><div><b>Price the outcome, not the app.</b>Charge the partner per asset or a share of the flex value (15–25 % of €350–450 per house is about €50–110 a year), or the household €5–15 a month; €25 is five times the median paid fee.</div></li>
+          </ol>
+        </div>
+        <div class="m4-risk">
+          <h4>Risks</h4>
+          <ol>
+            <li><i>!</i><div><b>Commoditisation.</b>Planning views spread (SMA, Podero, evcc already show one), fees sit at about €5 and utilities bundle HEMS for free. A schedule alone will not stay unique.<span class="m4-sig">platform release notes; free bundles from utilities</span></div></li>
+            <li><i>!</i><div><b>Consolinno FlexA.</b>FlexA already schedules CHP, heat pumps and storage in industry and is announced for homes with 24–48 h plans; Consolinno already sells its HEMS through more than 28 wholesalers.<span class="m4-sig">Consolinno releases after 2.1 (08/2026)</span></div></li>
+            <li><i>!</i><div><b>Simultaneity and who pays for it.</b>The RLI study sees a risk of new simultaneous peaks, ZVEI/Neon finds market flexibility relieves grids today. If grid operators solve it with §14a dimming and AgNes tariffs, nobody buys the plan.<span class="m4-sig">AgNes decision end 2026; grid-operator pilots</span></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <p class="src"><b>Source:</b> chapters 1–6 of this report; BCG (Nov 2025) flex values and take rates; BNetzA Monitoringbericht 2025 (sales cost and margin 4.45 ct/kWh); pv magazine (13.04.2026, 18.06.2026); Consolinno HEMS Vision 2026 (19.01.2026) and annual accounts 2024; RLI ErSiFlex (29.06.2026); ZVEI/Neon short study (2024). <b>Note:</b> €178 per household = 4.45 ct/kWh × 4,000 kWh (own calculation, includes sales cost). Moves and risks are our interpretation of the evidence.</p>
+  </figure>
+
+  <div class="m4-qs" id="m4-questions">
+    <h3>Questions for our supervisor</h3>
+    <ol>
+      <li>Which niche should the prototype prove first: heat-pump homes with a buffer tank (volume) or CHP hybrids like our reference house (best fit, under 1 % of homes, est.)?<span>Decides what we optimise and simulate next.</span></li>
+      <li>Who would you bet on as the paying customer: the homeowner, a utility or Stadtwerk, a heating OEM or the grid operator?<span>Decides the price model and the interface we build.</span></li>
+      <li>Would a grid operator take a 48-hour household plan in advance today, and in which format (§14a EMS route, EEBUS, a portal)?<span>No source shows a grid operator buying such plans yet.</span></li>
+      <li>Can we get API access to one platform (gridX, Kiwigrid or Heartbeat AI) to run our optimiser on top of it?<span>Tests the plug-in route instead of building integrations.</span></li>
+      <li>Should the next deliverable quantify the extra flex value of CHP plus buffer on the reference house?<span>BCG gives values for battery, heat pump and EV only.</span></li>
+    </ol>
+  </div>
+
+  <aside class="sowhat"><span class="lbl">So what for us</span>
+    <p>Stop adding integrations and start proving value: run the Flexibility Manager on the reference house and on a heat-pump-with-buffer profile, express the 48 h plan's value in euros per year, and take that number to one utility or heating OEM and one grid operator before the end of the semester. The advantage lasts only as long as Consolinno's FlexA for homes is not shipped.</p>
+  </aside>
+</section>
+
+<section class="chapter" id="appendix">
+  <header>
+    <span class="no">A</span>
+    <h2>Eight research streams, each checked by a second agent: 132 of 188 claims held as stated and one was removed</h2>
+    <p>Most numbers come from eight research streams run on 25.11.2026 on top of our earlier competitor analysis (20.11.2026). A second agent re-opened the cited sources for every key claim and wrote its corrections back into the data. This page shows only corrected values and marks low-confidence values.</p>
+  </header>
+
+  <div class="m4-meth">
+    <div>
+      <h4>Research streams</h4>
+      <ul>
+        <li><b>Market size</b> (Ch. 2) and <b>regulation &amp; trends</b> (Ch. 3, 6)</li>
+        <li><b>Entrants &amp; exits</b> and <b>company size</b> (Ch. 4, 6)</li>
+        <li><b>Pricing history</b> and <b>business models</b> (Ch. 1, 5)</li>
+        <li><b>gridX</b> and <b>Consolinno</b> deep dives (separate page, Ch. 7)</li>
+      </ul>
+      <p>Plus the hems-finder.org feature matrix (83 systems, 20.11.2026), annual accounts (Lobbyregister, Bundesanzeiger), company registers and company releases and our own calculation from the Energy-Charts API.</p>
+    </div>
+    <div>
+      <h4>Adversarial fact-check</h4>
+      <p>A separate agent re-read each primary document or cited page and recorded a verdict per claim in check_&lt;stream&gt;.md: confirmed, corrected, unverifiable or refuted. Corrections were written back into the data with a note. The only refuted claim (an Enpal tariff "from 19 ct/kWh") was removed. The web-search budget ran out during the checks, so some values rest on one source.</p>
+    </div>
+    <div>
+      <h4>Confidence levels</h4>
+      <p><b>High</b>: primary source read by us (filings, BNetzA, BCG, statutes). <b>Medium</b>: reputable secondary source or vendor release. <b>Low</b>: snippet, single secondary article, company directory or our own derivation. Low values are drawn hollow, dashed or hatched, or labelled "est." or "unverified".</p>
+    </div>
+  </div>
+
+  <figure class="exhibit" id="x-factcheck">
+    <div class="xh"><span class="xno"></span>
+      <h3>70 % of the 188 checked claims held as stated, 18 % were corrected, 11 % could not be verified and one was refuted and removed</h3>
+      <p class="sub">Fact-check verdicts per research stream, number of claim rows in the check tables, 25.11.2026</p>
+    </div>
+    <div class="body"><div id="m4-fc"></div></div>
+    <p class="src"><b>Source:</b> our fact-check tables (8 files, one per research stream), counted by us. <b>Note:</b> one row is one claim block and may hold several numbers. "Corrected" includes wording, date and source corrections; "unverifiable" includes partly unverifiable claims, which stay in the data at low confidence.</p>
+  </figure>
+
+  <h3 class="m4-h">Data-quality caveats</h3>
+  <ul class="m4-cav">
+    <li><b>hems-finder entries are vendor self-declarations.</b>Nobody audits them; gridX ticks every one of the first 34 features. Shares such as "94 % control a battery" describe claims, not tested functions.</li>
+    <li><b>Start-up figures are sparse.</b>Company figures come only from annual accounts (Lobbyregister, Bundesanzeiger), filings, company registers and company releases. Most HEMS start-ups publish no accounts, so they appear without revenue or results, and a few headcounts rest on a register or press article (marked low confidence). Companies with known results are a sample, not the market.</li>
+    <li><b>Definitions of HEMS differ by a factor of about four.</b>Berg Insight counts any PV + battery + app (~1.9 M in Germany, derived), BCG only systems that optimise against dynamic prices (~0.5 M). Figures from different definitions must not be added.</li>
+    <li><b>Price history has an observation bias.</b>Before 2025 the dataset holds no verified paid HEMS subscription, so a 2019–2024 price trend would show what was archived, not how prices moved. E.ON's €4.99 tier (11/2026) is unverified.</li>
+    <li><b>Company accounts are partly second-hand.</b>gridX's 2020–2024 losses come from group research with consistency checks; the Bundesanzeiger originals were not read. 1KOMMA5° revenue is the 2024 HGB figure.</li>
+    <li><b>Some numbers are our own estimates.</b>The market funnel steps, the flex-pool crossover year (~2032), the €178–180 retail margin, the positioning scores and the niche scores are ours and labelled as such. 2026 values are year to date.</li>
+  </ul>
+
+  <h3 class="m4-h">Key sources by chapter</h3>
+  <div class="m4-src">
+    <section><h4>1 · Definition &amp; value chain</h4><ul>
+      <li><a href="https://web-assets.bcg.com/4c/64/be48ec324876a7fee51f64241110/bcg-energy-management-systems.pdf">BCG, Energy Management Systems</a> <span>Nov 2025</span></li>
+      <li><a href="https://data.bundesnetzagentur.de/Bundesnetzagentur/SharedDocs/Mediathek/Monitoringberichte/MonitoringberichtEnergie2025.pdf">BNetzA Monitoringbericht 2025</a></li>
+      <li><a href="https://www.tib-op.org/ojs/index.php/pv-symposium/article/view/2641">Haupt et al., PV-Symposium 2025</a> <span>HEMS survey</span></li>
+      <li><a href="https://hems-finder.org">hems-finder.org</a> <span>Hochschule Ansbach, read 20.11.2026</span></li>
+    </ul></section>
+    <section><h4>2 · Size &amp; growth</h4><ul>
+      <li><a href="https://iotbusinessnews.com/?p=39999">Berg Insight HEMS reports</a> <span>press summary</span></li>
+      <li><a href="https://www.pv-magazine.com/2024/07/15/energy-management-market-to-roughly-double-in-europe-by-2030-says-lcp-delta/">LCP Delta via pv magazine</a> <span>15.07.2024</span></li>
+      <li><a href="https://www.pv-magazine.de/2025/05/13/prosumer-anteil-unter-den-eigenheimbesitzern-steigt-deutlich/">EUPD / Lichtblick Prosumer Report</a> <span>13.05.2025</span></li>
+      <li><a href="https://www.umweltbundesamt.de/system/files/medien/384/bilder/dateien/4_Abb_Waermepumpen_2026-06-02.pdf">UBA heat-pump sales chart</a> <span>02.06.2026</span></li>
+      <li><a href="https://www.solarwirtschaft.de/datawall/uploads/2025/10/BSW-Solar_Faktenblatt_Stromspeicher.pdf">BSW-Solar storage factsheet</a></li>
+      <li><a href="https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/NetzzugangMesswesen/Mess-undZaehlwesen/iMSys/artikel.html">BNetzA smart-meter statistics</a></li>
+    </ul></section>
+    <section><h4>3 · Drivers &amp; regulation</h4><ul>
+      <li><a href="https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html">BNetzA §14a controllable devices</a></li>
+      <li><a href="https://www.bundesnetzagentur.de/SharedDocs/Pressemitteilungen/DE/2026/20260806_Agnes.html">BNetzA AgNes press release</a> <span>06.08.2026</span></li>
+      <li><a href="https://www.gesetze-im-internet.de/enwg_2005/__41a.html">§41a EnWG (dynamic tariffs)</a></li>
+      <li><a href="https://www.bundesregierung.de/breg-de/aktuelles/neues-gebaeudemodernisierungsgesetz-2430284">Gebäudemodernisierungsgesetz</a> <span>Bundesregierung</span></li>
+      <li><a href="https://api.energy-charts.info/price?bzn=DE-LU&amp;start=2026-01-01&amp;end=2026-11-24">Energy-Charts price API</a> <span>own calculation</span></li>
+    </ul></section>
+    <section><h4>4 · Competitive landscape</h4><ul>
+      <li><a href="https://hems-finder.org">hems-finder.org feature matrix</a> <span>83 systems</span></li>
+      <li><a href="https://www.lobbyregister.bundestag.de/media/3b/8e/835645/251120_-Consolinno-Energy-GmbH_Jahresabschluss_-2024_vollstaendig-unterzeichnet.pdf">Consolinno annual accounts 2024</a> <span>Lobbyregister</span></li>
+      <li><a href="https://www.lobbyregister.bundestag.de/media/94/86/697493/Hamburg_HRB_168900_20-02-2026.pdf">1KOMMA5° management report 2024</a></li>
+      <li><a href="https://www.lobbyregister.bundestag.de/media/8f/18/776797/FY24_Enpal_Financial_Statements_with_Auditor_Report-6.pdf">Enpal FY24 statements</a></li>
+      <li>Company registers and press releases <span>headcount fallbacks for start-ups, cited per exhibit</span></li>
+    </ul></section>
+    <section><h4>5 · Business models &amp; pricing</h4><ul>
+      <li><a href="https://www.pv-magazine.de/2025/04/17/eon-bringt-erstes-energiemanagementsystem-zum-selbst-nachruesten/">E.ON Home launch prices</a> <span>17.04.2025</span></li>
+      <li><a href="https://www.pv-magazine.de/2025/11/14/1komma5-macht-heartbeat-fuer-bestehende-anlagen-verfuegbar/">1KOMMA5° Heartbeat retrofit</a> <span>14.11.2025</span></li>
+      <li><a href="https://www.enbw.com/presse/enbw-energiewelt-vernetzt-steuern.html">EnBW Mavi free for customers</a></li>
+      <li><a href="https://www.electrive.net/2026/09/11/tibber-startet-grid-rewards/">Tibber Grid Rewards</a> <span>11.09.2026</span></li>
+    </ul></section>
+    <section><h4>6 · Trends &amp; consolidation</h4><ul>
+      <li><a href="https://www.pv-magazine.de/2026/10/22/sonnen-meldet-insolvenz-an/">sonnen insolvency filing</a> <span>22.10.2026</span></li>
+      <li><a href="https://www.pv-magazine.de/2026/07/14/enbw-findet-keinen-investor-neukundengeschaeft-von-senec-wird-eingestellt/">SENEC stops new business</a> <span>14.07.2026</span></li>
+      <li><a href="https://www.solarserver.de/2026/05/20/1komma5-erreicht-1-gw-im-virtuellen-kraftwerk-mit-heartbeat-ai/">1KOMMA5° VPP reaches 1 GW</a> <span>20.05.2026</span></li>
+      <li><a href="https://reiner-lemoine-institut.de/wp-content/uploads/2026/07/2026-06-29_ErSiFlex-Studie.pdf">RLI ErSiFlex study</a> <span>29.06.2026</span></li>
+    </ul></section>
+    <section><h4>7 · White spaces</h4><ul>
+      <li><a href="https://consolinno.de/hems-vision-2026-wohin-geht-die-reise/">Consolinno HEMS Vision 2026</a> <span>19.01.2026</span></li>
+      <li><a href="https://manuals.sma.de/HM-20/en-US/7414822923.html">SMA Sunny Home Manager forecast view</a></li>
+      <li><a href="https://podero.com/en/app">Podero app</a> · <a href="https://docs.evcc.io/en/features/plans">evcc plans</a> · <a href="https://octopus.energy/smart/intelligent-octopus-go/">Intelligent Octopus Go</a></li>
+      <li><a href="https://www.pv-magazine.de/2026/04/13/energieversorger-und-hersteller-koennen-heartbeat-ai-kuenftig-direkt-selbst-nutzen/">Heartbeat AI opens to utilities</a> <span>13.04.2026</span></li>
+      <li><a href="https://www.pv-magazine.de/2026/06/18/enpal-stellt-seine-infrastruktur-anderen-marktteilnehmern-zur-verfuegung/">Enpal opens its infrastructure</a> <span>18.06.2026</span></li>
+    </ul></section>
+  </div>
+  <p class="src" style="margin:0;font-size:11.5px;color:var(--grey)">Full source lists with every URL and the claim-by-claim check tables are in our project files (one source list and one check table per stream); they are not published.</p>
+</section>
+
+<footer class="foot">
+  <span>HEMS market study, prepared for a TUM project meeting, 26.11.2026. Public version: company figures come only from annual accounts, registers, filings and company releases.</span>
+  <span>Built from fact-checked research of 25.11.2026. Companion page: <a href="deep-dive.html">Deep dive gridX vs. Consolinno</a>.</span>
+</footer>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/m1.js"></script>
+<script src="js/m2.js"></script>
+<script src="js/m3.js"></script>
+<script src="js/m4.js"></script>

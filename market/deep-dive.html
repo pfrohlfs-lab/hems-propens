@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>gridX vs. Consolinno</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* deep-dive page only; every class carries the dd- prefix */
+.dd-page figure.exhibit { margin: 0; }
+.dd-page .exhibit { align-content: start; }
+.dd-page .head nav { min-width: 0; }
+.dd-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--muted); }
+.dd-key span { display: inline-flex; align-items: center; gap: 7px; }
+.dd-sw { width: 12px; height: 12px; display: inline-block; flex: none; border: 1px solid var(--ink); }
+.dd-sw.gx { background: var(--c-gridx); } .dd-sw.cn { background: var(--c-consolinno); } .dd-sw.us { background: var(--c-ours); }
+.dd-meta { font-size: 12px; color: var(--grey); }
+.dd-poles { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 0; border: 1px solid var(--line); }
+.dd-poles > div { padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+.dd-poles .vs { display: grid; place-items: center; align-content: center; padding: 0 10px; color: var(--grey); font-size: 12px; border-inline: 1px solid var(--line); }
+.dd-poles .nm { font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.dd-poles .ln { font-size: 13.5px; color: var(--muted); }
+.dd-poles .big { font-size: 26px; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .dd-poles { grid-template-columns: minmax(0,1fr); } .dd-poles .vs { border-inline: 0; border-block: 1px solid var(--line); padding: 6px; } }
+
+/* profile: one row per attribute, both companies side by side */
+.dd-prof { display: grid; grid-template-columns: 170px minmax(0,1fr) minmax(0,1fr); font-size: 13.5px; }
+.dd-prof > div { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.dd-prof .h { border-bottom: 2px solid var(--ink); font-weight: 600; display: flex; align-items: center; gap: 8px; padding-top: 0; }
+.dd-prof .k { color: var(--muted); font-size: 12.5px; }
+.dd-prof .gx, .dd-prof .cn { padding-left: 12px; }
+.dd-prof .cn { border-left: 1px solid var(--line); }
+.dd-prof .gx { border-left: 1px solid var(--line); }
+.dd-prof small { color: var(--grey); font-size: 11.5px; }
+@media (max-width: 640px) {
+  .dd-prof { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .dd-prof .k { grid-column: 1 / -1; border-bottom: 0; padding-bottom: 0; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+  .dd-prof .hk { display: none; }
+  .dd-prof .gx { border-left: 0; padding-left: 0; }
+}
+
+/* one-pagers */
+.dd-op { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px; }
+.dd-op button { border: 1px solid var(--line); background: var(--bg); padding: 0; cursor: zoom-in; display: grid; text-align: left; }
+.dd-op button:hover { border-color: var(--ink); }
+.dd-op img { width: 100%; height: auto; display: block; }
+.dd-op .cap { padding: 8px 10px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+@media (max-width: 760px) { .dd-op { grid-template-columns: minmax(0,1fr); } }
+dialog.dd-dlg { border: 1px solid var(--ink); padding: 0; max-width: min(1400px, 96vw); width: 96vw; background: var(--bg); color: var(--ink); }
+dialog.dd-dlg::backdrop { background: rgba(0,0,0,.6); }
+dialog.dd-dlg .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 13px; position: sticky; top: 0; background: var(--bg); }
+dialog.dd-dlg .sc { overflow: auto; max-height: 86vh; }
+dialog.dd-dlg img { width: 100%; min-width: 900px; height: auto; display: block; }
+.dd-upd { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 32px; }
+@media (max-width: 900px) { .dd-upd { grid-template-columns: minmax(0,1fr); } }
+.dd-upd h4 { margin: 0 0 6px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.dd-upd ol { margin: 0; padding: 0; list-style: none; display: grid; }
+.dd-upd li { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 4px 14px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.dd-upd li .was.nq { text-decoration: none; font-style: italic; }
+.dd-upd li .was { color: var(--grey); text-decoration: line-through; text-decoration-color: var(--bad); }
+.dd-upd li .now b { font-weight: 600; }
+.dd-upd .hd { font-size: 11px; color: var(--grey); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--ink); }
+.dd-upd .hd span { text-decoration: none; }
+
+/* big-number tiles */
+.dd-tiles { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); border-top: 2px solid var(--ink); }
+.dd-tiles > div { padding: 14px 16px 16px 0; display: grid; gap: 4px; align-content: start; }
+.dd-tiles > div + div { padding-left: 16px; border-left: 1px solid var(--line); }
+.dd-tiles .v { white-space: nowrap; font-size: clamp(22px, 2.2vw, 30px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.dd-tiles .l { font-size: 12.5px; color: var(--muted); }
+.dd-tilehd { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+@media (max-width: 640px) { .dd-tiles { grid-template-columns: minmax(0,1fr); } .dd-tiles > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
+
+/* chips and tables */
+.dd-chip { display: inline-block; font-size: 11.5px; padding: 2px 7px; border: 1px solid var(--line); background: var(--bg); margin: 0 4px 4px 0; white-space: nowrap; }
+.dd-tbl { overflow-x: auto; }
+.dd-tbl table.t td small { color: var(--grey); }
+.dd-tbl .dd-gxh { box-shadow: inset 0 -3px 0 var(--c-gridx); }
+.dd-tbl .dd-cnh { box-shadow: inset 0 -3px 0 var(--c-consolinno); }
+.dd-tbl .dd-ush { box-shadow: inset 0 -3px 0 var(--c-ours); }
+.dd-note { font-size: 12.5px; color: var(--muted); border-left: 2px solid var(--line); padding: 4px 0 4px 12px; margin: 0; }
+
+/* benchmark */
+.dd-bm { min-width: 680px; }
+.dd-bm td.us, .dd-bm th.us { background: color-mix(in srgb, var(--c-ours) 14%, transparent); padding-left: 10px; }
+.dd-bm td.gx, .dd-bm td.cn, .dd-bm th.gx, .dd-bm th.cn { padding-left: 10px; }
+.dd-bm td .txt { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.dd-bm tr.lead td:first-child::before { content: "▲ "; color: var(--good); font-size: 10px; }
+.dd-bm tr.lag td:first-child::before { content: "▼ "; color: var(--bad); font-size: 10px; }
+.dd-bm .crit { font-weight: 500; }
+.dd-sc { display: inline-flex; gap: 3px; vertical-align: middle; }
+.dd-sc i { width: 11px; height: 11px; border: 1px solid var(--ink); display: inline-block; }
+.dd-sc i.on.gx { background: var(--c-gridx); } .dd-sc i.on.cn { background: var(--c-consolinno); } .dd-sc i.on.us { background: var(--c-ours); }
+.dd-sc.na { font-size: 11px; color: var(--grey); border: 1px dashed var(--grey); padding: 0 5px; }
+
+/* SWOT */
+.dd-swot { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.dd-swot > div { background: var(--bg); padding: 12px 14px; }
+.dd-swot h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--grey); font-weight: 500; }
+.dd-swot ul { margin: 0; padding-left: 16px; font-size: 13px; display: grid; gap: 5px; }
+.dd-swot .s, .dd-swot .o { box-shadow: inset 3px 0 0 var(--good); }
+.dd-swot .w, .dd-swot .t { box-shadow: inset 3px 0 0 var(--bad); }
+@media (max-width: 520px) { .dd-swot { grid-template-columns: minmax(0,1fr); } }
+.dd-impl { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); border-top: 2px solid var(--ink); }
+.dd-impl > div { padding: 14px 16px 16px 0; display: grid; gap: 8px; align-content: start; }
+.dd-impl > div + div { padding-left: 16px; border-left: 1px solid var(--line); }
+.dd-impl .t { font-weight: 600; font-size: 16px; }
+.dd-impl .w { font-size: 12px; color: var(--grey); }
+.dd-impl ul { margin: 0; padding-left: 16px; font-size: 13.5px; display: grid; gap: 6px; }
+@media (max-width: 760px) { .dd-impl { grid-template-columns: minmax(0,1fr); } .dd-impl > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
+.dd-q { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 86ch; }
+.dd-chart { width: 100%; min-width: 0; }
+.dd-chart h5 { margin: 0 0 6px; font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.dd-panels { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+@media (max-width: 760px) { .dd-panels { grid-template-columns: minmax(0,1fr); } }
+.dd-panels2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 28px; }
+@media (max-width: 760px) { .dd-panels2 { grid-template-columns: minmax(0,1fr); } }
+.dd-ch { display: grid; gap: 14px; }
+.dd-ch .row { display: grid; grid-template-columns: 170px 34px minmax(0,1fr); gap: 10px; align-items: start; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.dd-ch .row .n { font-size: 12.5px; font-weight: 500; }
+.dd-ch .row .c { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--muted); }
+.dd-ch .bar { height: 8px; margin-top: 5px; }
+@media (max-width: 520px) { .dd-ch .row { grid-template-columns: minmax(0,1fr) 34px; } .dd-ch .row .p { grid-column: 1 / -1; } }
+</style>
+</head>
+<body class="dd-page">
+<header class="head">
+  <span class="brand"><i></i>HEMS market study</span>
+  <nav aria-label="Pages">
+    <a href="../">Project</a>
+    <a href="../competitors/">Competitor page</a>
+    <a href="index.html">Market</a>
+    <a href="deep-dive.html" aria-current="page">Deep dive gridX vs. Consolinno</a>
+  </nav>
+</header>
+
+<div class="frame">
+  <aside class="toc" aria-label="Contents">
+    <div class="lbl">Contents</div>
+    <a href="#answer"><span class="no">0</span><span>Answer first</span></a>
+    <a href="#glance"><span class="no">1</span><span>At a glance</span></a>
+    <a href="#history"><span class="no">2</span><span>History</span></a>
+    <a href="#ownership"><span class="no">3</span><span>Ownership &amp; funding</span></a>
+    <a href="#financials"><span class="no">4</span><span>Financials</span></a>
+    <a href="#product"><span class="no">5</span><span>Product &amp; technology</span></a>
+    <a href="#gtm"><span class="no">6</span><span>Go-to-market &amp; pricing</span></a>
+    <a href="#benchmark"><span class="no">7</span><span>Head-to-head benchmark</span></a>
+    <a href="#implications"><span class="no">8</span><span>SWOT &amp; implications</span></a>
+  </aside>
+
+  <main class="main">
+    <div class="wrap">
+
+<!-- 0 ANSWER FIRST -->
+<section class="hero" id="answer">
+  <div class="eyebrow">Deep dive · gridX vs. Consolinno · as of 25 Nov 2026</div>
+  <h1>Two opposite poles, one shared gap: neither plans a hybrid-heating home ahead</h1>
+  <p class="lede">gridX is an E.ON-owned white-label platform that lost €16.1&nbsp;m in 2024. Consolinno is an independent DIN-rail specialist with an equity ratio of 1.2&nbsp;%. Neither optimises CHP, heat pump and buffer tank jointly, and neither shows the user a schedule. Consolinno's FlexA logic, announced for homes in its "HEMS Vision 2026" with 24–48&nbsp;h schedules, is the closest threat to our lead.</p>
+  <div class="dd-poles" aria-label="The two poles">
+    <div>
+      <span class="nm"><i class="dd-sw gx"></i>gridX GmbH, Aachen</span>
+      <span class="big">250k+ assets</span>
+      <span class="ln">Platform scale, paid for by E.ON: net loss €16.1&nbsp;m (2024), recapitalised in 2024</span>
+    </div>
+    <div class="vs">vs.</div>
+    <div>
+      <span class="nm"><i class="dd-sw cn"></i>Consolinno Energy GmbH, Regensburg</span>
+      <span class="big">1.2 % equity ratio</span>
+      <span class="ln">Regulation-first hardware, thin capital base: cash €0.30&nbsp;m against €10.99&nbsp;m due within a year (2024)</span>
+    </div>
+  </div>
+  <div class="keys3">
+    <div><span class="k">1</span><span class="t">gridX is a scale platform that E.ON pays for</span><p>250,000+ connected assets, 55+ OEMs and a live flexibility pool of 16,000 EVs. Losses grew from €1.7&nbsp;m (2020) to €16.1&nbsp;m (2024), €44.7&nbsp;m accumulated. Six top-level management changes since April 2023.</p></div>
+    <div><span class="k">2</span><span class="t">Consolinno is a regulation-first hardware specialist on a thin capital base</span><p>HEMS and FNN control box in one patented DIN-rail device, sold through 28+ wholesalers without a subscription. Revenue €2.84&nbsp;m (2024) covers 61&nbsp;% of personnel cost; the 2025 unit plan was cut from 20,000 to about 9,500.</p></div>
+    <div><span class="k">3</span><span class="t">Neither has our core today; FlexA could change that</span><p>Both steer by rules or price signals. No joint CHP + heat pump + buffer model, no schedule view, no plan for the grid operator. FlexA already sends schedules to CHP units in industry; the home version had not shipped by Release 2.1 (08/2026).</p></div>
+  </div>
+  <div class="dd-key" aria-label="Colour key"><span><i class="dd-sw gx"></i>gridX</span><span><i class="dd-sw cn"></i>Consolinno</span><span><i class="dd-sw us"></i>Our Flexibility Manager (prototype)</span><span><span class="conf low">est.</span> low confidence or derived, drawn hollow or dashed</span></div>
+</section>
+
+<!-- 1 AT A GLANCE -->
+<section class="chapter" id="glance">
+  <header><span class="no">1</span><h2>gridX has almost three times Consolinno's headcount and runs on a corporate balance sheet; both lose money</h2>
+  <p>The same thirteen attributes for both companies. gridX discloses scale metrics but no revenue; Consolinno publishes full annual accounts in the lobby register but no unit sales.</p></header>
+  <figure class="exhibit" id="x-profile">
+    <div class="xh"><span class="xno"></span><h3>Both companies were founded within eight months of each other; by 2024 gridX employed about 190 people on average and Consolinno 71</h3><p class="sub">Company profiles, latest available value with date</p></div>
+    <div class="body plain">
+      <div class="dd-prof">
+        <div class="h hk"></div><div class="h gx"><i class="dd-sw gx"></i>gridX</div><div class="h cn"><i class="dd-sw cn"></i>Consolinno</div>
+        <div class="k">Founded</div><div class="gx">27 May 2016 <small>(idea 2015)</small></div><div class="cn">13 Jan 2017</div>
+        <div class="k">Headquarters</div><div class="gx">Aachen <small>(office in Munich)</small></div><div class="cn">Regensburg <small>(Rudolf-Vogt-Str. 8 since 07/2026)</small></div>
+        <div class="k">Legal form, register</div><div class="gx">gridX GmbH, HRB 20494 Aachen</div><div class="cn">Consolinno Energy GmbH, HRB 15773 Regensburg</div>
+        <div class="k">Owner</div><div class="gx">E.ON, 100&nbsp;% <small>(majority since 09/2021, all shares since 14.12.2022)</small></div><div class="cn">Klaus Nagl 50&nbsp;%, MF Tech GmbH 50&nbsp;% <small>(no VC)</small></div>
+        <div class="k">Employees</div><div class="gx">190 avg. 2024; &gt;200 <small>(09/2024, last disclosed)</small></div><div class="cn">71 <small>(2024)</small>; 70 <small>(company website, 2026)</small></div>
+        <div class="k">Revenue</div><div class="gx">Not disclosed <small>(€1.5&nbsp;m 2021 is a third-party estimate)</small> <span class="conf low">est.</span></div><div class="cn">€2.84&nbsp;m <small>(2024, +294&nbsp;%)</small></div>
+        <div class="k">Latest result</div><div class="gx">−€16.1&nbsp;m <small>(2024)</small></div><div class="cn">−€1.31&nbsp;m <small>(2024)</small>; ≈ −€2.0&nbsp;m forecast 2025</div>
+        <div class="k">Equity</div><div class="gx">+€5.8&nbsp;m <small>(2024, after recapitalisation)</small></div><div class="cn">€0.17&nbsp;m, 1.2&nbsp;% <small>(2024)</small>; −€0.92&nbsp;m incl. silent partner</div>
+        <div class="k">Connected assets / units</div><div class="gx">250,000+ assets <small>(11/2026)</small></div><div class="cn">Units not disclosed; plan 2025 ~9,500 <small>(after cut)</small></div>
+        <div class="k">Channel</div><div class="gx">B2B white label: utilities, OEMs, installers, metering operators</div><div class="cn">Wholesale to installers (28+ wholesalers), KACO OEM edition</div>
+        <div class="k">Price to end customer</div><div class="gx">E.ON Home: €199 + €9.99/month <small>(04/2025)</small>; €4.99 reported 11/2026 <span class="conf low">est.</span></div><div class="cn">From €629 one-off, no subscription <small>(10/2026)</small></div>
+        <div class="k">App rating (iOS, DE)</div><div class="gx">E.ON Home 3.6 ★ <small>(521 ratings)</small></div><div class="cn">2.9 ★ <small>(20 ratings)</small></div>
+        <div class="k">CEO</div><div class="gx">Anne B. Bicking <small>(since 11/2025)</small></div><div class="cn">Klaus Nagl <small>(founder; sole MD since 05/2025)</small></div>
+      </div>
+    </div>
+    <p class="src"><b>Source:</b> northdata register data; gridX press releases and KPI block (gridx.ai, 11/2026); gridX annual accounts 2020–2024 via group research (consistency-checked, Bundesanzeiger original not read); Consolinno annual accounts 2024 (HGB, lobby register); consolinno.de (about us); pv magazine; solaranlage-tipps; App Store (25.11.2026). <b>Note:</b> gridX revenue 2021 is a Munich Startup estimate. The €4.99 E.ON Home fee has no primary source.</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>We face two different kinds of competitor. Against gridX we compete for the utility or installer that would otherwise license a platform. Against Consolinno we compete for the installer's DIN-rail slot. A student prototype wins neither fight on scale, so our entry point has to be a function both lack.</p></aside>
+</section>
+
+<!-- 3 HISTORY -->
+<section class="chapter" id="history">
+  <header><span class="no">2</span><h2>gridX moved from EV load management to HEMS platform under E.ON; Consolinno moved from research grants to a regulation-first device</h2>
+  <p><span id="dd-tl-n">133</span> dated events from both research streams, by category. Hover a mark for details. Year-only dates sit at mid-year.</p></header>
+  <figure class="exhibit" id="x-timeline">
+    <div class="xh"><span class="xno"></span><h3>gridX has changed its top management six times since April 2023, while Consolinno shipped 13 HEMS releases in 27 months</h3><p class="sub">Company events 2015–2026 by category; one mark per event</p></div>
+    <div class="tools"><div class="seg" id="dd-tl-seg" role="group" aria-label="Highlight category"></div></div>
+    <div class="body"><div id="dd-timeline" class="dd-chart"></div></div>
+    <p class="src"><b>Source:</b> gridX press releases 2019–2026 (86), northdata; Consolinno website, release notes, northdata, GitHub API, annual accounts 2024. <b>Note:</b> Consolinno categories "technology", "ip" and "strategy" are shown as product, "go-to-market" and "pricing" as partner, "finance" as corporate. gridX founders' handover date is 01.04.2023 (register entry 07.03.2023).</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>Contacts at gridX may change quickly, so any conversation should be anchored with the company, not one person. Consolinno releases every 1–3 months; we should re-check its release notes before each of our milestone presentations, because a FlexA home release would change our positioning.</p></aside>
+</section>
+
+<!-- 4 OWNERSHIP -->
+<section class="chapter" id="ownership">
+  <header><span class="no">3</span><h2>gridX answers to one corporate owner; Consolinno rests on two private shareholders and public grants</h2>
+  <p>E.ON bought gridX in two steps: a majority in 2021, the remaining shares in 2022. Consolinno never raised venture capital: its owners paid in €3.85&nbsp;m, and public grants contributed more.</p></header>
+  <div class="grid2">
+    <figure class="exhibit" id="x-own-gx">
+      <div class="xh"><span class="xno"></span><h3>E.ON has held 100 % of gridX since December 2022, after taking a majority in September 2021</h3><p class="sub">Ownership structure since 14 Dec 2022</p></div>
+      <div class="body"><div id="dd-own-gx" class="dd-chart"></div></div>
+      <p class="src"><b>Source:</b> gridX press release 24.09.2021 (E.ON acquires majority stake); pv magazine 14.12.2022 (E.ON takes over gridX completely); gridX press release 12/2022 (E.ON One); northdata register data (RWE/innogy as shareholder 2019–2020); gridX press release 05.10.2021 (Series A 2018); gridX annual accounts 2024 via group research (average staff). <b>Note:</b> the size of the 2021 stake and both prices are not disclosed.</p>
+    </figure>
+    <figure class="exhibit" id="x-own-cn">
+      <div class="xh"><span class="xno"></span><h3>Consolinno is owned 50/50 by its founder and MF Tech GmbH, with no venture investor</h3><p class="sub">Ownership structure, as of 31 Dec 2024</p></div>
+      <div class="body"><div id="dd-own-cn" class="dd-chart"></div></div>
+      <p class="src"><b>Source:</b> Consolinno annual accounts 2024 (Blatt 2, 10, 12; lobby register R008107); northdata grant data. <b>Note:</b> that MF Tech is a Schmack family vehicle is plausible, not proven.</p>
+    </figure>
+  </div>
+  <figure class="exhibit" id="x-grants">
+    <div class="xh"><span class="xno"></span><h3>Consolinno has received about €5.7 m in public grants since 2017, more than the €3.85 m its owners paid in</h3><p class="sub">Public grants by year of award and owner capital contributions, € m</p></div>
+    <div class="body"><div id="dd-grants" class="dd-chart"></div></div>
+    <p class="src"><b>Source:</b> northdata grant data; lobby register R008107 (2025 bands); Consolinno annual accounts 2024 (capital reserve). <b>Note:</b> 2017–2024 and 2026 are award amounts; 2025 is grants received in the fiscal year (band €0.52–0.54&nbsp;m, midpoint shown hollow). The total is therefore approximate.</p>
+  </figure>
+  <figure class="exhibit" id="x-deals">
+    <div class="xh"><span class="xno"></span><h3>Public sources show one venture round for gridX before E.ON took over in two steps; Consolinno's equity came only from its two owners</h3><p class="sub">Funding and ownership events documented in public sources; acquisition prices undisclosed</p></div>
+    <div class="body plain dd-tbl"><table class="t" id="dd-deals"></table></div>
+    <p class="src"><b>Source:</b> gridX press releases 24.09.2021 and 05.10.2021; pv magazine 14.12.2022; northdata register and grant data; Consolinno annual accounts 2024 (Blatt 10, 12). <b>Note:</b> gridX Aachen has no disclosed total raised; the US company GridX Inc. (Walnut Creek, CA) is unrelated. Consolinno's other public grants are shown in the exhibit above.</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>A partnership with gridX is in practice a partnership with E.ON, and municipal utilities may avoid it for that reason. Consolinno's decisions sit with two shareholders, which makes it easier to approach but less able to fund a joint project. Its grant record shows it likes research consortia, which is a natural format for working with a university team.</p></aside>
+</section>
+
+<!-- 5 FINANCIALS -->
+<section class="chapter" id="financials">
+  <header><span class="no">4</span><h2>gridX lost €16.1 m in 2024 and runs on E.ON's money; Consolinno grows revenue but has almost no equity left</h2>
+  <p>gridX figures come from its HGB accounts as compiled by group research and checked for internal consistency. Consolinno figures come from the full annual accounts 2024, read page by page.</p></header>
+  <div class="grid2">
+    <div>
+      <div class="dd-tilehd"><i class="dd-sw gx"></i>gridX, 2024</div>
+      <div class="dd-tiles">
+        <div><span class="v">−€16.1 m</span><span class="l">net loss 2024, 9.6× the 2020 loss</span></div>
+        <div><span class="v">−€44.7 m</span><span class="l">accumulated losses end 2024</span></div>
+        <div><span class="v">~4 months</span><span class="l">of 2024 losses covered by equity; cash of €2.5&nbsp;m covers about 2 months</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="dd-tilehd"><i class="dd-sw cn"></i>Consolinno, 2024</div>
+      <div class="dd-tiles">
+        <div><span class="v">1.2 %</span><span class="l">equity ratio, down from 13.8&nbsp;% in 2023</span></div>
+        <div><span class="v">37×</span><span class="l">short-term liabilities (€10.99&nbsp;m) over cash (€0.30&nbsp;m)</span></div>
+        <div><span class="v">61 %</span><span class="l">of personnel cost (€4.66&nbsp;m) covered by revenue</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid2">
+    <figure class="exhibit" id="x-gx-pl">
+      <div class="xh"><span class="xno"></span><h3>gridX's annual loss grew from €1.7 m to €16.1 m in four years; book equity stayed negative until E.ON recapitalised it in 2024</h3><p class="sub">Net loss (bars) and book equity at year end (line), € m, 2020–2024</p></div>
+      <div class="body"><div id="dd-gx-pl" class="dd-chart"></div></div>
+      <p class="src"><b>Source:</b> gridX HGB accounts 2020–2024 via group research; 2023 confirmed by register snippet. <b>Note:</b> 2020–2022 and 2024 are medium confidence (originals not read). gridX does not disclose revenue; the 2020–21 figures are third-party estimates and are not charted.</p>
+    </figure>
+    <figure class="exhibit" id="x-cn-pl">
+      <div class="xh"><span class="xno"></span><h3>Consolinno nearly quadrupled revenue to €2.84 m in 2024, but its loss widened to €1.31 m</h3><p class="sub">Revenue and net income, € m, 2022–2025; 2025 = management forecast (hollow)</p></div>
+      <div class="body"><div id="dd-cn-pl" class="dd-chart"></div></div>
+      <p class="src"><b>Source:</b> Consolinno annual accounts 2024 (Blatt 2, 14, 48, 60). <b>Note:</b> 2022 net income not available. 2024 result includes +€0.63&nbsp;m deferred-tax income and €0.44&nbsp;m loss absorption by the silent partner; before both it was −€2.38&nbsp;m.</p>
+    </figure>
+  </div>
+  <div class="grid2">
+    <figure class="exhibit" id="x-gx-bs">
+      <div class="xh"><span class="xno"></span><h3>gridX's 2023 balance-sheet total of €28.5 m includes a €21.5 m deficit item; its real assets were only €7.1 m</h3><p class="sub">Balance-sheet total at year end 2023, € m</p></div>
+      <div class="body"><div id="dd-gx-bs" class="dd-chart"></div></div>
+      <p class="src"><b>Source:</b> implisense (2023 total); book equity 2023 from gridX HGB accounts via group research; own derivation (real assets = total − deficit item). <b>Note:</b> under HGB, negative equity appears on the asset side as "nicht durch Eigenkapital gedeckter Fehlbetrag". The 2024 balance-sheet total is not shown: no public source was available to us.</p>
+    </figure>
+    <figure class="exhibit" id="x-cn-eq">
+      <div class="xh"><span class="xno"></span><h3>Consolinno's equity fell to €0.17 m in 2024; including the silent-partner account it was already −€0.92 m</h3><p class="sub">Equity at year end, € m, and equity ratio; 2025 = our estimate without new capital (hollow)</p></div>
+      <div class="body"><div id="dd-cn-eq" class="dd-chart"></div></div>
+      <p class="src"><b>Source:</b> Consolinno annual accounts 2024 (Blatt 2, 12, 13, 48, 59). 2022 is our derivation: share capital €0.025&nbsp;m + capital reserve €3.85&nbsp;m − accumulated loss €1.58&nbsp;m (loss carried forward €2.39&nbsp;m less the 2023 loss of €0.81&nbsp;m). <b>Note:</b> 2025 estimate = 2024 equity minus the forecast loss of ~€2&nbsp;m; including the silent-partner account it would be about −€2.9&nbsp;m. Annual accounts 2025 are due by 31.12.2026.</p>
+    </figure>
+  </div>
+  <figure class="exhibit" id="x-cn-liq">
+    <div class="xh"><span class="xno"></span><h3>Consolinno's short-term liabilities are 37 times its cash, and the 2025 unit plan was cut by more than half after one customer dropped out</h3><p class="sub">Left: cash vs. liabilities at year end 2024, € m. Right: unit plan, devices per year</p></div>
+    <div class="body"><div class="dd-panels2"><div id="dd-cn-liq" class="dd-chart"></div><div id="dd-cn-units" class="dd-chart"></div></div></div>
+    <p class="src"><b>Source:</b> Consolinno annual accounts 2024 (Blatt 13, 14, 60–61). <b>Note:</b> units sold in 2024 are not disclosed ("test sales"). The customer that dropped 10,000 units is not named.</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>A white-label HEMS at €5–10 a month has not paid for gridX's cost base, and both companies now look to flexibility revenue for profit. For us that means the business case has to include a flexibility or grid-service revenue line. Consolinno is a credible hardware partner for a pilot, but not for a long-term service dependency until its 2025 accounts show new capital.</p></aside>
+</section>
+
+<!-- 6 PRODUCT -->
+<section class="chapter" id="product">
+  <header><span class="no">5</span><h2>gridX is cloud-first with its own gateway; Consolinno is local-first on a DIN-rail box; both steer by rules or prices</h2>
+  <p>Both stacks solve device integration and §14a. Neither documents a joint model of CHP, heat pump and buffer tank in the home product, and neither shows a plan to the user.</p></header>
+  <figure class="exhibit" id="x-arch">
+    <div class="xh"><span class="xno"></span><h3>gridX puts the intelligence in the XENON cloud; Consolinno keeps control in the device and needs no cloud</h3><p class="sub">Simplified architecture, devices to user, as of 11/2026</p></div>
+    <div class="body"><div class="dd-panels2"><div id="dd-arch-gx" class="dd-chart"></div><div id="dd-arch-cn" class="dd-chart"></div></div></div>
+    <p class="src"><b>Source:</b> gridx.ai (product pages, KPI block, press releases); consolinno.de (HEMS product page, release notes 1.1–2.1); GitHub (ConsolinnoEnergy). <b>Note:</b> the 1KOMMA5 Heartbeat link to gridX is documented by Theben (05.12.2024: Heartbeat connects via the gridX gridBox) and a gridX press release (04.11.2024); the terms of the relationship are not public.</p>
+  </figure>
+  <figure class="exhibit" id="x-tech">
+    <div class="xh"><span class="xno"></span><h3>Neither optimises CHP, heat pump and buffer jointly in the home; Consolinno's FlexA already does it for industrial sites</h3><p class="sub">Technology comparison, as of 11/2026</p></div>
+    <div class="body plain dd-tbl">
+      <table class="t" style="min-width:620px">
+        <thead><tr><th style="width:22%">Dimension</th><th class="dd-gxh">gridX (XENON, gridBox)</th><th class="dd-cnh">Consolinno (Leaflet HEMS)</th></tr></thead>
+        <tbody>
+          <tr><td>Optimisation logic</td><td>Price-based on dynamic tariffs and day-ahead prices; method not public</td><td>Rules: PV-surplus priority list ("Prio Panda"), price thresholds vs. 48&nbsp;h average; linear optimisation only for wallbox schedules</td></tr>
+          <tr><td>Forecasts</td><td>Not documented in detail</td><td>Weather forecast for the wallbox only; FlexA (C&amp;I) forecasts load, price and weather</td></tr>
+          <tr><td>CHP and buffer tank</td><td>Only a "CHP" tag (Viessmann); CHP named as "next step" in a 2020 C&amp;I project</td><td>Not in the HEMS. CHP in CEMS (OpenEMS, e.g. SenerTec Dachs) and FlexA schedules</td></tr>
+          <tr><td>Schedule view</td><td>None documented; dashboard shows live flow and "paid with vs. without HEMS"</td><td>None; the 24&nbsp;h ring view was removed in Release 2.0 (04/2026)</td></tr>
+          <tr><td>§14a EnWG</td><td>Grid Signal Processor (2024); control form "EMS" via EEBUS declared conform (10/2025)</td><td>Relay (10/2024), EEBUS LPC from FNN control box (08/2025), module 3 grid fees in optimisation (02/2026)</td></tr>
+          <tr><td>Protocols</td><td>EEBUS, Modbus TCP/RTU, SEMP, OCPP, OBIS, SG Ready, HTTP(S)/WebSockets</td><td>Modbus TCP/RTU, SunSpec, SG Ready, EEBUS (LPC, LPP, OHPCF, MPC), OCPP 1.6, KNX, SMGW HAN/CLS</td></tr>
+          <tr><td>Hosting</td><td>Gateway + cloud; 10 days offline; cloud-to-cloud for single assets</td><td>Local-first on the device; OTA updates (Mender); no cloud needed for control</td></tr>
+          <tr><td>Patents</td><td>Not researched</td><td>2 granted patents: FNN control box HEMS (DE 10 2021 121 795 B4, granted 05/2024, appraised €15.35&nbsp;m) and "Control of energy networks" (EP 3 985 599 B1, FlexA, granted 11/2024, €2.97&nbsp;m)</td></tr>
+          <tr><td>Certifications</td><td>ISO/IEC 27001:2022 (23.11.2026), UK G100-2</td><td>ISO 27001 (01/2025), ISO 9001 (01/2024), EEBUS-qualified (01/2025)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src"><b>Source:</b> gridx.ai; consolinno.de; Consolinno annual accounts 2024 (Blatt 49, 57, 61); patent publications DE 10 2021 121 795 B4 (DPMA) and EP 3 985 599 B1 (EPO). <b>Note:</b> patent appraisals are by the company's patent attorneys and are not on the balance sheet.</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>Our lead is the optimisation layer: one mixed-integer model over 48&nbsp;h for CHP, heat pump, buffer, battery and EV, with the plan as the start view. Both rivals already solve the device integration and §14a work that we lack. We should build on their hardware and interfaces instead of copying them.</p></aside>
+</section>
+
+<!-- 7 GTM -->
+<section class="chapter" id="gtm">
+  <header><span class="no">6</span><h2>gridX sells under other brands; Consolinno sells hardware through wholesalers; reported end-customer prices fall on both sides</h2>
+  <p>gridX never prices to the end customer directly; E.ON Home is the visible example. Consolinno publishes no list price, so street prices come from shops.</p></header>
+  <figure class="exhibit" id="x-channels">
+    <div class="xh"><span class="xno"></span><h3>gridX reaches end customers through utilities, OEMs and installers; Consolinno through 28+ electrical wholesalers and one OEM</h3><p class="sub">Named partners by channel; bar length = number of named partners</p></div>
+    <div class="body"><div class="dd-panels2"><div id="dd-ch-gx"></div><div id="dd-ch-cn"></div></div></div>
+    <p class="src"><b>Source:</b> gridX press releases and success stories; consolinno.de (HEMS page, press releases); solarserver 21.05.2026. <b>Note:</b> E.ON pays installers €20 per HEMS and €100 per Home Comfort contract (05/2026). Consolinno's KACO OEM launch date is not public.</p>
+  </figure>
+  <figure class="exhibit" id="x-kpi">
+    <div class="xh"><span class="xno"></span><h3>gridX's connected assets grew from about 100,000 to 250,000+ in 27 months, and its OEM label went from 1 to 7 partners</h3><p class="sub">gridX platform KPIs as published, by date</p></div>
+    <div class="body"><div class="dd-panels"><div id="dd-kpi-assets" class="dd-chart"></div><div id="dd-kpi-oem" class="dd-chart"></div><div id="dd-kpi-ev" class="dd-chart"></div></div></div>
+    <p class="src"><b>Source:</b> gridX press releases (17.12.2025, 15.09.2026, Ready for gridX 2024–2026), gridx.ai KPI block (11/2026). <b>Note:</b> 08/2024 value derived from "doubled to 200,000"; early-2023 value back-solved from a "13-fold" growth claim over about 02/2023–08/2025 (hollow, estimate). Consolinno publishes no comparable KPI.</p>
+  </figure>
+  <figure class="exhibit" id="x-price">
+    <div class="xh"><span class="xno"></span><h3>Over five years, E.ON Home at its launch fee (€798) costs more than a Consolinno box at today's €629; at the reported but unverified €4.99 fee it costs less (€498)</h3><p class="sub">Cumulative cost to the end customer, € (one-off + monthly fee × months), by price observation date; axis starts at €200</p></div>
+    <div class="tools"><span class="grey">Horizon</span><div class="seg" id="dd-price-seg" role="group" aria-label="Cost horizon"></div></div>
+    <div class="body"><div id="dd-price" class="dd-chart"></div></div>
+    <p class="src"><b>Source:</b> pv magazine 17.04.2025 and 24.07.2025; Tepto (Wayback 15.08.2025); solaranlage-tipps (14.10.2026); group research (E.ON €4.99). <b>Note:</b> our derivation; excludes installation, tariffs and bonuses. Consolinno points come from different shops and VAT bases and are indicative only; hollow = low confidence.</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>We cannot out-distribute 28 wholesalers or E.ON. The realistic paths are to sell the optimisation as a module to a hardware or platform owner, or to target installers of hybrid heating (CHP plus heat pump), a segment neither serves. Price anchors: €0–10 a month or about €600–900 one-off.</p></aside>
+</section>
+
+<!-- 8 BENCHMARK -->
+<section class="chapter" id="benchmark">
+  <header><span class="no">7</span><h2>Our Flexibility Manager leads on optimisation and transparency and lags on integration, regulation and channel</h2>
+  <p>Twelve criteria, scored 0–4 by us from the facts on this page. Our prototype is not rated where a prototype cannot be judged.</p></header>
+  <figure class="exhibit" id="x-bench">
+    <div class="xh"><span class="xno"></span><h3 id="dd-bench-title">We lead on 5 of 12 criteria, all on optimisation and transparency; gridX and Consolinno lead on everything that needs scale</h3><p class="sub">Scorecard, 0 (absent) to 4 (best in class); ▲ we lead, ▼ we lag; n/a = not assessable</p></div>
+    <div class="tools"><span class="grey">Show</span><div class="seg" id="dd-bench-seg" role="group" aria-label="Filter criteria"></div></div>
+    <div class="body plain dd-tbl"><table class="t dd-bm" id="dd-bench"></table></div>
+    <p class="src"><b>Source:</b> chapters 1–6 of this page; our earlier benchmark (20.11.2026). <b>Note:</b> scores are our judgement, not measurements. Our prototype is assessed on its design, not on field use.</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>Our pitch has to be "the plan for hybrid-heating homes", not "another HEMS". The five criteria we lead on are exactly the ones FlexA would attack if Consolinno brings 24–48&nbsp;h schedules into homes, so speed matters.</p></aside>
+</section>
+
+<!-- 9 SWOT + IMPLICATIONS -->
+<section class="chapter" id="implications">
+  <header><span class="no">8</span><h2>Partner with Consolinno on hardware, treat gridX as a channel risk, and watch FlexA closely</h2>
+  <p>SWOT per company, then what follows for our product and the questions we want to settle in the next meeting.</p></header>
+  <div class="grid2">
+    <figure class="exhibit" id="x-swot-gx">
+      <div class="xh"><span class="xno"></span><h3>gridX's strength is scale and regulation; its weakness is losses, churn and a black-box optimiser</h3><p class="sub">SWOT, as of 11/2026</p></div>
+      <div class="body plain"><div class="dd-swot">
+        <div class="s"><h4>Strengths</h4><ul><li>250k+ assets, 55+ OEMs, 7 "Ready for gridX" OEMs</li><li>Regulatory first mover: §14a EMS, §9 EEG, G100-2, ISO 27001</li><li>Own gateway plus cloud; live flex pool (13k systems)</li><li>E.ON as anchor customer and funder</li></ul></div>
+        <div class="w"><h4>Weaknesses</h4><ul><li>Net loss €16.1&nbsp;m (2024); revenue never disclosed</li><li>Six management changes since 04/2023</li><li>Optimisation is a black box; no plan view, no CHP</li><li>E.ON Home app 3.6 ★; inconsistent public KPIs</li></ul></div>
+        <div class="o"><h4>Opportunities</h4><ul><li>EEG 2027 direct marketing (Nomos)</li><li>§14a module 3 and dynamic tariffs</li><li>EV, battery and depot flexibility in DE, NL, UK</li><li>UK retrofit market (~3.2&nbsp;m homes, gridX estimate)</li></ul></div>
+        <div class="t"><h4>Threats</h4><ul><li>End-customer prices toward €0 squeeze asset fees</li><li>Utilities may avoid an E.ON subsidiary</li><li>1KOMMA5, Enpal, Tibber build own stacks</li><li>Chinese OEMs ship their own EMS</li></ul></div>
+      </div></div>
+      <p class="src"><b>Source:</b> gridx_deepdive research stream and fact-check (25.11.2026). <b>Note:</b> condensed.</p>
+    </figure>
+    <figure class="exhibit" id="x-swot-cn">
+      <div class="xh"><span class="xno"></span><h3>Consolinno's strength is regulation in hardware; its weakness is a balance sheet that may need new capital in 2026</h3><p class="sub">SWOT, as of 11/2026</p></div>
+      <div class="body plain"><div class="dd-swot">
+        <div class="s"><h4>Strengths</h4><ul><li>HEMS + FNN control box in one patented DIN-rail device</li><li>Local-first, ISO 27001, no subscription</li><li>28+ wholesalers, KACO OEM, 200+ manufacturers</li><li>Product ladder up to FlexA with CHP schedules</li></ul></div>
+        <div class="w"><h4>Weaknesses</h4><ul><li>Equity ratio 1.2&nbsp;%, cash €0.30&nbsp;m (2024)</li><li>Revenue covers 61&nbsp;% of personnel cost; grant-dependent</li><li>HEMS is rule-based; LP only for the wallbox</li><li>iOS 2.9 ★; 24&nbsp;h view removed</li></ul></div>
+        <div class="o"><h4>Opportunities</h4><ul><li>Every new heat pump and wallbox needs a control box</li><li>Metering-operator channel via Steuerbox-Connect</li><li>FlexA 24–48&nbsp;h schedules in homes (Vision 2026)</li><li>Patent licensing or sale</li></ul></div>
+        <div class="t"><h4>Threats</h4><ul><li>Equity ≈ −€1.8&nbsp;m end 2025 without new capital, ≈ −€2.9&nbsp;m incl. silent partner <span class="conf low">est.</span></li><li>Street price fell from €899 to €629 (different shops, indicative)</li><li>Better-funded platforms and OEM-bundled EMS</li><li>Installer market consolidation (sonnen insolvency filing 10/2026)</li></ul></div>
+      </div></div>
+      <p class="src"><b>Source:</b> consolinno_deepdive research stream and fact-check (25.11.2026). <b>Note:</b> condensed; the 2025 equity is our estimate.</p>
+    </figure>
+  </div>
+  <figure class="exhibit" id="x-impl">
+    <div class="xh"><span class="xno"></span><h3>Consolinno is our most natural partner, gridX our largest channel risk, and FlexA the development to watch</h3><p class="sub">Implications for the Flexibility Manager</p></div>
+    <div class="body plain"><div class="dd-impl">
+      <div><span class="w">Partner</span><span class="t">Consolinno as hardware and §14a layer</span><ul><li>Run our optimiser on top of the Leaflet's local interfaces and FNN control box instead of building device drivers.</li><li>Use its research-consortium habit: a joint grant project fits both sides.</li><li>Keep the dependency short-term until the 2025 accounts show new capital.</li></ul></div>
+      <div><span class="w">Compete</span><span class="t">gridX as white-label channel risk</span><ul><li>Utilities and installers that license gridX get a "good enough" HEMS at €0–10 a month.</li><li>We cannot win on breadth; we win only where hybrid heating and a visible plan matter.</li><li>If E.ON adds schedules or CHP, the gap closes fast; watch XENON Flex.</li></ul></div>
+      <div><span class="w">Learn</span><span class="t">FlexA and the gridX dashboard</span><ul><li>FlexA proves forecast-based schedules for CHP are sellable in industry; our home version must ship first.</li><li>Copy gridX's "paid today with vs. without HEMS" line as the header of our plan view.</li><li>Avoid Consolinno's mistake: users complained when the 24&nbsp;h view disappeared.</li></ul></div>
+    </div></div>
+    <p class="src"><b>Source:</b> chapters 1–7; our earlier competitive analysis (20.11.2026). <b>Note:</b> recommendations are ours.</p>
+  </figure>
+  <figure class="exhibit" id="x-questions">
+    <div class="xh"><span class="xno"></span><h3>Four questions decide where we position the Flexibility Manager</h3><p class="sub">To raise with our supervisor in the next meeting</p></div>
+    <div class="body plain"><ol class="dd-q">
+      <li>Should we position the Flexibility Manager as a module on someone else's hardware (Consolinno, an OEM) or as a stand-alone product?</li>
+      <li>Is a contact to Consolinno for a pilot on our reference house realistic, and would a joint research grant be the right format?</li>
+      <li>How large is the segment of homes with CHP plus heat pump plus buffer that neither competitor serves, and who installs them?</li>
+      <li>Would a grid operator use an ex-ante household plan today, or only after §14a module 3 and smart-meter rollout reach scale?</li>
+    </ol></div>
+    <p class="src"><b>Source:</b> our analysis. <b>Note:</b> question 3 needs market data we do not have yet.</p>
+  </figure>
+  <aside class="sowhat"><span class="lbl">So what for us</span><p>Build the optimisation layer for hybrid-heating homes, run it on existing hardware, and make the plan the product. Re-check Consolinno's FlexA home release and its 2025 accounts before the end of December 2026.</p></aside>
+</section>
+
+<footer class="foot">
+  <span>Deep dive gridX vs. Consolinno · HEMS market study · as of 25 Nov 2026 · public version, built from public sources only.</span>
+  <span>Method: primary sources (press releases, register data, annual accounts) read directly; every key figure re-checked by a second pass on 25 Nov 2026. Low-confidence and derived values are marked "est." or drawn hollow/dashed.</span>
+</footer>
+
+    </div>
+  </main>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/dd.js"></script>
+</body>
+</html>
