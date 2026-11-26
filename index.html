@@ -1780,14 +1780,15 @@ function fillStatic() {
 // ================= project menu: weeks with their analyses =================
 function buildMenu() {
   const it = (go, no, title, sub, dt, link) => link ? `<a class="it" href="${link}"><span class="no">${no}</span><span class="ttl"><span>${title}</span>${sub ? `<small>${sub}</small>` : ""}</span><span class="dt">${dt || ""}</span></a>` : `<button class="it" data-go="${go}"><span class="no">${no}</span><span class="ttl"><span>${title}</span>${sub ? `<small>${sub}</small>` : ""}</span><span class="dt">${dt || ""}</span></button>`;
-  let html = `<div class="wk">${it("overview", "00", "Overview", "Key takeaways by week")}${it(null, "FM", D.product.titel, "Our product · since week " + weekOf(D.product.seit), "", D.product.link)}</div>`;
+  // Peter, 25 Nov 2026: each week simply lists what we have (incl. the Flexibility Manager in week 3), no separate product entry
+  let html = `<div class="wk">${it("overview", "00", "Overview", "Key takeaways by week")}</div>`;
   for (let w = 1; w <= CUR_WEEK + 1; w++) {
     const a0 = new Date(+START + (w - 1) * 7 * DAY), a1 = new Date(+a0 + 6 * DAY);
-    const items = TASKS.filter(a => (a.woche || weekOf(a.datum)) === w);
+    const items = D.analyses.filter(a => (a.woche || weekOf(a.datum)) === w).sort((a, b) => a.datum.localeCompare(b.datum));
     const next = w > CUR_WEEK;
     html += `<div class="wk${next ? " next" : ""}"><div class="wk-h"><b>${w === CUR_WEEK ? "<i></i>" : ""}Week ${w}</b><span class="lbl">${dm(a0)} – ${dm(a1)}${next ? " · next" : ""}</span></div>`
-      + (items.length ? items.map(a => it(a.id, a.nr, a.titel, `Task ${a.nr} · Phase ${a.phase}`, dm(new Date(a.datum + "T12:00:00")), a.link)).join("")
-                      : `<div class="empty">${next ? "Next meeting. Nothing here yet." : w === weekOf(D.product.seit) ? `Start of the ${D.product.titel} (entry above).` : "No analyses this week."}</div>`) + "</div>";
+      + (items.length ? items.map(a => it(a.id, a.nr, a.titel, `Task ${a.nr} · Phase ${a.phase}${a.produkt ? " · our product" : ""}`, dm(new Date(a.datum + "T12:00:00")), a.link)).join("")
+                      : `<div class="empty">${next ? "Next meeting. Nothing here yet." : "No analyses this week."}</div>`) + "</div>";
   }
   html += `<div class="wk"><div class="wk-h"><b>Method</b></div>${it("method", "—", "Methodology", "How every figure is calculated")}</div>`;
   html += `<div class="wk"><div class="wk-h"><b>Data</b></div>${it("data", "—", "Hourly explorer", `${N.toLocaleString("en")} hours, CHP vs heat pump`)}</div>`;
