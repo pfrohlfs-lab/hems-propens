@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>App Mock-up Comparison</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="shared.css">
+<style>
+.mk-main { max-width: 1180px; margin-inline: auto; padding: 40px max(16px, env(safe-area-inset-right, 0px)) 96px max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 18px; }
+.mk-main h1 { font-size: clamp(26px, 3.4vw, 40px); max-width: none; }
+.mk-main .lede { font-size: 15px; }
+</style>
+
+<header class="head">
+  <span class="brand"><i></i>HEMS market &amp; competitors</span>
+  <nav aria-label="Pages">
+    <a href="../">Project</a>
+    <a href="index.html">Market &amp; competitors</a>
+    <a href="mockups.html" aria-current="page">App mock-ups</a>
+  </nav>
+</header>
+
+<main class="mk-main">
+  <h1>App mock-up comparison</h1>
+  <p class="lede">gridX, Consolinno and our Flexibility Manager, same simulated house.</p>
+<style>
+/* ---- Exhibit "three apps" (ported from the team's competitor page, section 06).
+   Every rule is scoped to #x-apps; the source's .frame is .ap-frame, .body inside the phones is .ap-body,
+   .chart is .ap-chart, .apps-ctl is .ap-ctl. Phone screens keep their own fixed light/dark look. ---- */
+#x-apps { --c-g: var(--c-gridx); --c-c: var(--c-consolinno); --c-o: var(--c-ours); --yellow: var(--accent); --panel-line: var(--line); --hover: var(--panel-2); margin: 0; }
+#x-apps > .body { overflow-x: visible; display: grid; gap: 18px; }
+
+/* controls */
+#x-apps .ap-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+#x-apps .ctl { display: grid; gap: 7px; min-width: min(260px, 100%); flex: 1; max-width: 460px; }
+#x-apps .ctl .top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12px; }
+#x-apps .ctl .top span:first-child { color: var(--muted); }
+#x-apps .ctl .val { font-variant-numeric: tabular-nums; color: var(--ink); }
+#x-apps .ctl input[type="range"] { width: 100%; margin: 0; }
+#x-apps .ap-btn { white-space: nowrap; }
+
+/* day profile above the phones */
+#x-apps .ap-chart { width: 100%; min-width: 0; position: relative; }
+#x-apps .ap-chart svg { display: block; overflow: visible; max-width: 100%; height: auto; }
+#x-apps .ap-chart text { font-family: var(--sans); font-size: 12px; fill: var(--grey); }
+#x-apps .ap-chart text.dl { fill: var(--ink); }
+#x-apps .ap-key { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); }
+#x-apps .ap-key span { display: inline-flex; align-items: center; gap: 7px; }
+#x-apps .ap-key i { width: 12px; height: 10px; display: inline-block; flex: none; }
+
+/* phones */
+#x-apps .phones { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 28px 24px; }
+#x-apps .ph { display: grid; gap: 10px; align-content: start; min-width: 0; }
+#x-apps .ph-h { display: flex; align-items: baseline; gap: 8px; font-size: 14px; font-weight: 500; }
+#x-apps .ph-h i { width: 10px; height: 10px; flex: none; align-self: center; }
+#x-apps .ph-h i.o { outline: 1px solid var(--ink); outline-offset: -1px; }
+#x-apps .ph-h small { font-weight: 400; font-size: 12px; color: var(--grey); margin-left: auto; }
+#x-apps .ph-tabs { justify-self: start; }
+#x-apps .ap-frame { width: 100%; max-width: 310px; justify-self: center; aspect-ratio: 9 / 18.6; border: 1px solid var(--ink); background: #1a1a1a; padding: 9px; border-radius: 34px !important; position: relative; }
+#x-apps .screen { width: 100%; height: 100%; overflow: hidden; border-radius: 26px !important; position: relative; display: flex; flex-direction: column; font-size: 11px; line-height: 1.35; }
+/* undo the page-wide svg defaults (display:block, max-width) inside the phones; text styles are set inline by apps.js */
+#x-apps .screen svg { display: inline; max-width: none; overflow: visible; }
+#x-apps .screen svg[width="100%"] { max-width: 100%; }
+#x-apps .notch { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 34%; height: 20px; background: #1a1a1a; border-radius: 0 0 12px 12px !important; z-index: 3; }
+#x-apps .sb { height: 30px; flex: none; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px 4px; font-size: 10px; font-weight: 600; }
+#x-apps .r8 { border-radius: 8px !important; } #x-apps .r12 { border-radius: 12px !important; } #x-apps .r16 { border-radius: 16px !important; } #x-apps .rf { border-radius: 999px !important; }
+#x-apps .ph > details.more { justify-self: stretch; }
+#x-apps .app-note { font-size: 12px; color: var(--muted); margin: 8px 0 0; padding-left: 16px; display: grid; gap: 4px; line-height: 1.45; }
+
+/* gridX mock-up: light, house gauge in the middle, devices left and right, Live/Today at the bottom */
+#x-apps .a-g { background: #ffffff; color: #1f2733; }
+#x-apps .a-g .ap-body { flex: 1; overflow: hidden; padding: 4px 12px 0; display: flex; flex-direction: column; gap: 14px; }
+#x-apps .a-g .st { font-size: 10.5px; color: #4a5361; }
+#x-apps .a-g .val { display: grid; gap: 0; }
+#x-apps .a-g .val small { font-size: 9.5px; color: #4a5361; }
+#x-apps .a-g .val b { font-size: 15px; font-weight: 500; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+#x-apps .a-g .val i { font-style: normal; font-size: 8.5px; color: #4a5361; }
+#x-apps .a-g .val.l { border-bottom: 1.5px solid #cfd6de; padding-bottom: 1px; width: fit-content; }
+#x-apps .a-g .top { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 8px; }
+#x-apps .a-g .top .val { justify-items: end; text-align: right; border-right: 1.5px solid #cfd6de; padding-right: 8px; }
+#x-apps .a-g .top .pr { font-size: 9px; color: #4a5361; align-self: start; }
+#x-apps .a-g .mid { display: grid; grid-template-columns: 1fr 1.25fr 1fr; align-items: center; gap: 4px; }
+#x-apps .a-g .mid .col { display: grid; gap: 30px; }
+#x-apps .a-g .mid .col.r { justify-items: end; text-align: right; }
+#x-apps .a-g .mid .col.r .val { justify-items: end; }
+#x-apps .a-g .ic { color: #8a96a6; }
+#x-apps .a-g .ev { display: grid; grid-template-columns: auto auto; justify-content: center; align-items: end; gap: 6px 14px; }
+#x-apps .a-g .ev .row2 { grid-column: 1 / -1; display: flex; justify-content: center; gap: 14px; align-items: center; }
+#x-apps .a-g .btn-g { background: #1f2733; color: #fff; font-size: 10px; font-weight: 500; padding: 6px 10px; }
+#x-apps .a-g .btn-g.off { background: #e6eaef; color: #4a5361; }
+#x-apps .a-g .tg { display: grid; grid-template-columns: 1fr 1fr; background: #eef1f4; padding: 3px; font-size: 10px; text-align: center; cursor: pointer; margin-top: auto; }
+#x-apps .a-g .tg span { padding: 4px 0; }
+#x-apps .a-g .tg span.on { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+#x-apps .a-g .cardg { background: #fff; border: 1px solid #e6eaef; padding: 8px 10px; display: grid; gap: 3px; }
+#x-apps .a-g .cardg .h { font-size: 9.5px; color: #4a5361; display: flex; justify-content: space-between; }
+#x-apps .a-g .cardg .v { font-size: 17px; font-weight: 500; }
+#x-apps .a-g .cardg .v small { font-size: 9.5px; font-weight: 400; color: #4a5361; margin-left: 2px; }
+#x-apps .a-g .tri { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+#x-apps .a-g .tri div { border: 1px solid #e6eaef; padding: 5px 4px; display: grid; gap: 1px; text-align: center; font-size: 8.5px; color: #4a5361; }
+#x-apps .a-g .tri b { font-size: 12px; color: #1f2733; font-weight: 500; }
+#x-apps .a-g .seg3 { display: grid; grid-template-columns: repeat(3, 1fr); background: #eef1f4; padding: 2px; font-size: 9px; text-align: center; }
+#x-apps .a-g .seg3 span { padding: 3px 0; } #x-apps .a-g .seg3 span.on { background: #fff; }
+#x-apps .a-g .prio { display: grid; grid-template-columns: 50px 1fr; gap: 6px; align-items: center; border: 1px solid #e6eaef; padding: 6px 8px; font-size: 10px; }
+#x-apps .a-g .prio small { font-size: 8.5px; color: #4a5361; display: block; }
+#x-apps .a-g .li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-top: 1px solid #eef1f4; font-size: 10px; }
+#x-apps .a-g .li:first-of-type { border-top: 0; }
+#x-apps .a-g .sw-t { width: 26px; height: 15px; background: #1f2733; position: relative; flex: none; }
+#x-apps .a-g .sw-t::after { content: ""; position: absolute; right: 2px; top: 2px; width: 11px; height: 11px; background: #fff; border-radius: 50% !important; }
+#x-apps .a-g .nav { flex: none; display: grid; grid-template-columns: repeat(3, 1fr); background: #f6f7f9; padding: 6px 0 14px; font-size: 9px; text-align: center; color: #8a96a6; margin-top: 6px; }
+#x-apps .a-g .nav span { display: grid; justify-items: center; gap: 1px; }
+#x-apps .a-g .nav span.on { color: #1f2733; font-weight: 500; }
+#x-apps .fl { stroke-dasharray: 0 6; stroke-linecap: round; animation: ap-fl 1.1s linear infinite; }
+@keyframes ap-fl { to { stroke-dashoffset: -12; } }
+@media (prefers-reduced-motion: reduce) { #x-apps .fl { animation: none; } }
+
+/* Consolinno mock-up: cards on a light ground, 2x2 tiles with dotted flows, values in watts */
+#x-apps .a-c { background: #ffffff; color: #263026; }
+#x-apps .a-c .hd { flex: none; display: flex; justify-content: space-between; align-items: center; padding: 2px 14px 6px; font-size: 13px; }
+#x-apps .a-c .hd .t { font-size: 11px; font-weight: 500; }
+#x-apps .a-c .ap-body { flex: 1; overflow: hidden; padding: 8px 10px 0; display: flex; flex-direction: column; gap: 8px; background: #f3f4f2; }
+#x-apps .a-c .pnl { background: #e7e9e5; padding: 8px; display: grid; gap: 6px; }
+#x-apps .a-c .pnl > b { font-size: 11px; font-weight: 600; }
+#x-apps .a-c .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 30px; position: relative; padding: 2px; }
+#x-apps .a-c .tl { background: #fff; padding: 7px 4px; display: grid; justify-items: center; gap: 1px; position: relative; z-index: 1; text-align: center; }
+#x-apps .a-c .tl small { font-size: 9.5px; color: #3e4a3e; }
+#x-apps .a-c .tl b { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+#x-apps .a-c .tl b i { font-style: normal; font-weight: 400; font-size: 9.5px; }
+#x-apps .a-c .tl .ic { color: #6b746b; }
+#x-apps .a-c .tiles > svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; overflow: visible; max-width: none; }
+#x-apps .a-c .rowc { background: #fff; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 6px 8px; }
+#x-apps .a-c .rowc span { display: grid; justify-items: center; font-size: 9.5px; color: #3e4a3e; text-align: center; }
+#x-apps .a-c .rowc b { text-align: center; font-size: 11.5px; font-weight: 600; }
+#x-apps .a-c .kv { display: flex; justify-content: space-between; padding: 6px 0; font-size: 10px; }
+#x-apps .a-c .kv span:first-child { color: #3e4a3e; }
+#x-apps .a-c .h2c { font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+#x-apps .a-c .pill { font-size: 9.5px; font-weight: 500; padding: 3px 14px; background: #2e3a2e; color: #fff; }
+#x-apps .a-c .pill.off { background: #d9dcd7; color: #3e4a3e; }
+#x-apps .a-c .btnc { background: #c9cec6; text-align: center; padding: 7px; font-weight: 600; font-size: 8.5px; letter-spacing: .06em; margin-top: 6px; }
+#x-apps .a-c .seg2 { display: flex; background: #eef0ec; font-size: 10px; }
+#x-apps .a-c .seg2[data-act] { cursor: pointer; }
+#x-apps .a-c .seg2 span { flex: 1; text-align: center; padding: 3px 0; }
+#x-apps .a-c .seg2 span.on { background: #2e3a2e; color: #fff; }
+#x-apps .a-c .ctr { text-align: center; font-size: 9px; color: #3e4a3e; line-height: 1.5; }
+#x-apps .a-c .nav { flex: none; display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 6px 0 14px; color: #3e4a3e; }
+#x-apps .a-c .nav span { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50% !important; }
+#x-apps .a-c .nav span.on { background: #2e3a2e; color: #fff; }
+
+/* Flexibility Manager: dark app like our prototype */
+#x-apps .a-o { background: #0b0b0d; color: #f2f2f2; }
+#x-apps .a-o .ap-body { flex: 1; overflow: hidden; padding: 6px 12px 0; display: flex; flex-direction: column; gap: 8px; }
+#x-apps .a-o .ttl { font-size: 15px; font-weight: 600; display: flex; justify-content: space-between; align-items: baseline; }
+#x-apps .a-o .ttl small { font-size: 10px; color: #9a9a9a; font-weight: 400; }
+#x-apps .a-o .crd { background: #17171a; padding: 9px 10px; display: grid; gap: 5px; }
+#x-apps .a-o .crd .h { font-size: 10px; color: #9a9a9a; display: flex; justify-content: space-between; }
+#x-apps .a-o .big { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+#x-apps .a-o .big small { font-size: 10px; color: #9a9a9a; font-weight: 400; margin-left: 4px; }
+#x-apps .a-o .y { color: var(--yellow); }
+#x-apps .a-o .why { display: inline-flex; gap: 5px; align-items: center; font-size: 9.5px; color: #0b0b0d; background: var(--yellow); padding: 2px 7px; font-weight: 600; width: fit-content; }
+#x-apps .a-o .cp { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+#x-apps .a-o .cp .b { background: var(--yellow); color: #0b0b0d; padding: 4px 9px; font-weight: 600; font-size: 10px; flex: none; cursor: pointer; }
+#x-apps .a-o .nav { margin-top: auto; flex: none; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #222; padding: 6px 0 14px; font-size: 9.5px; text-align: center; color: #777; }
+#x-apps .a-o .nav span.on { color: #fff; font-weight: 600; }
+#x-apps .a-o .lane { display: grid; grid-template-columns: 58px 1fr; align-items: center; gap: 6px; font-size: 9.5px; color: #bdbdbd; }
+#x-apps .a-o .lane svg { display: block; width: 100%; height: 14px; max-width: none; }
+#x-apps .a-o .goal { display: grid; grid-template-columns: 70px 1fr 26px; gap: 6px; align-items: center; font-size: 10px; }
+#x-apps .a-o .goal .t { height: 4px; background: #2a2a2e; position: relative; }
+#x-apps .a-o .goal .t b { position: absolute; left: 0; top: 0; bottom: 0; background: var(--yellow); }
+
+@media (max-width: 560px) {
+  #x-apps .phones { grid-template-columns: minmax(0, 1fr); }
+  #x-apps .ap-btn { order: 2; }
+}
+</style>
+
+<figure class="exhibit wide" id="x-apps" style="border-top:0;padding-top:0">
+  <div class="side">
+    <details class="more"><summary>Sources &amp; notes</summary><p>Schematic mock-ups based on the apps' original screenshots: same structure and content, but without logos, brand colours and illustrations, labels translated. All three show the same simulated single-family home with 8 kWp PV, a 10 kWh battery, a heat pump with buffer and an EV. Drag the time of day or switch the views. Source: group research (team page, 24.11.2026), mock-ups based on the apps' screenshots.</p></details>
+  </div>
+  <div class="body">
+    <div class="ap-ctl">
+      <div class="ctl">
+        <div class="top"><span>Time of day</span><span class="val" id="ap-time">13:00</span></div>
+        <input type="range" id="ap-t" min="0" max="95" step="1" value="52" aria-label="Time of day">
+      </div>
+      <button type="button" class="btn ap-btn" id="ap-play">▶ Play day</button>
+      <div class="seg" role="group" aria-label="Weather">
+        <button type="button" data-wx="sun" aria-pressed="true">Sunny day</button>
+        <button type="button" data-wx="cloud" aria-pressed="false">Winter day</button>
+      </div>
+    </div>
+    <div class="ap-chart" id="ap-day"></div>
+    <div class="ap-key" aria-hidden="true"><span><i style="background:var(--accent)"></i>PV (kW)</span><span><i style="height:2px;background:var(--ink)"></i>Consumption (kW)</span><span><i style="height:0;border-top:2px dashed var(--grey)"></i>Power price (ct/kWh)</span></div>
+    <div class="phones">
+      <div class="ph">
+        <div class="ph-h"><i style="background:var(--c-g)"></i>gridX mock-up<small>white-label app</small></div>
+        <div class="seg ph-tabs" role="group" aria-label="gridX view" data-app="g">
+          <button type="button" data-v="home" aria-pressed="true">Home</button>
+          <button type="button" data-v="report" aria-pressed="false">Report</button>
+          <button type="button" data-v="manager" aria-pressed="false">Manager</button>
+        </div>
+        <div class="ap-frame"><div class="notch"></div><div class="screen a-g" id="scr-g"></div></div>
+        <details class="more"><summary>What the original shows</summary>
+          <ul class="app-note">
+            <li>Home: house-shaped gauge with total consumption, devices around it, values in kW, current power price on top.</li>
+            <li>Report: price paid per kWh versus “without HEMS”, plus savings, feed-in earnings and grid costs in euros.</li>
+            <li>What the control plans next is not shown, only “optimised x times in the last 6 h”.</li>
+          </ul>
+        </details>
+      </div>
+      <div class="ph">
+        <div class="ph-h"><i style="background:var(--c-c)"></i>Consolinno mock-up<small>Leaflet HEMS app</small></div>
+        <div class="seg ph-tabs" role="group" aria-label="Consolinno view" data-app="c">
+          <button type="button" data-v="home" aria-pressed="true">Home</button>
+          <button type="button" data-v="wallbox" aria-pressed="false">Wallbox</button>
+          <button type="button" data-v="stats" aria-pressed="false">Statistics</button>
+        </div>
+        <div class="ap-frame"><div class="notch"></div><div class="screen a-c" id="scr-c"></div></div>
+        <details class="more"><summary>What the original shows</summary>
+          <ul class="app-note">
+            <li>Home: four tiles with dotted flows, values in watts, below them self-sufficiency, self-consumption and spot price.</li>
+            <li>Detailed wallbox screen: charging mode, phases, status, charging power. Statistics with today's and tomorrow's spot price.</li>
+            <li>No savings in euros; heat pump and buffer are missing from the home screen.</li>
+          </ul>
+        </details>
+      </div>
+      <div class="ph">
+        <div class="ph-h"><i class="o" style="background:var(--c-o)"></i>Flexibility Manager<small>our prototype</small></div>
+        <div class="seg ph-tabs" role="group" aria-label="Flexibility Manager view" data-app="o">
+          <button type="button" data-v="plan" aria-pressed="true">Plan</button>
+          <button type="button" data-v="overview" aria-pressed="false">Overview</button>
+          <button type="button" data-v="impact" aria-pressed="false">Impact</button>
+        </div>
+        <div class="ap-frame"><div class="notch"></div><div class="screen a-o" id="scr-o"></div></div>
+        <details class="more"><summary>What the original shows</summary>
+          <ul class="app-note">
+            <li>Home: schedule for the next 24 h per device, heat included.</li>
+            <li>“Why?” explains every block; the copilot asks before intervening.</li>
+            <li>Live values only appear in the overview, not on the home screen.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</figure>
+
+</main>
+
+<script src="js/ui.js"></script>
+<script src="js/apps.js"></script>
