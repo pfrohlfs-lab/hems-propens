@@ -423,22 +423,30 @@
      ===================================================================== */
   function drawPools() {
     const el = $('m1-pools'); if (!el) return;
-    // height = right-hand list (.m1-why), so chart and list start and end on the same line (26.11.)
+    // chart top = top of the right-hand list (.m1-why), x-axis (€0 line) = its bottom edge; year labels hang below (26.11.)
     const why = el.closest('.exhibit')?.querySelector('.m1-why');
     // side column is sticky, so measure the list relative to its own column (both columns start on the same grid row)
     const side = why && why.closest('.side');
     const listBottom = () => (why && why.offsetParent === side ? why.offsetTop + why.offsetHeight : 0); // sticky .side is the offsetParent
     const besideList = side && side.getBoundingClientRect().left >= el.getBoundingClientRect().right;
-    const h = besideList && listBottom() ? Math.max(260, Math.round(listBottom())) : 290;
-    drawPools.lastB = listBottom();
-    // redraw when the list end moves (headline moved out of .side by ui.js, fonts loaded, text wraps)
-    if (side && !drawPools.ro && window.ResizeObserver) {
-      drawPools.ro = new ResizeObserver(() => { if (Math.abs(listBottom() - drawPools.lastB) > 2) drawPools(); });
-      drawPools.ro.observe(side); drawPools.ro.observe(why);
+    const lb = besideList ? listBottom() : 0;
+    drawPools.lastB = lb;
+    // redraw when the list end moves: ui.js moves the headline out of .side on DOMContentLoaded, fonts load, text wraps
+    if (side && !drawPools.watch) {
+      drawPools.watch = true;
+      const recheck = () => {
+        const nb = side.getBoundingClientRect().left >= el.getBoundingClientRect().right ? listBottom() : 0;
+        if (Math.abs(nb - drawPools.lastB) > 2) drawPools();
+      };
+      if (window.ResizeObserver) { const ro = new ResizeObserver(recheck); ro.observe(side); ro.observe(why); }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(recheck, 0));
+      window.addEventListener('load', recheck);
+      document.fonts?.ready.then(recheck);
     }
     const w = width(el);
     const narrow = w < 440;
     const m = { t: 22, r: narrow ? 12 : 92, b: 24, l: 46 };
+    const h = lb ? Math.max(260, Math.round(lb + m.b)) : 290;
     const svg = mkSvg(el, w, h, 'BCG value pools Germany 2025-2035');
     const toPts = (s) => (s.points || []).map((p) => ({ year: p.year, mid: p.value, lo: p.low, hi: p.high, p }));
     const pools = [
