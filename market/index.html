@@ -182,7 +182,13 @@
 .m1-tools { justify-content: space-between; }
 #x-definitions .m1-two { grid-template-columns: minmax(0, 1fr); gap: 22px; }
 .m1-brand { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
-.pts.m1-why li b { font-size: 15px; letter-spacing: 0; margin-bottom: 2px; }
+.pts.m1-why li { grid-template-columns: 34px minmax(0, 1fr); column-gap: 10px; align-items: start; align-content: start; }
+@media (max-width: 1080px) { .exhibit.split .pts.m1-why { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); row-gap: 14px; } }
+.pts.m1-why li b { font-size: 15px; letter-spacing: 0; margin-bottom: 2px; grid-column: 2; }
+.pts.m1-why li > span { grid-column: 2; }
+.pts.m1-why .m1-ic { grid-column: 1; grid-row: 1 / span 2; width: 34px; height: 34px; display: grid; place-items: center; background: var(--panel-2); color: var(--ink); margin-top: 1px; }
+.pts.m1-why .m1-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.pts.m1-why .m1-ic.m1-ic-up { background: var(--accent); color: var(--accent-ink); }
 .m1-brand img { display: block; height: 20px; width: auto; background: #fff; padding: 3px 5px; box-sizing: content-box; }
 </style>
 
@@ -205,10 +211,10 @@
       <p class="sub">German HEMS value pools in € M per year: flexibility revenue vs. classic HEMS hardware and software · band = BCG min–max range</p>
       <p class="m1-brand"><span>Source</span><img src="img/bcg-logo.png" alt="BCG" width="48" height="20"></p>
       <ul class="pts m1-why">
-        <li><b>Hardware pays once</b>Devices, software and installation are one-off sales with no income from running the system. BCG expects this pool to shrink 10 % from 2030 to 2035.</li>
-        <li><b>Self-consumption is table stakes</b>The savings carry the customer’s payback, so providers cannot charge for them.</li>
-        <li><b>Customers share flex gains</b>Providers keep 15–30 % of the savings from day-ahead, intraday and balancing markets (BCG take rates for 2030).</li>
-        <li><b>20× more capable homes</b>HEMS that handle dynamic prices grow from about 0.5 M (2025) to 10 M (2035), driven by the dynamic-tariff obligation and more heat pumps, batteries and EVs.</li>
+        <li><i class="m1-ic" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 1.5 14 4.75v6.5L8 14.5 2 11.25v-6.5z"/><path d="M2 4.75 8 8l6-3.25M8 8v6.5"/></svg></i><b>Hardware pays once</b><span>Devices, software and installation are one-off sales with no income from running the system. BCG expects this pool to shrink 10 % from 2030 to 2035.</span></li>
+        <li><i class="m1-ic" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M1.5 7.5 8 2l6.5 5.5"/><path d="M3.5 6v8h9V6"/><path d="M8.7 7.2 6.9 10.3h2.3l-1.8 3"/></svg></i><b>Self-consumption is table stakes</b><span>The savings carry the customer’s payback, so providers cannot charge for them.</span></li>
+        <li><i class="m1-ic" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M7 3.2A5.5 5.5 0 1 0 12.8 9H7z"/><path d="M9.5 1.5v5h5a5 5 0 0 0-5-5z"/></svg></i><b>Customers share flex gains</b><span>Providers keep 15–30 % of the savings from day-ahead, intraday and balancing markets (BCG take rates for 2030).</span></li>
+        <li><i class="m1-ic m1-ic-up" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M1.5 12.5 6 8l2.5 2.5 6-6"/><path d="M10.5 4.5h4v4"/></svg></i><b>20× more capable homes</b><span>HEMS that handle dynamic prices grow from about 0.5 M (2025) to 10 M (2035), driven by the dynamic-tariff obligation and more heat pumps, batteries and EVs.</span></li>
       </ul>
       <details class="more"><summary>Sources &amp; notes</summary>
         <p>Bands show BCG’s min–max range, line the midpoint.</p>
