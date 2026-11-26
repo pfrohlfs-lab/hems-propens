@@ -49,11 +49,6 @@
 .m0-v.m0-ours { box-shadow: inset 0 -0.32em 0 var(--accent); justify-self: start; }
 .m0-l { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
 .m0-l b { font-weight: 500; color: var(--ink); }
-#summary .keys3 .t { font-size: 17px; }
-#summary .keys3 p { line-height: 1.5; font-size: 13.5px; }
-#summary .keys3 p b { font-weight: 500; color: var(--ink); }
-.m0-go { font-size: 12.5px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); justify-self: start; margin-top: 4px; }
-.m0-go:hover { background: var(--panel); }
 #summary .sowhat { max-width: none; }
 #summary .sowhat p { font-size: 15.5px; }
 @media (max-width: 900px) { .m0-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .m0-kpis a:nth-child(3) { padding-left: 0; border-left: 0; } .m0-kpis a:nth-child(n+3) { border-top: 1px solid var(--line); } }
@@ -69,27 +64,6 @@
     <a href="#x-feature-heatmap"><span class="m0-v">94 %</span><span class="m0-l">of 80 vendors claim <b>PV-surplus battery control</b></span></a>
     <a href="#x-m3-landscape"><span class="m0-v">€4.99 / month</span><span class="m0-l"><b>median paid HEMS fee</b>; 9 of 32 offers charge none</span></a>
     <a href="#x-positioning"><span class="m0-v m0-ours">0 of 16</span><span class="m0-l">products <b>plan CHP or a buffer tank</b> or share a plan with the grid</span></a>
-  </div>
-
-  <div class="keys3">
-    <div>
-      <span class="k">1 · Market</span>
-      <span class="t">Grows with heat pumps and new price rules; the money moves to flexibility</span>
-      <p><b>+55 %</b> heat-pump sales 2025 · flex pool overtakes hardware <b>~2032</b></p>
-      <a class="m0-go" href="#size">Chapter 1</a>
-    </div>
-    <div>
-      <span class="k">2 · Competition</span>
-      <span class="t">Base functions are a commodity; the field consolidates at a loss</span>
-      <p><b>10 of 12</b> paid fees at €4–7/month · <b><span id="m0-loss">12 of 13</span></b> companies lost money</p>
-      <a class="m0-go" href="#landscape">Chapter 2</a>
-    </div>
-    <div>
-      <span class="k">3 · Gaps</span>
-      <span class="t">Nobody plans heat and power together or shares the plan with the grid</span>
-      <p><b>4 of 16</b> show a forward schedule, <b>none</b> shares it · Consolinno home schedules announced, not shipped</p>
-      <a class="m0-go" href="#whitespace">Chapter 3</a>
-    </div>
   </div>
 
 </section>
@@ -209,6 +183,7 @@
 .m1-tools { justify-content: space-between; }
 #x-definitions .m1-two { grid-template-columns: minmax(0, 1fr); gap: 22px; }
 .m1-brand { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.pts.m1-why li b { font-size: 15px; letter-spacing: 0; margin-bottom: 2px; }
 .m1-brand img { display: block; height: 20px; width: auto; background: #fff; padding: 3px 5px; box-sizing: content-box; }
 </style>
 
@@ -230,14 +205,15 @@
       <h3>The flex pool overtakes classic HEMS hardware and software around 2032</h3>
       <p class="sub">German HEMS value pools in € M per year: flexibility revenue vs. classic HEMS hardware and software · band = BCG min–max range</p>
       <p class="m1-brand"><span>Source</span><img src="img/bcg-logo.png" alt="BCG" width="48" height="20"></p>
-      <ul class="pts">
-        <li><b>€1.15–1.35 bn</b>flex pool 2035, up from €10–20 M in 2025</li>
-        <li><b>€600–800 M</b>classic EMS pool 2035 (€300–350 M in 2025)</li>
-        <li><b>~2032</b>crossover year (our interpolation, 2031–2033)</li>
+      <ul class="pts m1-why">
+        <li><b>Hardware pays once</b>Devices, software and installation are one-off sales with no income from running the system. BCG expects this pool to shrink 10 % from 2030 to 2035.</li>
+        <li><b>Self-consumption is table stakes</b>The savings carry the customer’s payback, so providers cannot charge for them.</li>
+        <li><b>Customers share flex gains</b>Providers keep 15–30 % of the savings from day-ahead, intraday and balancing markets (BCG take rates for 2030).</li>
+        <li><b>20× more capable homes</b>HEMS that handle dynamic prices grow from about 0.5 M (2025) to 10 M (2035), driven by the dynamic-tariff obligation and more heat pumps, batteries and EVs.</li>
       </ul>
       <details class="more"><summary>Sources &amp; notes</summary>
         <p>Bands show BCG’s min–max range, line the midpoint.</p>
-        <p class="src"><b>Source:</b> BCG, <i>Energy Management Systems</i> (Nov 2025), Exhibit 7. <b>Note:</b> classic pool = EMS hardware + software incl. installation; flex pool = revenue from lowering customer energy costs (day-ahead, intraday, balancing). BCG body text says flex “up to €1,150–1,400 M”. Crossover year is our linear interpolation between BCG points (2031–2033 across the ranges); midpoints are our calculation.</p>
+        <p class="src"><b>Source:</b> BCG, <i>Energy Management Systems</i> (Nov 2025), Exhibit 7; reasons from pp. 2, 9–12. <b>Note:</b> BCG gives the crossover only as “between 2030 and 2035”. classic pool = EMS hardware + software incl. installation; flex pool = revenue from lowering customer energy costs (day-ahead, intraday, balancing). BCG body text says flex “up to €1,150–1,400 M”. Crossover year is our linear interpolation between BCG points (2031–2033 across the ranges); midpoints are our calculation.</p>
       </details>
     </div>
     <div class="body"><div id="m1-pools"></div></div>

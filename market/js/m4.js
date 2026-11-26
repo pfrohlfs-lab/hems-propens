@@ -388,8 +388,4 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', all); else all();
   UI.onTheme(all);
-  
-  /* public build: the summary (#m0-loss) repeats the loss count of the profit chart (#m3-pr-title, computed by m3.js from the filtered data) */
-  try { const t = $('m3-pr-title'), o = $('m0-loss'), m = t && /^(\d+) of (\d+)/.exec(t.textContent); if (o && m) o.textContent = `${m[1]} of ${m[2]}`; } catch (e) { console.error('m4 summary count', e); }
-  
 })();
