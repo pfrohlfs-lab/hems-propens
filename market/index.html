@@ -221,8 +221,6 @@
 <section class="chapter" id="size">
   <header>
     <span class="no">1</span>
-    <h2>The market grows with heat pumps and new price rules; the money moves to flexibility</h2>
-    <p class="kick">Heat-pump sales rose 55 % to 299,000 in 2025, and since 2025 every supplier must offer a dynamic tariff.</p>
   </header>
 
 
@@ -328,6 +326,13 @@ table.m2-hm tr.gh td { font-size: 10px; letter-spacing: .06em; text-transform: u
 table.m2-hm tr.gh td.rowh { padding-top: 8px; }
 table.m2-hm tbody tr:not(.gh):hover td { background: var(--panel-2); }
 table.m2-hm tbody tr:not(.gh):hover td.rowh { background: var(--panel-2); }
+/* our TUM HEMS benchmark row: yellow band above all vendors (26.11.2026) */
+table.m2-hm tbody tr.ours td, table.m2-hm tbody tr.ours:hover td { background: color-mix(in srgb, var(--accent) 40%, var(--panel)); height: 22px; border-top: 1.5px solid var(--accent); border-bottom: 1.5px solid var(--accent); }
+table.m2-hm tbody tr.ours td.rowh, table.m2-hm tbody tr.ours:hover td.rowh { background: color-mix(in srgb, var(--accent) 40%, var(--panel)); box-shadow: inset 4px 0 0 var(--accent); font-weight: 700; line-height: 22px; padding-left: 0; }
+table.m2-hm tbody tr.ours td.rowh .n { color: var(--ink); font-weight: 700; }
+table.m2-hm tbody tr.ours td.c span { width: 14px; height: 14px; }
+table.m2-hm tbody tr.ours td.gap { border-top: 0; border-bottom: 0; background: transparent; }
+table.m2-hm tr.ours-gh td, table.m2-hm tr.ours-gh td.rowh { color: var(--ink); font-weight: 600; border-bottom: 0; }
 .m2-hmkey { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11.5px; color: var(--muted); }
 .m2-hmkey span { display: inline-flex; align-items: center; gap: 6px; }
 .m2-hmkey em { display: inline-block; width: 13px; height: 12px; font-style: normal; }
@@ -394,7 +399,7 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
     <div class="side">
       <span class="xno"></span>
       <h3>Base functions are near-universal; CHP and buffer tanks have no category</h3>
-      <p class="sub">Rows = 80 vendors, columns = 32 of 73 features, grouped by category; dark square = feature claimed on hems-finder.org; bars on top = share of vendors</p>
+      <p class="sub">Rows = 80 vendors, columns = 32 of 73 features, grouped by category; dark square = feature claimed on hems-finder.org; bars on top = share of vendors. Yellow row on top = our TUM HEMS prototype as a benchmark (own assessment)</p>
       <ul class="pts">
         <li><b>94 %</b>claim PV-surplus control of a battery</li>
         <li><b>93 %</b>claim PV-surplus control of a heat pump</li>
@@ -402,7 +407,7 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
       </ul>
       <details class="more"><summary>Sources &amp; notes</summary>
         <p>Feature claims per vendor (all systems of a vendor combined), 32 decision-relevant of 73 hems-finder features in 9 groups; bars in the header = share of the 80 vendors. Right block: four capabilities hems-finder does not track, filled only where we researched them.</p>
-        <p class="src"><b>Source:</b> hems-finder.org (Hochschule Ansbach), 83 system pages read 20.11.2026; strategic groups from the entrants research (20 vendors without a match = "Other"); right block from our competitor analysis (wiki, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026). <b>Note:</b> All hems-finder entries are vendor self-declarations and unaudited; gridX ticks every one of the first 34 features. "Any" columns combine several hems-finder fields (dynamic tariff: 6 device fields; §9 EEG: EEBUS or relay; grid fees: postcode, price curve or manual; interfaces: any device type). Consolinno's half mark: CHP only in its commercial product CEMS/FlexA; hatched mark: 24–48 h schedules announced for homes ("HEMS Vision 2026", 19.01.2026), not shipped. Our Flexibility Manager is a prototype and not listed on hems-finder.</p>
+        <p class="src"><b>Source:</b> hems-finder.org (Hochschule Ansbach), 83 system pages read 20.11.2026; strategic groups from the entrants research (20 vendors without a match = "Other"); right block from our competitor analysis (wiki, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026). <b>Note:</b> All hems-finder entries are vendor self-declarations and unaudited; gridX ticks every one of the first 34 features. "Any" columns combine several hems-finder fields (dynamic tariff: 6 device fields; §9 EEG: EEBUS or relay; grid fees: postcode, price curve or manual; interfaces: any device type). Consolinno's half mark: CHP only in its commercial product CEMS/FlexA; hatched mark: 24–48 h schedules announced for homes ("HEMS Vision 2026", 19.01.2026), not shipped. Our TUM HEMS (Flexibility Manager) is a prototype and not listed on hems-finder; its row is our own assessment against the same 73 features (26.11.2026): full mark = built and running in model, schedule or shadow operation, half = modelled or mapped to commands without device integration, hatched = planned (concept). Sales channels are "no" because the prototype is not sold. Vendor rows are marketing claims, ours is a stricter self-check, so the comparison favours the vendors.</p>
       </details>
     </div>
     <div class="body">

@@ -584,6 +584,12 @@
     const missBy = Object.fromEntries(miss.rows.map((r) => [r.key, r]));
     const flat = COLS.flatMap(([g, cs]) => cs.map(([lab, idx]) => ({ g, lab, idx, prev: rows.filter((r) => idx.some((i) => r.f.has(i))).length / nP })));
     const featName = (i) => { const f = MD.matrix.features[i]; return `${f.cat}: ${f.name}`; };
+    // our TUM HEMS: value per hems-finder feature index (1 / 0.5 / 'a' / missing = no); column = best of its fields
+    const OF = X.m2_ours_features || null;
+    const ourF = (i) => (OF && OF.v[String(i)] != null ? OF.v[String(i)] : 0);
+    const rank = (v) => (v === 1 ? 3 : v === 0.5 ? 2 : v === 'a' ? 1 : 0);
+    const ourVal = (idx) => idx.map(ourF).reduce((a, b) => (rank(b) > rank(a) ? b : a), 0);
+    const ourN = OF ? Object.values(OF.v).reduce((s, v) => { s.full += v === 1; s.part += v === 0.5; s.plan += v === 'a'; return s; }, { full: 0, part: 0, plan: 0 }) : null;
     let order = rows.slice();
     if (hmSort === 'n') order.sort((a, b) => b.n - a.n || d3.ascending(a.short.toLowerCase(), b.short.toLowerCase()));
     if (hmSort === 'name') order.sort((a, b) => d3.ascending(a.short.toLowerCase(), b.short.toLowerCase()));
@@ -608,9 +614,14 @@
       miss.columns.forEach((_, k) => { const v = missRow ? missRow.v[k] : null; s += `<td class="c" data-m="${k}"><span class="${cellMiss(v)}"></span></td>`; });
       return s + '</tr>';
     };
-    // our row on top
+    // our TUM HEMS on top of every sort order (benchmark row, team member 26.11.2026); values = own assessment, data/m2_ours_features.json
     const ours = missBy.ours;
-    if (ours && false) h += rowHtml(  /* prototype row hidden: market view only (26.11.2026) */ { short: ours.short, arch: 'ours', n: null, prod: '' }, 'ours', flat.map(() => '<td class="c"><span class="nl"></span></td>').join(''), ours);
+    if (ours && OF) {
+      const oursCells = flat.map((c, j) => `<td class="c" data-j="${j}"><span class="${cellMiss(ourVal(c.idx))}"></span></td>`).join('');
+      h += `<tr class="gh ours-gh"><td class="rowh">Our prototype</td><td colspan="${flat.length + 1 + miss.columns.length}"></td></tr>`;
+      h += rowHtml({ short: narrow ? 'TUM HEMS' : (OF.label || 'TUM HEMS (ours)'), arch: 'ours', n: ourN.full, prod: '' }, 'ours', oursCells, ours);
+      if (hmSort !== 'arch') h += `<tr class="gh"><td class="rowh">Market (${nP} vendors)</td><td colspan="${flat.length + 1 + miss.columns.length}"></td></tr>`;
+    }
     let lastArch = null;
     order.forEach((r) => {
       if (hmSort === 'arch' && r.arch !== lastArch) {
@@ -637,17 +648,21 @@
       const r = byProd.get(tr.dataset.p);
       const isOurs = tr.classList.contains('ours');
       if (td.classList.contains('rowh')) {
-        if (isOurs) { UI.tip('<b>Flexibility Manager (ours)</b><br>Student prototype; not listed on hems-finder, so the hems-finder columns are left blank', ev); return; }
+        if (isOurs) { UI.tip(`<b>TUM HEMS (ours): Flexibility Manager prototype</b><br>Own assessment against the hems-finder list, not a hems-finder entry<br>${ourN.full} of ${nF} features built, ${ourN.part} partly, ${ourN.plan} planned`, ev); return; }
         if (!r) { UI.tip(null); return; }
         UI.tip(`<b>${esc(r.prod)}</b><br>${esc(archLabel(r.arch))}<br>Systems: ${r.sys.map(esc).join(', ')}<br>${r.n} of ${nF} hems-finder features claimed`, ev); return;
       }
       if (td.dataset.m != null) {
         const k = +td.dataset.m; const mr = isOurs ? missBy.ours : (r ? missBy[r.provider] : null);
-        const nm = isOurs ? 'Flexibility Manager' : (r ? r.short : '');
+        const nm = isOurs ? 'TUM HEMS' : (r ? r.short : '');
         UI.tip(`<b>${esc(nm)}: ${esc(miss.columns[k])}</b><br>${mr ? esc(missText(mr.v[k])) + '<br><span style="opacity:.75">' + esc(mr.notes[k]) + '</span>' : 'not researched'}`, ev); return;
       }
       const j = +td.dataset.j; const c = flat[j];
-      if (isOurs) { UI.tip(`<b>Flexibility Manager: ${esc(c.lab)}</b><br>not listed on hems-finder`, ev); return; }
+      if (isOurs) {
+        const lab = (v) => (v === 1 ? 'yes (built)' : v === 0.5 ? 'partly' : v === 'a' ? 'planned' : 'no');
+        const lines = c.idx.map((i) => `${esc(featName(i))}: <b>${lab(ourF(i))}</b>${OF.notes[String(i)] ? '<br><span style="opacity:.75">' + esc(OF.notes[String(i)]) + '</span>' : ''}`);
+        UI.tip(`<b>TUM HEMS: ${esc(c.g)}, ${esc(c.lab)}</b><br>${lines.join('<br>')}<br><span style="opacity:.75">Market: ${Math.round(c.prev * 100)} % of ${nP} vendors claim it</span>`, ev); return;
+      }
       if (!r) { UI.tip(null); return; }
       const hitF = c.idx.filter((i) => r.f.has(i));
       UI.tip(`<b>${esc(r.short)}: ${esc(c.g)}, ${esc(c.lab)}</b><br>${hitF.length ? 'yes (vendor claim)<br><span style="opacity:.75">' + hitF.map(featName).map(esc).join('<br>') + '</span>' : 'not claimed'}`, ev);
@@ -657,7 +672,8 @@
     if (key) key.innerHTML = `<span><em style="background:var(--ink);opacity:.82"></em>claimed</span><span><em style="box-shadow:inset 0 0 0 1px var(--line)"></em>not claimed</span>` +
       `<span><em style="box-shadow:inset 0 0 0 1.5px var(--muted)"></em>no (our research)</span>` +
       `<span><em style="background:linear-gradient(90deg,var(--ink) 50%,transparent 50%);box-shadow:inset 0 0 0 1px var(--ink)"></em>partly</span>` +
-      `<span><em style="outline:1px dashed var(--ink);outline-offset:-1px;background:repeating-linear-gradient(135deg,transparent 0 2px,var(--line) 2px 3px)"></em>announced</span>`;
+      `<span><em style="outline:1px dashed var(--ink);outline-offset:-1px;background:repeating-linear-gradient(135deg,transparent 0 2px,var(--line) 2px 3px)"></em>announced / planned</span>` +
+      `<span><em style="background:color-mix(in srgb,var(--accent) 40%,var(--panel));box-shadow:inset 0 0 0 1.5px var(--accent)"></em>our TUM HEMS</span>`;
   }
   function initHeatmap() {
     if (!document.getElementById('m2-heatmap')) return;
