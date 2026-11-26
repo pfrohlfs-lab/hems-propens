@@ -1398,7 +1398,7 @@ function weatherCard() {
   return `<div class="wc c4 wx"><h3>Weather<span class="r">forecast, next 24 h</span></h3>
     <div class="wxnow">${wxIcon(wxKind(i), 34)}<span class="n">${fmt(P.temp[i], 0)}<small>°C</small></span>
       <span class="wxk"><small>Solar now</small>${fmt(P.pv[i], 1)} kW</span>
-      <span class="wxk"><small>Grid renewable</small>${ren == null ? '—' : '≈ ' + ren + ' %'}</span></div>
+      <span class="wxk"><small>Grid renewable</small>${ren == null ? '—' : ren < 5 ? '< 5 %' : '≈ ' + ren + ' %'}</span></div>
     <div class="chart">${wxStrip(380, 84)}</div>
     <div class="keys"><span><i class="l" style="background:#111"></i>Temperature</span><span><i style="background:#ffcf22"></i>Solar, kW</span></div></div>`;
 }
