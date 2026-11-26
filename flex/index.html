@@ -427,10 +427,50 @@ table.lvc code { font-family: var(--mono); font-size: 11.5px; background: var(--
 @media (max-width: 1200px) { .lv-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .lv-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 640px) { .lv-steps { grid-template-columns: minmax(0, 1fr); gap: 10px; } .lv-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 641px) and (max-width: 1100px) { .lv-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; } }
+/* ---------- clean-up pass 2026-11-26: less text, quieter chrome, one plan chart ---------- */
+.bbar { display: none; }
+.browser { border: 0; border-top: 1px solid var(--ink); background: #fafaf8; }
+.wside { background: #fff; }
+.wmain { padding: 28px 36px 48px; gap: 22px; }
+.wtop { align-items: center; }
+.wtop h2 { font-size: 28px; }
+.wtop p { font-size: 13.5px; color: var(--muted); }
+.browser .wc { padding: 16px 20px 20px; gap: 12px; background: #fff; }
+.browser .wc.donate { background: var(--ink); }
+.browser .wc h3 { font-size: 13px; }
+.browser .wc h3 .r { font-size: 12px; color: var(--grey); font-weight: 400; text-align: right; }
+.kpi .n { font-size: 38px; }
+.p48c .keys { font-size: 11.5px; }
+.p48c .chart { margin-top: 2px; }
+.p48 text { font-size: 11px; }
+.daysel { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; font-size: 12.5px; }
+details.more { font-size: 12.5px; color: var(--muted); }
+details.more summary { cursor: pointer; color: var(--grey); font-size: 12px; list-style: none; display: inline-flex; align-items: center; gap: 7px; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more summary::before { content: ""; width: 5px; height: 5px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(-45deg); transition: transform .15s; }
+details.more[open] summary::before { transform: rotate(45deg); }
+details.more summary:hover { color: var(--ink); }
+details.more > div { margin-top: 8px; max-width: 84ch; line-height: 1.5; }
+.browser .checks div { grid-template-columns: 18px minmax(0, 1fr) auto; }
+.browser .checks .ok { width: 16px; height: 16px; border-radius: 0; background: none; border: 1px solid var(--ink); color: var(--ink); font-size: 10px; margin-top: 1px; }
+.browser .checks div.bad .ok { border-color: var(--w-red); color: var(--w-red); background: #fde3de; }
+.browser .checks div.open .ok { border-color: var(--panel-line); color: var(--grey); }
+.browser .checks .ty { font-size: 10.5px; color: var(--grey); text-transform: uppercase; letter-spacing: .05em; padding-top: 3px; }
+.browser .tag { background: none; border: 1px solid var(--panel-line); color: #333; }
+.browser .tag.y { border-color: #e5c84d; background: #fff8d9; }
+.browser .tag.st-ready i { background: var(--w-green); }
+.browser .tag.st-pending i { background: #c99a00; }
+.browser .tag.st-blocked i { background: var(--w-red); }
+.browser .tag.st-none i { background: #b5b5b0; }
+.browser table.cmd th, .browser table.cmd td { padding: 7px 10px; }
+.browser table.cmd code { background: none; padding: 0; font-size: 12px; }
+.browser .pick { border-top: 1px solid var(--ink); padding-top: 10px; display: grid; gap: 3px; }
+@media (max-width: 900px) { .wmain { padding: 18px 14px 28px; } }
+@media (max-width: 760px) { .p48c .chart { overflow-x: auto; } .p48c .chart svg { min-width: 760px; } }
 </style>
 
 <header class="head">
-  <div class="brand"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" fill="#000"/><rect x="11" y="3" width="6" height="6" fill="#ffcf22"/><rect x="3" y="13" width="14" height="2" fill="#fff"/></svg>HEMS <small>Flexibility Manager · week 3 draft · data 18 Nov 2026</small></div><a class="hbtn" href="../" style="text-decoration:none;color:inherit">← Results</a>
+  <div class="brand"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" fill="#000"/><rect x="11" y="3" width="6" height="6" fill="#ffcf22"/><rect x="3" y="13" width="14" height="2" fill="#fff"/></svg>HEMS <small>Flexibility Manager · data 18 Nov 2026</small></div><a class="hbtn" href="../" style="text-decoration:none;color:inherit">← Results</a>
   <span class="sync" id="sync" title="Changes sync between open copies of this page in this browser"><i></i><span>Local</span></span>
   <button class="hbtn" type="button" id="reset">Reset demo</button>
   <div class="switch" role="group" aria-label="Version">
@@ -447,7 +487,7 @@ table.lvc code { font-family: var(--mono); font-size: 11.5px; background: var(--
         <nav class="wside" id="wside" aria-label="Website sections"></nav>
         <div class="wmain" id="wmain"></div>
         <div class="wmain lv-page" id="live">
-          <div class="wtop"><div><h2>Live</h2><p>The other pages show a fixed example from 8 November. Here the house plans the next 48 hours with today's day-ahead prices and weather forecast, using the same optimisation model. It runs on your device; nothing is sent anywhere.</p></div></div>
+          <div class="wtop"><div><h2>Live</h2><p>Plans the next 48 hours from today's prices and weather, in your browser.</p></div></div>
           <div class="wc lv-bar">
             <div class="lv-row"><button class="lv-go" type="button" id="lv-go">Plan the next 48 hours</button><span class="lv-co2" id="lv-co2"></span></div>
             <ol class="lv-steps" id="lv-steps">
@@ -639,7 +679,7 @@ const SVEN_OPEN = [
   ['Wallbox', 'Maximum charging current, phase switching']
 ];
 const readiness = st => /Writable today|Available/.test(st) ? 'ready' : /Not yet controllable|^Open$|To be implemented/.test(st) ? 'blocked' : 'pending';
-const RLAB = { ready: 'Writable today', pending: 'Needs setup', blocked: 'Not controllable yet', none: 'Not in owner’s list' };
+const RLAB = { ready: 'Writable today', pending: 'Needs setup', blocked: 'Not controllable yet', none: 'Not in the list' };
 function sven(label) { const r = SVEN.find(x => x[1] === label); return r ? { iface: r[2], st: r[3], ready: readiness(r[3]) } : { iface: 'Home Assistant', st: 'Not in owner’s list', ready: 'none' }; }
 const amps = kw => Math.round(kw * 1000 / (3 * 230));
 
@@ -879,7 +919,7 @@ function monthBars(W, H) {
   return s + '</svg>';
 }
 
-// ---------------- last 24 h measured + next 24 h planned (card on 'Overview') ----------------
+// ---------------- measured power of the last 24 h + planned power of the next 24 h (card on 'Overview') ----------------
 // Inserted by flexmanager_bauen.py before wOverview(). Uses the page's globals P, F, S, rerender.
 // Measured hourly means come from api/verlauf on the same server as the page: same keys and units as api/jetzt
 // (pv, netz + buy/- sell, batterie, hauslast, wp, bhkw, wallbox in kW; soc in %), `t` = hours since 1970 UTC
@@ -958,50 +998,334 @@ function histChart(W, H) {
 }
 
 function histCard() {
+  if (!HIST || (typeof DAY !== 'undefined' && DAY !== 'fc')) return '';   // without measured values the plan chart above says it all
   const keys = HIST_SERIEN.map(([, name, col]) => `<span><i class="l" style="background:${col}"></i>${name}</span>`).join('');
   return `
-    <div class="wc c12"><h3>Last 24 hours and next 24 hours<span class="r">${HIST ? 'solid = measured · dashed = plan' : 'plan only'}</span></h3>
+    <div class="wc c12"><h3>Power, kW<span class="r">solid = measured · dashed = plan</span></h3>
       <div class="keys">${keys}<span><i class="l" style="background:#1f8a52"></i>Battery, % (right axis)</span></div>
       <div class="chart">${histChart(1120, 230)}</div>
     </div>
 `;
 }
 
-function wOverview() {
-  const ev = evPlan(), [h, b] = nowSentence(), cmds = commands().filter(c => c.i > 0).slice(0, 6), v = cumSavings(12), pl = planFor(S.p);
+// ---------------- plan vs. measured for the current hour (card on 'Overview') ----------------
+// Inserted by flexmanager_bauen.py before wOverview(), after the history card. Uses the page's globals S, F, rerender.
+// The card fetches its own copies of api/state (plan, every minute) and api/jetzt (measurements, every 15 s) from the
+// server that serves the page, so it never reads values that another script put into P for display. Without that
+// server (static page, file) the card is not shown.
+// api/jetzt: pv, netz (+ buy, − sell), batterie (+ charging), soc (%), hauslast, wp, bhkw, wallbox in kW, zeit (UTC).
+// api/state: P (24 planned hours, P.t = hours since 1970 UTC), startzustand, ersatz, solver_status, ev_soc, erstellt.
+const PI_ZEILEN = [
+  // measured key, label, colour, planned value of hour i (null = not planned)
+  ['pv', 'Solar', '#e0a800', (P, i) => P.pv[i]],
+  ['wp', 'Heat pump (electric)', '#e8850c', (P, i) => P.hp[i]],
+  ['bhkw', 'CHP (electric)', '#d9452f', (P, i) => P.chp[i]],
+  ['hauslast', 'House', '#a3a39e', (P, i) => P.load[i]],
+  ['batterie', 'Battery (+ charging)', '#1f8a52', (P, i, st) => piBatterie(P, i, st)],
+  ['netz', 'Grid (+ buy, − sell)', '#111', (P, i) => P.grid[i] - P.feed[i]],
+  ['wallbox', 'Wallbox', '#555', () => null]
+];
+const PI_ERSATZ = { eauto_kw: 'car charging', hauslast_ohne_eauto_kw: 'house load' };
+let PI = { state: null, jetzt: null };
+
+function piBatKwh() { return (typeof F !== 'undefined' && F && F.batKwh) || 39.5; }
+
+// planned battery power in hour i from the planned state of charge (kWh at the end of each hour)
+function piBatterie(P, i, st) {
+  if (!P.soc || P.soc[i] == null) return null;
+  const vor = i > 0 ? P.soc[i - 1] : (st && st.startzustand && st.startzustand.batterie_soc_pct != null
+    ? st.startzustand.batterie_soc_pct / 100 * piBatKwh() : null);
+  return vor == null ? null : P.soc[i] - vor;
+}
+
+// index of the measurement hour in the plan (the plan may be older than the current hour), or -1
+function piStunde(st, j) {
+  if (!st || !st.P || !st.P.t || !st.P.t.length) return -1;
+  const ms = j && j.zeit ? Date.parse(j.zeit) : Date.now();
+  const i = Math.floor(ms / 3600e3) - st.P.t[0];
+  return i >= 0 && i < st.P.t.length ? i : -1;
+}
+
+// rows {key, name, col, plan, ist, diff, abw}; abw = deviation larger than 0.5 kW and 25 % of the larger value
+function piZeilen(st, j) {
+  const i = piStunde(st, j);
+  return PI_ZEILEN.map(([key, name, col, f]) => {
+    const plan = i < 0 ? null : f(st.P, i, st), ist = j && j.ok !== false && isFinite(j[key]) ? +j[key] : null;
+    const planOk = plan != null && isFinite(plan);
+    const diff = planOk && ist != null ? ist - plan : null;
+    const abw = diff != null && Math.abs(diff) > Math.max(0.5, 0.25 * Math.max(Math.abs(plan), Math.abs(ist)));
+    return { key, name, col, plan: planOk ? +plan : null, ist, diff, abw };
+  });
+}
+
+function piSatz(zeilen) {
+  const ab = zeilen.filter(z => z.abw).sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
+  if (!zeilen.some(z => z.diff != null)) return 'No plan for this hour yet.';
+  if (!ab.length) return 'Everything runs as planned this hour.';
+  const k = v => `${v.toFixed(1).replace('.', ',').replace('-', '−')} kW`;
+  return ab.slice(0, 3).map(z => {
+    const netz = v => Math.abs(v) < 0.05 ? '0 kW' : `${v > 0 ? 'import' : 'export'} ${k(Math.abs(v))}`;
+    if (z.key === 'netz') return `Grid ${netz(z.ist)}, plan: ${netz(z.plan)}`;
+    if (z.key === 'batterie') return `Battery ${Math.abs(z.ist) < 0.05 ? 'idle' : z.ist > 0 ? 'charging ' + k(z.ist) : 'discharging ' + k(-z.ist)}, plan: ${Math.abs(z.plan) < 0.05 ? 'idle' : z.plan > 0 ? 'charge ' + k(z.plan) : 'discharge ' + k(-z.plan)}`;
+    if (Math.abs(z.plan) < 0.05) return `${z.name.replace(/ \(.*\)/, '')} runs at ${k(z.ist)}, plan: off`;
+    if (Math.abs(z.ist) < 0.05) return `${z.name.replace(/ \(.*\)/, '')} is off, plan: ${k(z.plan)}`;
+    return `${z.name.replace(/ \(.*\)/, '')} ${k(z.ist)} instead of ${k(z.plan)}`;
+  }).join(' · ') + '.';
+}
+
+// two bars per row on one shared scale: plan (outline) and measured (filled)
+function piBalken(z, max, W) {
+  const H = 22, mid = W / 2, sx = v => v / max * (mid - 4);
+  const bar = (v, y, h, fill) => {
+    if (v == null) return '';
+    const w = Math.abs(sx(v)), x = v >= 0 ? mid : mid - w;
+    return `<rect x="${x.toFixed(1)}" y="${y}" width="${Math.max(w, 1).toFixed(1)}" height="${h}" rx="2" ${fill}/>`;
+  };
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" preserveAspectRatio="none" style="display:block;max-width:${W}px;min-width:120px">` +
+    `<line x1="${mid}" x2="${mid}" y1="0" y2="${H}" stroke="#d4d4cf"/>` +
+    bar(z.plan, 2, 8, `fill="none" stroke="${z.col}" stroke-width="1.2" stroke-dasharray="3 2"`) +
+    bar(z.ist, 12, 8, `fill="${z.col}"`) + '</svg>';
+}
+
+function planIstCard() {
+  const st = PI.state, j = PI.jetzt;
+  if (!st || !st.P) return '';
+  const zeilen = piZeilen(st, j), i = piStunde(st, j);
+  const max = Math.max(1, ...zeilen.flatMap(z => [z.plan, z.ist]).filter(v => v != null).map(Math.abs));
+  const k = v => v == null ? '—' : v.toFixed(1).replace('.', ',').replace('-', '−');
+  const zeit = s => s ? new Date(s).toLocaleTimeString('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit' }) : '—';
+  const sz = st.startzustand || {}, er = st.ersatz || {};
+  const status = [
+    j && isFinite(j.soc) ? `Battery ${Math.round(j.soc)} %` : null,
+    sz.puffer_temp_c != null ? `Buffer ${k(sz.puffer_temp_c)} °C (at plan start)` : null,
+    st.ev_soc != null ? `Car ${Math.round(st.ev_soc)} %` : null,
+    sz.bhkw_an === false && sz.h_seit_bhkw != null ? `CHP off for ${Math.round(sz.h_seit_bhkw)} h` : null,
+    `Solver: ${st.solver_status || '—'}${st.muss_verletzt ? ` · ${st.muss_verletzt} hard rule(s) broken` : ''}`
+  ].filter(Boolean).map(t => `<span class="tag">${t}</span>`).join(' ');
+  const ersatz = Object.entries(er).map(([key, txt]) => `${PI_ERSATZ[key] || key}: ${String(txt)
+    .replace(/konstant ([\d.,−-]+) für (\d+) h/, 'constant $1 kW for $2 h').replace(/(\d+) von (\d+) h ersetzt/, '$1 of $2 h replaced')}`).join(' · ');
+  const alt = j && j.zeit && Date.now() - Date.parse(j.zeit) > 120e3;
   return `
-  <div class="wtop"><div><h2>Good evening.</h2><p>Sunday, 8 November, ${hrs[NOW]}. ${S.level === 'auto' ? 'Autopilot is on. Nothing needs your attention.' : S.level === 'manual' ? 'Running on your rules.' : (requests().some(x => x.st === 'pending') ? 'The Copilot has a few questions for you.' : 'Copilot is on. Nothing open.')}</p></div><span class="tag"><i></i>Local grid: normal · 48 % renewable</span></div>
-  ${S.level === 'copilot' && requests().length ? `<div class="wc"><h3>${requests().some(x => x.st === 'pending') ? 'Waiting for your OK' : 'Your decisions for the next 24 h'}<span class="r"><a href="#" data-page="goals" style="color:inherit">All decisions ›</a></span></h3><div>${reqList(requests())}</div></div>` : ''}
+    <div class="wc c12"><h3>Plan vs. measured · this hour<span class="r">plan from ${zeit(st.erstellt)}${i > 0 ? ` (hour ${i + 1} of the plan)` : ''} · measured ${zeit(j && j.zeit)}${alt ? ' · stale' : ''}</span></h3>
+      <div><b style="font-weight:500">${piSatz(zeilen)}</b></div>
+      <div class="tw"><table class="cmd">
+        <tr><th>Device</th><th>Plan, kW</th><th>Measured, kW</th><th>Difference</th><th><span class="g">dashed = plan · filled = measured</span></th></tr>
+        ${zeilen.map(z => `<tr${z.abw ? ' class="hl"' : ''}><td><span class="dot" style="background:${z.col}"></span>${z.name}</td><td>${z.plan == null ? '<span class="g">not planned</span>' : k(z.plan)}</td><td>${k(z.ist)}</td><td>${z.diff == null ? '' : Math.abs(z.diff) < 0.05 ? '0,0' : (z.diff > 0 ? '+' : '') + k(z.diff)}</td><td>${piBalken(z, max, 240)}</td></tr>`).join('')}
+      </table></div>
+      <div class="keys">${status}</div>
+      ${ersatz ? `<div class="s">Plan inputs replaced by defaults: ${ersatz}</div>` : ''}
+    </div>
+`;
+}
+
+async function piLade(pfad, feld) {
+  try {
+    const r = await fetch(pfad, { cache: 'no-store' });
+    if (!r.ok) return r.status;
+    const x = await r.json();
+    if (x && x.ok !== false) { PI[feld] = x; return 200; }
+  } catch (e) { /* offline or no server: keep the last values */ }
+  return 0;
+}
+// returns false when the server has no api/state (static page): then polling stops
+async function piTick(mitPlan) {
+  const vorher = planIstCard();
+  const [st] = await Promise.all([mitPlan ? piLade('api/state', 'state') : 200, piLade('api/jetzt', 'jetzt')]);
+  if (planIstCard() !== vorher && typeof S !== 'undefined' && S.page === 'overview' && typeof rerender === 'function') rerender();
+  return st !== 404;
+}
+if (typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) {
+  let n = 0;
+  (async () => {
+    if (await piTick(true) === false) return;          // e.g. GitHub Pages: one request, no polling
+    setInterval(() => { n += 1; piTick(n % 4 === 0); }, 15000);
+  })();
+}
+
+// ---------------- plan chart: price, grid CO2 and device lanes on one time axis (Overview and 'Plan & commands') ----------------
+// Inserted by flexmanager_design.py before wOverview(). Uses the page's globals P, F, S, DAY, HIST, evPlan, dishwasher, fmt.
+// 48 slots when the house provides measured history (24 measured hours left of the now line, 24 planned right of it),
+// otherwise the 24 planned hours. Prices of past hours: api/verlauf may carry da/co2/buy/tariff (README, 'Measured
+// history'); if not, the page remembers the prices of every plan it has shown (localStorage, 72 h), so a past hour keeps
+// its price after the plan has moved on.
+
+const P48_CACHE_KEY = 'hems-flex-prices';
+const P48_LANES = [
+  // label, colour, key in a slot
+  ['Wallbox', '#111', 'car'],
+  ['Heat pump', '#e8850c', 'hp'],
+  ['CHP', '#d9452f', 'chp'],
+  ['Battery charging', '#1f8a52', 'batUp'],
+  ['Battery discharging', '#8fd1ad', 'batDown'],
+  ['Solar export', '#e0a800', 'feed'],
+  ['Dishwasher', '#3d7be0', 'dish']
+];
+
+function p48Cache() { try { return JSON.parse(localStorage.getItem(P48_CACHE_KEY)) || {}; } catch (e) { return {}; } }
+function p48Remember() {
+  if (typeof DAY !== 'undefined' && DAY !== 'fc') return;
+  const c = p48Cache(), t0 = P.t[0];
+  P.t.forEach((t, i) => { c[t] = [P.da[i], P.co2[i], P.buy ? P.buy[i] : null, P.tariff ? P.tariff[i] : null]; });
+  Object.keys(c).forEach(t => { if (+t < t0 - 72) delete c[t]; });
+  try { localStorage.setItem(P48_CACHE_KEY, JSON.stringify(c)); } catch (e) { /* private mode: no memory, no harm */ }
+}
+
+// true when measured hours can be shown: history from the server and the forecast day (not a 2025 example day)
+function p48Live() {
+  return typeof HIST !== 'undefined' && !!HIST && Array.isArray(HIST.t) && (typeof DAY === 'undefined' || DAY === 'fc');
+}
+
+// one slot per hour: {t, i (plan index or null), measured, da, co2, tariff, car, hp, chp, batUp, batDown, feed, dish, none}
+function p48Slots() {
+  const ev = evPlan(), dw = dishwasher(), t0 = P.t[0], n = P.t.length;
+  const plan = Array.from({ length: n }, (_, i) => ({
+    t: P.t[i], i, measured: false, da: P.da[i], co2: P.co2[i], tariff: P.tariff ? P.tariff[i] : 0,
+    car: ev.pick.includes(i), hp: P.hp[i] > 0.3, chp: P.chp[i] > 0.1,
+    batUp: i < n - 1 && P.soc[i + 1] - P.soc[i] > 0.5, batDown: i < n - 1 && P.soc[i + 1] - P.soc[i] < -0.5,
+    feed: P.feed[i] > 0.1, dish: !!dw && (i === dw.i || i === dw.i + 1), none: false
+  }));
+  if (!p48Live()) return { slots: plan, nowAt: 0, measuredAny: false };
+  p48Remember();
+  const idx = {}; HIST.t.forEach((t, j) => { idx[t] = j; });
+  const cache = p48Cache();
+  const g = (key, j) => (j == null || !HIST[key] || HIST[key][j] == null || !isFinite(HIST[key][j])) ? null : +HIST[key][j];
+  let any = false;
+  const past = Array.from({ length: 24 }, (_, k) => {
+    const t = t0 - 24 + k, j = idx[t], c = cache[t] || [];
+    const wall = g('wallbox', j), wp = g('wp', j), bhkw = g('bhkw', j), bat = g('batterie', j), netz = g('netz', j);
+    const none = [wall, wp, bhkw, bat, netz].every(v => v == null);
+    if (!none) any = true;
+    const da = g('da', j) ?? (c[0] ?? null), co2 = g('co2', j) ?? (c[1] ?? null), tariff = g('tariff', j) ?? (c[3] ?? null);
+    return { t, i: null, measured: true, da, co2, tariff, car: wall != null && wall > 0.3, hp: wp != null && wp > 0.3,
+      chp: bhkw != null && bhkw > 0.1, batUp: bat != null && bat > 0.5, batDown: bat != null && bat < -0.5,
+      feed: netz != null && netz < -0.1, dish: null, none };
+  });
+  return { slots: past.concat(plan), nowAt: 24, measuredAny: any };
+}
+
+function p48Hour(t) { return new Date(t * 3600e3).toLocaleTimeString('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit' }); }
+function p48Date(t) { return new Date(t * 3600e3).toLocaleDateString('en-GB', { timeZone: 'Europe/Berlin', weekday: 'short', day: 'numeric', month: 'short' }); }
+
+// opt.sel = selected plan hour (index into P), opt.lanes = false for the price chart only
+function p48SVG(W, opt = {}) {
+  const { slots, nowAt, measuredAny } = p48Slots(), n = slots.length;
+  const m = { l: 34, r: 40, t: 20 }, iw = W - m.l - m.r, bw = iw / n;
+  const ph = 140, gap = 30, rh = 20, lanes = opt.lanes === false ? [] : P48_LANES, lh = lanes.length * rh;
+  const H = m.t + ph + (lanes.length ? gap + lh : 0) + 24, yAxis = m.t + ph, yLanes = yAxis + gap, yBottom = lanes.length ? yLanes + lh : yAxis;
+  const X = k => m.l + k * bw, Xc = k => m.l + k * bw + bw / 2;
+  const da = slots.map(s => s.da).filter(v => v != null && isFinite(v));
+  const lo = Math.min(0, Math.floor(Math.min(...da, 0) / 20) * 20), hi = Math.max(70, Math.ceil(Math.max(...da, 0) / 20) * 20);
+  const Yp = v => m.t + ph - (v - lo) / (hi - lo) * ph, Yc = v => m.t + ph - v / 800 * ph;
+  let s = `<svg viewBox="0 0 ${W} ${H}" class="p48">`;
+  // measured half: light band
+  if (nowAt > 0) s += `<rect x="${m.l}" y="${m.t - 12}" width="${nowAt * bw}" height="${yBottom - m.t + 12}" fill="#f4f4f1"/>`;
+  // price grid + axes
+  for (let v = lo; v <= hi + 1e-9; v += 20) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${Yp(v)}" y2="${Yp(v)}" stroke="${v === 0 ? '#c9c9c4' : '#e9e9e5'}"/><text x="${m.l - 8}" y="${Yp(v) + 4}" text-anchor="end">${v}</text>`;
+  [0, 400, 800].forEach(v => s += `<text x="${W - m.r + 8}" y="${Yc(v) + 4}">${v}</text>`);
+  s += `<text x="${m.l - 8}" y="${m.t - 8}" text-anchor="end">ct</text><text x="${W - m.r + 8}" y="${m.t - 8}">g/kWh</text>`;
+  // price bars; the plan's car-charging hours and measured wallbox hours in black; grid-fee marks under the axis
+  slots.forEach((sl, k) => {
+    if (sl.da == null || !isFinite(sl.da)) return;
+    const y0 = Yp(0), y1 = Yp(sl.da);
+    s += `<rect x="${X(k) + 1.5}" y="${Math.min(y0, y1)}" width="${bw - 3}" height="${Math.max(0.5, Math.abs(y0 - y1))}" fill="${sl.car ? '#111' : sl.measured ? '#d6d6d1' : '#e4e4df'}"/>`;
+    if (sl.tariff === 2) s += `<rect x="${X(k) + 1.5}" y="${yAxis + 3}" width="${bw - 3}" height="3" fill="#ffcf22"/>`;
+    else if (sl.tariff === 1) s += `<rect x="${X(k) + 1.5}" y="${yAxis + 3}" width="${bw - 3}" height="3" fill="#8a8a86"/>`;
+  });
+  // grid CO2: one polyline per run of known values
+  let pts = [];
+  const flush = () => { if (pts.length > 1) s += `<polyline points="${pts.join(' ')}" fill="none" stroke="#1f8a52" stroke-width="1.8" stroke-linejoin="round"/>`; pts = []; };
+  slots.forEach((sl, k) => { if (sl.co2 == null || !isFinite(sl.co2)) flush(); else pts.push(`${Xc(k).toFixed(1)},${Yc(sl.co2).toFixed(1)}`); });
+  flush();
+  // lanes
+  lanes.forEach(([name, col, key], r) => {
+    const y = yLanes + r * rh;
+    s += `<text x="${m.l - 8}" y="${y + rh / 2 + 4}" text-anchor="end" style="fill:#555">${name}</text>`;
+    slots.forEach((sl, k) => {
+      if (sl.measured && (sl.none || sl[key] == null)) return;
+      s += `<rect x="${X(k) + 1.5}" y="${y + 3}" width="${bw - 3}" height="${rh - 6}" fill="${sl[key] ? col : sl.measured ? '#e9e9e4' : '#f0f0ec'}"/>`;
+    });
+  });
+  // hour labels; the first hour of a day gets its date
+  slots.forEach((sl, k) => {
+    if (k === nowAt && nowAt > 0) return;   // the now line has its own label
+    const h = new Date(sl.t * 3600e3).toLocaleTimeString('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit' }).slice(0, 2);
+    if (h === '00') s += `<text x="${Xc(k)}" y="${H - 6}" text-anchor="middle" style="fill:#111">${p48Date(sl.t)}</text>`;
+    else if (+h % 3 === 0) s += `<text x="${Xc(k)}" y="${H - 6}" text-anchor="middle">${h}</text>`;
+  });
+  // selected plan hour, now line, half labels
+  if (opt.sel != null && opt.sel >= 0 && opt.sel < P.t.length) {
+    const k = nowAt + opt.sel;
+    s += `<rect x="${X(k)}" y="${m.t - 12}" width="${bw}" height="${yBottom - m.t + 12}" fill="#ffcf22" fill-opacity=".28"/>`;
+  }
+  if (nowAt > 0) {
+    s += `<line x1="${X(nowAt)}" x2="${X(nowAt)}" y1="${m.t - 16}" y2="${yBottom}" stroke="#111" stroke-width="1.5"/>`;
+    s += `<text x="${X(nowAt)}" y="${H - 6}" text-anchor="middle" style="fill:#111;font-weight:500">now</text>`;
+    s += `<text x="${m.l + 6}" y="${m.t - 2}" style="fill:#555">measured</text><text x="${X(nowAt) + 6}" y="${m.t - 2}" style="fill:#555">plan</text>`;
+    if (!measuredAny) s += `<text x="${X(nowAt / 2)}" y="${m.t + ph / 2}" text-anchor="middle">No measured values for these hours yet.</text>`;
+  }
+  // click targets, plan hours only (the handler reads data-hr)
+  slots.forEach((sl, k) => { if (sl.i != null) s += `<rect x="${X(k)}" y="${m.t - 12}" width="${bw}" height="${yBottom - m.t + 12}" fill="transparent" data-hr="${sl.i}" style="cursor:pointer"/>`; });
+  return s + '</svg>';
+}
+
+function p48Keys() {
+  return `<div class="keys"><span><i style="background:#e4e4df"></i>Day-ahead price</span><span><i style="background:#111"></i>Car charging</span>` +
+    `<span><i style="background:#ffcf22;height:4px"></i>Low grid fee (§14a)</span><span><i class="l" style="background:#1f8a52"></i>Grid CO2</span></div>`;
+}
+
+// text for the selected hour on 'Plan & commands'
+function p48SelText(i) {
+  const end = p48Hour(P.t[i] + 1);
+  return `${p48Hour(P.t[i])}–${end} · ${fmt(P.da[i], 1)} ct · ${fmt(P.co2[i])} g/kWh · ${fmt(P.temp[i], 1)} °C · battery ${Math.round(P.soc[i] / F.batKwh * 100)} %`;
+}
+
+// title of the forecast day: "Thu 26 Nov, 18:00 → Fri 27 Nov, 18:00"
+function p48Range() {
+  const t0 = P.t[0], t1 = P.t[P.t.length - 1] + 1;
+  return `${p48Date(t0)}, ${p48Hour(t0)} → ${p48Date(t1)}, ${p48Hour(t1)}`;
+}
+
+// card with legend and chart; o = {title, sub, sel, lanes}
+function p48Card(o) {
+  return `<div class="wc c12 p48c"><h3>${o.title}<span class="r">${o.sub || ''}</span></h3>${p48Keys()}<div class="chart" data-hrchart>${p48SVG(1120, { sel: o.sel, lanes: o.lanes })}</div></div>`;
+}
+
+function wOverview() {
+  const ev = evPlan(), [h, b] = nowSentence(), cmds = commands().filter(c => c.i > 0).slice(0, 6), pl = planFor(S.p), live = p48Live(), t0 = P.t[0];
+  const hour = +p48Hour(t0).slice(0, 2), greet = hour < 5 ? 'Good night' : hour < 11 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+  const pending = requests().some(x => x.st === 'pending');
+  const status = S.level === 'auto' ? 'Autopilot is on.' : S.level === 'manual' ? 'Running on your rules.' : pending ? 'The Copilot has questions for you.' : 'Copilot is on. Nothing open.';
+  return `
+  <div class="wtop"><div><h2>${greet}.</h2><p>${p48Date(t0)}, ${p48Hour(t0)} · ${status}</p></div><span class="tag"><i></i>Local grid: normal · 48 % renewable</span></div>
+  ${S.level === 'copilot' && requests().length ? `<div class="wc"><h3>${pending ? 'Waiting for your OK' : 'Your decisions for the next 24 h'}<span class="r"><a href="#" data-page="goals" style="color:inherit">All decisions ›</a></span></h3><div>${reqList(requests())}</div></div>` : ''}
   <div class="wgrid">
     <div class="wc c3"><h3>Saved in 2025</h3><div class="kpi"><span class="n">${fmt(SC.ist.cost - SC[pl].cost)}<small>€</small></span><span class="d up">▲ ${fmt((SC.ist.cost - SC[pl].cost) / SC.ist.cost * 100)} % vs. before</span></div></div>
     <div class="wc c3"><h3>CO2 avoided in 2025</h3><div class="kpi"><span class="n">${fmt(SC.ist.co2 - SC[pl].co2, 1)}<small>t</small></span><span class="d">${fmt(SC.ist.co2, 1)} t → ${fmt(SC[pl].co2, 1)} t</span></div></div>
     <div class="wc c3"><h3>Next 24 hours</h3><div class="kpi"><span class="n">${fmt(planCost(), 2)}<small>€</small></span><span class="d">energy cost incl. car</span></div></div>
     <div class="wc c3"><h3>Car</h3><div class="kpi"><span class="n">${S.evNow}<small>%</small></span><span class="d">${tgt()} % by ${dep()} · from ${ev.pick.length ? hrs[ev.pick[0]] : '—'}</span></div></div>
-    <div class="wc c5"><h3>Right now<span class="r">${hrs[NOW]}</span></h3><div class="flowbox">${flowSVG('light')}</div><div><b style="font-weight:500">${h}.</b> <span class="g">${b}</span></div></div>
-    <div class="wc c7"><h3>Next 24 hours<span class="r"><a href="#" data-page="plan" style="color:inherit">Open plan ›</a></span></h3>
-      <div class="keys"><span><i style="background:#e9e9e4"></i>Price, ct/kWh</span><span><i style="background:#f3d9a8"></i>Low grid fee (§14a)</span><span><i style="background:#111"></i>Car charging</span><span><i class="l" style="background:#1f8a52"></i>Grid CO2, g/kWh</span></div>
-      <div class="chart">${priceCO2Chart(620, 200, null)}</div>
+    ${p48Card({ title: live ? 'Last 24 hours and next 24 hours' : 'Next 24 hours', sub: live ? 'measured left of the line · plan right of it' : `<a href="#" data-page="plan" style="color:inherit">Open plan ›</a>`, lanes: true })}
+    <div class="wc c5"><h3>Right now<span class="r">${p48Hour(t0)}</span></h3><div class="flowbox">${flowSVG('light')}</div><div><b style="font-weight:500">${h}.</b> <span class="g">${b}</span></div></div>
+    <div class="wc c7"><h3>Next commands<span class="r"><a href="#" data-page="plan" style="color:inherit">All commands ›</a></span></h3>
       <div class="list">${cmds.map(c => `<div><span class="t">${hrs[c.i]}</span><span><span class="dot" style="background:${{ 'Heat pump': '#e8850c', CHP: '#d9452f', Battery: '#1f8a52', Wallbox: '#111', Vehicle: '#111', Dishwasher: '#3d7be0', 'Transfer pump': '#b06a2a', PV: '#e0a800' }[c.asset]}"></span>${c.asset}: ${c.label.toLowerCase()} <span class="s">· ${c.why}</span></span><span class="s">${c.v}</span></div>`).join('')}</div>
     </div>
-${histCard()}  </div>`;
+${histCard()}${planIstCard()}  </div>`;
 }
-function rtag(c) { const col = { ready: '#dff3e8;color:#1f8a52', pending: '#fff4cc;color:#7a5d00', blocked: '#f6e3df;color:#d9452f', none: '#ececea;color:#6e6e6e' }[c.ready]; return `<span class="tag" style="font-size:11px;padding:2px 8px;background:${col}" title="${c.st}">${RLAB[c.ready]}</span>`; }
+function rtag(c) { return `<span class="tag st-${c.ready}" style="font-size:11px;padding:2px 8px" title="${c.st}"><i></i>${RLAB[c.ready]}</span>`; }
 function wPlan() {
   const cmds = commands(), ck = checks(), ok = ck.filter(c => c[3] === true).length, nck = ck.filter(c => c[3] !== null).length, sel = S.sel;
   const rc = { ready: 0, pending: 0, blocked: 0, none: 0 }; cmds.forEach(c => rc[c.ready]++);
+  const day = DAY === 'fc' ? null : F.days.find(x => x.k === DAY), live = p48Live(), open = ck.length - nck;
+  const title = day ? day.label : live ? 'Last 24 hours and next 24 hours' : p48Range();
+  const why = day ? `Replay of 2025 with hindsight: ${day.why}.` : 'Tomorrow as the system would plan it: forecast weather and prices, no hindsight.';
   return `
-  <div class="wtop"><div><h2>Plan & commands</h2><p>The optimiser's hourly result, translated into the commands each device receives. The Supervisor checks every schedule against the constraints before it is sent. Click an hour.</p></div><span class="tag ${ok === nck ? '' : 'y'}"><i></i>${ok} of ${nck} checks passed · ${ck.length - nck} value open</span></div>
+  <div class="wtop"><div><h2>Plan & commands</h2><p>What each device will do, hour by hour. Click an hour.</p></div><span class="tag ${ok === nck ? '' : 'y'}"><i></i>${ok} of ${nck} checks passed</span></div>
   <div class="wgrid">
-    <div class="wc c12"><h3>Example days<span class="r">same optimiser · Supervisor rules built in as constraints</span></h3><div class="seg" role="group" aria-label="Example day">${[['fc', 'Forecast · 8–9 Nov 2026'], ...F.days.map(x => [x.k, x.label])].map(([k, l]) => `<button type="button" data-day="${k}" aria-pressed="${DAY === k}">${l}</button>`).join('')}</div><div class="g" style="font-size:12px;margin-top:8px">${DAY === 'fc' ? 'Tomorrow as the system would plan it: forecast weather and prices, no hindsight, starting 18:00.' : `Replay of 2025 with hindsight: ${F.days.find(x => x.k === DAY).why}.`} Since 18 Nov the Supervisor's findings are constraints in the optimiser, not only checks: CHP at least 2 h on and 2 h off, start only with room in the buffer, heat pump locked while CHP heat is transferred, heat pump at least 1 kW when heating, grid charging once a day. Over 2025 this costs ${fmt(F.comp.costAfter - F.comp.costBefore)} € more (${fmt(F.comp.costAfter)} € instead of ${fmt(F.comp.costBefore)} €).</div></div>
-    <div class="wc c12"><h3>${DAY === 'fc' ? '8–9 November · financial optimum · forecast prices' : F.days.find(x => x.k === DAY).label + ' · financial optimum'}<span class="r">${hrs[sel]}–${endOf(sel)} selected</span></h3>
-      <div class="keys"><span><i style="background:#e9e9e4"></i>Day-ahead price</span><span><i style="background:#111"></i>Car charging</span><span><i class="l" style="background:#1f8a52"></i>Grid CO2</span></div>
-      <div class="chart" data-hrchart>${priceCO2Chart(1120, 210, sel)}</div>
-      <div class="chart" data-hrchart>${lanesSVG(1120)}</div>
-    </div>
-    <div class="wc c12 wide"><h3>Constraint check<span class="r">The owner's constraint sheet</span></h3><div class="checks">${ck.map(([ty, t, v, o]) => `<div><span class="ok ${o === false ? 'bad' : ''}" style="${o === null ? 'background:#ececea;color:#8a8a86' : ''}">${o === null ? '?' : o ? '✓' : '!'}</span><span>${t}<small>${v}</small></span><span class="tag" style="font-size:11px;padding:2px 8px;${ty === 'Must' ? 'background:#111;color:#fff' : ''}">${ty}</span></div>`).join('')}</div>
-      <div class="g" style="font-size:12px">${hrs[sel]}: ${fmt(P.da[sel], 1)} ct · ${fmt(P.co2[sel])} g · ${fmt(P.temp[sel], 1)} °C · battery ${Math.round(P.soc[sel] / F.batKwh * 100)} % · buffer ${fmt(P.buf[sel])} kWh</div></div>
-    <div class="wc c12"><h3>Command schedule<span class="r">${cmds.length} commands from the owner's list · only changes are sent · ${rc.ready} writable today, ${rc.pending} need interface setup, ${rc.blocked} not controllable yet</span></h3>
-      <div class="tw"><table class="cmd"><thead><tr><th>Time</th><th>Device</th><th>Command (owner)</th><th>Value</th><th>Interface</th><th>Ready?</th><th>Why</th></tr></thead><tbody>${cmds.map(c => `<tr class="${c.i === sel ? 'hl' : ''}" data-hr="${c.i}" style="cursor:pointer"><td>${hrs[c.i]}</td><td>${c.asset}</td><td><code>${c.label}</code><span class="g" style="display:block;font-size:11px">${c.sv}</span></td><td>${c.v}</td><td class="why">${c.iface}</td><td>${rtag(c)}</td><td class="why">${c.why}</td></tr>`).join('')}</tbody></table></div></div>
+    <div class="c12 daysel"><div class="seg" role="group" aria-label="Example day">${[['fc', live ? 'Live plan' : 'Forecast · ' + p48Date(F.plan.t[0])], ...F.days.map(x => [x.k, x.label])].map(([k, l]) => `<button type="button" data-day="${k}" aria-pressed="${DAY === k}">${l}</button>`).join('')}</div><span class="g">${why}</span></div>
+    ${p48Card({ title, sub: p48SelText(sel), sel, lanes: true })}
+    <div class="wc c12 wide"><h3>Supervisor check<span class="r">${open} value${open === 1 ? '' : 's'} still open</span></h3><div class="checks">${ck.map(([ty, t, v, o]) => `<div class="${o === false ? 'bad' : o === null ? 'open' : ''}"><span class="ok">${o === null ? '?' : o ? '✓' : '!'}</span><span>${t}<small>${v}</small></span><span class="ty">${ty}</span></div>`).join('')}</div>
+      <details class="more"><summary>How these rules enter the plan</summary><div>Since 18 Nov the Supervisor's findings are constraints in the optimiser, not only checks: CHP at least 2 h on and 2 h off, start only with room in the buffer, heat pump locked while CHP heat is transferred, heat pump at least 1 kW when heating, grid charging once a day. Over 2025 this costs ${fmt(F.comp.costAfter - F.comp.costBefore)} € more (${fmt(F.comp.costAfter)} € instead of ${fmt(F.comp.costBefore)} €).</div></details></div>
+    <div class="wc c12"><h3>Commands<span class="r">${cmds.length} · only changes are sent · ${rc.ready} writable today · ${rc.pending} need setup · ${rc.blocked} not controllable yet</span></h3>
+      <div class="tw"><table class="cmd"><thead><tr><th>Time</th><th>Device</th><th>Command</th><th>Value</th><th>Interface</th><th>Ready?</th><th>Why</th></tr></thead><tbody>${cmds.map(c => `<tr class="${c.i === sel ? 'hl' : ''}" data-hr="${c.i}" style="cursor:pointer"><td>${hrs[c.i]}</td><td>${c.asset}</td><td><code title="${c.sv}">${c.label}</code></td><td>${c.v}</td><td class="why">${c.iface}</td><td>${rtag(c)}</td><td class="why">${c.why}</td></tr>`).join('')}</tbody></table></div></div>
   </div>`;
 }
 function reqList(q, dark) {
@@ -1036,7 +1360,7 @@ function wLevelDetail() {
 function wGoals() {
   const pl = planFor(S.p), r = SC[pl], r0 = SC.kosten;
   return `
-  <div class="wtop"><div><h2>Goals & control</h2><p>First: who decides. Then: what for. Your limits and the hard rules hold on every level.</p></div></div>
+  <div class="wtop"><div><h2>Goals & control</h2><p>Who decides, and what for. Your limits hold on every level.</p></div></div>
   <div class="levels">${Object.entries(LV).map(([k, l]) => `<button class="lvl" type="button" data-level="${k}" aria-pressed="${S.level === k}"><span class="bars">${[1, 2, 3].map(x => `<i class="${x <= l.n ? 'on' : ''}"></i>`).join('')}</span><b>${l.label}</b><small>${l.sub}</small></button>`).join('')}</div>
   ${wLevelDetail()}
   <div class="modes">${Object.entries(MODES).map(([k, m]) => `<button class="mcard" type="button" data-mode="${k}" aria-pressed="${S.mode === k}"><svg viewBox="0 0 24 24">${m.ic}</svg><b>${m.label}</b><small>${m.sub}</small></button>`).join('')}</div>
@@ -1045,7 +1369,7 @@ function wGoals() {
       <div class="kpi"><span class="n">${fmt(S.p)}<small>€ per tonne</small></span></div>
       ${rng('p', 0, 1000, 1, S.p)}
       <div class="ticks"><button type="button" data-p="0">0<br>cost only</button><button type="button" data-p="27">27<br>national</button><button type="button" data-p="90">90<br>EU ETS</button><button type="button" data-p="500">500</button><button type="button" data-p="900">900<br>damage cost</button></div>
-      <div style="background:#fff8d9;border-radius:10px;padding:12px 14px;display:grid;gap:3px"><span class="g" style="font-size:12px">This picks</span><b style="font-weight:600;font-size:16px">${NAME[pl]}</b><span style="font-size:13px;color:#555">${fmt(r.cost)} € a year · ${fmt(r.co2, 1)} t CO2 · ${pl === 'kosten' ? 'the cost optimum; CO2 is not priced' : `+${fmt(r.cost - r0.cost)} € for −${fmt(r0.co2 - r.co2, 2)} t vs. the cost optimum`}</span></div>
+      <div class="pick"><span class="g" style="font-size:12px">This picks</span><b style="font-weight:600;font-size:16px">${NAME[pl]}</b><span style="font-size:13px;color:#555">${fmt(r.cost)} € a year · ${fmt(r.co2, 1)} t CO2 · ${pl === 'kosten' ? 'the cost optimum; CO2 is not priced' : `+${fmt(r.cost - r0.cost)} € for −${fmt(r0.co2 - r.co2, 2)} t vs. the cost optimum`}</span></div>
       <div>${sw('grid', S.grid, 'Support the grid and market', 'Shift load when Bayernwerk signals congestion or prices spike')}
       ${S.grid ? `<div class="fld" style="padding-bottom:6px"><div class="top"><span>Extra cost I accept</span><b>${fmt(S.gridEur * 100)} ct/kWh</b></div>${rng('gridEur', 0, 0.2, 0.01, S.gridEur)}</div>` : ''}</div>
     </div>
@@ -1059,7 +1383,7 @@ function wGoals() {
 function wPrefs() {
   const dw = dishwasher();
   return `
-  <div class="wtop"><div><h2>Comfort & car</h2><p>These are limits, not wishes. The optimiser never breaks them; it only chooses how to meet them.</p></div></div>
+  <div class="wtop"><div><h2>Comfort & car</h2><p>Limits the optimiser never breaks.</p></div></div>
   <div class="wgrid">
     <div class="c6 stack"><div class="wc"><h3>Heating and hot water</h3>
       <div class="fld"><div class="top"><span>Room never below, by day</span><b>${fmt(S.tDay, 1)} °C</b></div>${rng('tDay', 18, 24, 0.5, S.tDay)}</div>
@@ -1180,7 +1504,7 @@ function wImpact() {
   const money = [['Grid electricity', 'gridEur', 1], ['Gas for the CHP', 'gasEur', 1], ['CHP maintenance and battery wear', null, 1], ['Solar feed-in revenue', 'revPv', -1], ['CHP electricity revenue and bonus', 'revChp', -1]];
   const mv = (k, key) => key ? k[key] : k.maint + k.wear;
   return `
-  <div class="wtop"><div><h2>Impact</h2><p>Replay of 2025, hour by hour: the house with the HEMS (${NAME[pl]}) against how it actually ran before (CHP as measured).</p></div>${periodNav(false)}</div>
+  <div class="wtop"><div><h2>Impact</h2><p>2025 replayed hour by hour: ${NAME[pl]} against the house as it ran.</p></div>${periodNav(false)}</div>
   <div class="wgrid">
     <div class="wc c3"><h3>Saved</h3><div class="kpi"><span class="n">${fmt(saved)}<small>€</small></span><span class="d">${fmt(O.cost)} € → ${fmt(A.cost)} € · <span class="up">−${fmt(O.cost ? saved / O.cost * 100 : 0)} %</span></span></div></div>
     <div class="wc c3"><h3>CO2 avoided</h3><div class="kpi"><span class="n">${av >= 1 ? fmt(av, 1) : fmt(av * 1000)}<small>${av >= 1 ? 't' : 'kg'}</small></span><span class="d">${t(O.co2)} → ${t(A.co2)} · <span class="up">−${fmt(O.co2 ? av / O.co2 * 100 : 0)} %</span></span></div></div>
@@ -1234,7 +1558,7 @@ function wSetup() {
   ];
   const tou = P.t.map((_, i) => ({ 0: '#e9e9e4', 1: '#f3b1a6', 2: '#bfe3cd' })[P.tariff[i]]);
   return `
-  <div class="wtop"><div><h2>Devices & tariff</h2><p>Set up once, without an installer visit. Everything is read through Home Assistant; the HEMS only sees a neutral model of each device.</p></div></div>
+  <div class="wtop"><div><h2>Devices & tariff</h2><p>Read through Home Assistant. Set up once.</p></div></div>
   <div class="wgrid">
     <div class="wc c6"><h3>Devices<span class="r">via Home Assistant</span></h3><div>${devs.map(([n, d, st, ic]) => `<div class="dev"><span class="ic"><svg viewBox="0 0 20 20">${ic}</svg></span><span>${n}<small>${d}</small></span>${st === 'Add' ? '<button class="btn o" type="button">Add</button>' : `<span class="tag ${st === 'Cloud only' ? 'y' : ''}"><i></i>${st}</span>`}</div>`).join('')}</div></div>
     <div class="wc c6"><h3>Electricity tariff</h3>
@@ -1242,7 +1566,7 @@ function wSetup() {
       <div class="ledger">${S.tariff === 'fixed' ? '<div><span>Price</span><span>32.0 ct/kWh (example)</span></div><div><span>What the HEMS can do</span><span>solar and comfort only</span></div>' : `<div><span>Energy</span><span>day-ahead, hourly</span></div><div><span>Levies and taxes</span><span>6.32 ct net</span></div><div><span>VAT</span><span>19 %</span></div>${S.tariff === 'dynamic14a' ? '<div><span>Grid fee, Bayernwerk module 3</span><span>0.47 / 4.72 / 9.03 ct</span></div>' : '<div><span>Grid fee</span><span>flat</span></div>'}`}</div>
       ${S.tariff === 'dynamic14a' ? `<div class="g" style="font-size:12px">Grid fee today (Q4): <span class="dot" style="background:#bfe3cd"></span>low <span class="dot" style="background:#e9e9e4;margin-left:6px"></span>standard <span class="dot" style="background:#f3b1a6;margin-left:6px"></span>high</div><div class="tou"><span>8–9 Nov</span>${tou.map(c => `<i style="background:${c}"></i>`).join('')}</div>` : ''}
     </div>
-    <div class="wc c12"><h3>What the HEMS can control today<span class="r">The owner's command list, 12 Nov · open values as of 11 Nov</span></h3>
+    <div class="wc c12"><h3>What the HEMS can control today<span class="r">command list of 12 Nov</span></h3>
       <div class="tw"><table class="cmd"><thead><tr><th>Component</th><th>Command</th><th>Interface</th><th>Status</th></tr></thead><tbody>${SVEN.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="why">${r[2]}</td><td>${rtag({ ready: readiness(r[3]), st: r[3] })} <span class="g" style="font-size:11.5px">${r[3]}</span></td></tr>`).join('')}</tbody></table></div>
       <div class="g" style="font-size:12px">Still open before implementation: ${SVEN_OPEN.map(o => `<b style="font-weight:500;color:#333">${o[0]}</b> (${o[1].toLowerCase()})`).join(' · ')}.</div></div>
     <div class="wc c12"><h3>Sharing<span class="r">Energy management as a service</span></h3>
@@ -1274,7 +1598,7 @@ function jsonHTML() {
 }
 function wDev() {
   return `
-  <div class="wtop"><div><h2>For developers</h2><p>What the Flexibility Manager hands to the Schedule Builder. Every control on the website and in the app writes into this one file; changes are highlighted.</p></div></div>
+  <div class="wtop"><div><h2>For developers</h2><p>What the Flexibility Manager hands to the Schedule Builder. Changes are highlighted.</p></div></div>
   <div class="wgrid">
     <div class="wc c7"><h3>flex_config.json</h3><pre class="json">${jsonHTML()}</pre></div>
     <div class="wc c5"><h3>Objective</h3><div style="font-size:13px;border-left:2px solid #111;padding-left:12px;font-variant-numeric:tabular-nums">min Σ<sub>t</sub> cost<sub>t</sub> + p<sub>CO2</sub> · Σ<sub>t</sub> (e<sub>t</sub> · grid<sub>t</sub> + ${fmt(F.gasEf, 3)} · gas<sub>t</sub>) + penalties</div>
@@ -1312,7 +1636,7 @@ function mKids(a, b) {
   while (a.childNodes.length > i) a.removeChild(a.lastChild);
 }
 function mNode(o, n) {
-  for (const { name } of [...o.attributes]) if (!n.hasAttribute(name)) o.removeAttribute(name);
+  for (const { name } of [...o.attributes]) if (!n.hasAttribute(name) && !(o.tagName === 'DETAILS' && name === 'open')) o.removeAttribute(name);
   for (const { name, value } of [...n.attributes]) if (o.getAttribute(name) !== value) o.setAttribute(name, value);
   mKids(o, n);
   if (o.tagName === 'INPUT' && o !== document.activeElement) {
@@ -1322,12 +1646,17 @@ function mNode(o, n) {
     const s = n.querySelector('option[selected]'); if (s) o.value = s.getAttribute('value') ?? s.textContent;
   }
 }
+// grey explanations of 150+ characters become a collapsed block; short notes and legends stay visible
+function tidy(html) {
+  return html.replace(/<div class="g" style="font-size:12px(?:;margin-top:8px)?">((?:(?!<\/div>)[\s\S])*?)<\/div>/g, (m0, inner) =>
+    inner.replace(/<[^>]+>/g, '').length < 150 ? m0 : `<details class="more"><summary>Why</summary><div>${inner}</div></details>`);
+}
 function renderWeb() {
   if (S.page !== 'plan' && DAY !== 'fc') useDay('fc');
   renderSide();
   const m = $('#wmain'), act = document.activeElement, key = act && m.contains(act) ? (act.dataset.r || act.dataset.t || act.dataset.wt) : null;
   if (S.page !== 'dev') jsonHTML();
-  morph(m, WSCR[S.page]());
+  morph(m, tidy(WSCR[S.page]()));
   m.parentElement.dataset.aktiv = S.page;
   if (key) { const n = m.querySelector(`[data-r="${key}"],[data-t="${key}"],[data-wt="${key}"]`); if (n) n.focus(); }
 }
