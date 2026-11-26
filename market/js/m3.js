@@ -156,7 +156,7 @@
       g.append('text').attr('x', x(v)).attr('y', h - 8).attr('text-anchor', v === 1000 ? 'end' : 'middle').text(fmt(v));
     });
     svg.append('text').attr('x', m.l - 4).attr('y', m.t - 14).attr('text-anchor', 'start').attr('class', 'lab').style('font-size', '11px').text('Monthly fee, EUR/month');
-    svg.append('text').attr('x', w - m.r).attr('y', h - 8 - 13).attr('text-anchor', 'end').style('fill', grey).text('One-off price, EUR');
+    svg.append('text').attr('x', w - m.r).attr('y', h - 8 - 13).attr('text-anchor', 'end').style('fill', grey).text('One-off purchase price (device or licence), EUR');
     svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y0).attr('y2', y0).attr('stroke', muted);
 
     const obstacles = [];

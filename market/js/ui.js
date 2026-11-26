@@ -57,6 +57,17 @@
     map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
   document.addEventListener('DOMContentLoaded', toc);
+  /* split exhibits: headline (takeaway) + chart description go above the chart, full width (26.11.2026) */
+  function headlines() {
+    document.querySelectorAll('.exhibit.split > .side').forEach((side) => {
+      const fig = side.parentElement;
+      if (fig.querySelector(':scope > .xhead')) return;
+      const head = document.createElement('div'); head.className = 'xhead';
+      side.querySelectorAll(':scope > .xno, :scope > h3, :scope > .sub, :scope > .m1-brand').forEach((el) => head.appendChild(el));
+      fig.insertBefore(head, fig.firstChild);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', headlines); else headlines();
   /* number exhibits in page order: <span class="xno"></span> -> "Exhibit N" */
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.exhibit .xno').forEach((el, i) => { el.textContent = 'Exhibit ' + (i + 1); });

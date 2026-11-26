@@ -559,7 +559,7 @@
   const COLS = [
     ['Sales channel', [['White-label (B2B)', [0]], ['Installer / direct', [1]], ['Wholesale', [2]], ['Private customers', [56]], ['Open source', [57]]]],
     ['System type', [['Local HEMS', [13]], ['Cloud HEMS', [14]], ['Vendor-independent', [15]]]],
-    ['Algorithm', [['PV forecast', [20]], ['Load forecast', [21]]]],
+    ['Forecast', [['PV forecast', [20]], ['Load forecast', [21]]]],
     ['PV surplus', [['Battery', [3]], ['Heat pump', [6]], ['Wallbox', [4]], ['Immersion heater', [7]], ['EV via API', [5]]]],
     ['Dynamic tariff', [['Any device', [8, 9, 10, 11, 12, 35]], ['Battery', [8]], ['Heat pump', [11]], ['Wallbox', [9]]]],
     ['EV charging', [['1/3-phase switching', [16]], ['Car SoC', [17]]]],
@@ -591,7 +591,8 @@
     if (hmSort === 'arch') order.sort((a, b) => archOrder.indexOf(a.arch) - archOrder.indexOf(b.arch) || b.n - a.n);
     const cellMiss = (v) => v === 1 ? 'on' : v === 0.5 ? 'half' : v === 'a' ? 'ann' : v === 0 ? 'no' : 'na';
     const missText = (v) => v === 1 ? 'yes' : v === 0.5 ? 'partly' : v === 'a' ? 'announced, not shipped' : v === 0 ? 'no' : 'not researched';
-    const narrow = (host.clientWidth || 800) < 520, CW = 18, RW = narrow ? 132 : 196, GW = 14, TW = RW + flat.length * CW + GW + miss.columns.length * CW;
+    const narrow = (host.clientWidth || 800) < 520, RW = narrow ? 132 : 196, GW = 14,
+      CW = narrow ? 18 : Math.max(18, Math.min(30, Math.floor(((host.clientWidth || 800) - RW - GW - 4) / (flat.length + miss.columns.length)))), TW = RW + flat.length * CW + GW + miss.columns.length * CW;
     let h = `<table class="m2-hm" style="width:${TW}px"><colgroup><col style="width:${RW}px">${flat.map(() => `<col style="width:${CW}px">`).join('')}<col style="width:${GW}px">${miss.columns.map(() => `<col style="width:${CW}px">`).join('')}</colgroup><thead><tr class="grp"><th class="rowh"></th>`;
     COLS.forEach(([g, cs], gi) => { h += `<th colspan="${cs.length}"><span class="${gi % 2 ? 'lo' : 'hi'}">${esc(g)}</span></th>`; });
     h += `<th class="gap"></th><th colspan="${miss.columns.length}"><span class="${COLS.length % 2 ? 'lo' : 'hi'}" style="color:var(--ink)">Not on hems-finder</span></th></tr><tr class="cols"><th class="rowh" style="vertical-align:bottom;padding-bottom:6px;font-weight:500;font-size:11px;color:var(--muted)">Vendor <span style="float:right">features of ${nF}</span></th>`;

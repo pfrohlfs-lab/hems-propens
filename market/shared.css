@@ -238,3 +238,15 @@ details.fold > .fold-body { padding-bottom: 16px; display: grid; gap: 20px; }
 .part-break h2 { margin: 0; font-size: clamp(24px, 3vw, 34px); font-weight: 500; line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
 .part-break + .chapter { padding-top: 40px; }
 .toc .toc-part { padding: 14px 0 4px; }
+
+/* headline above the chart (26.11.2026, team member: every chart needs a headline with the takeaway) */
+.exhibit.split > .xhead { grid-column: 1 / -1; grid-row: 1; display: grid; gap: 4px; max-width: 80ch; }
+.exhibit.split > .side { grid-row: 2; }
+.exhibit.split > .body { grid-row: 2; }
+.xhead h3, .exhibit.wide > .side > h3 { font-size: 21px; line-height: 1.25; letter-spacing: -0.008em; text-wrap: balance; }
+.xhead .sub, .exhibit.wide > .side > .sub { font-size: 13px; color: var(--muted); }
+.xhead .m1-brand { margin-top: 4px; }
+@media (max-width: 1080px) {
+  .exhibit.split > .side { grid-row: 2; }
+  .exhibit.split > .body { grid-row: 3; }
+}
