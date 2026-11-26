@@ -229,3 +229,12 @@ details.fold > .fold-body { padding-bottom: 16px; display: grid; gap: 20px; }
   .exhibit.split .pts, .exhibit.wide > .side > .pts { grid-template-columns: minmax(0, 1fr); }
   .exhibit.split .pts li, .exhibit.wide > .side > .pts li { border-left: 0; border-top: 1px solid var(--line); padding: 8px 0; }
 }
+
+/* part separators (26.11.2026): Part I market, Part II competitor deep dive */
+.part-break { margin-top: 96px; padding: 28px 24px 30px; background: var(--ink); color: var(--bg); display: grid; gap: 8px; scroll-margin-top: calc(var(--head) + 16px); }
+.part-break.part-1 { margin-top: 56px; }
+.part-break { box-shadow: inset 6px 0 0 var(--accent); padding-left: 30px; }
+.part-break .eyebrow { color: var(--bg); opacity: .72; }
+.part-break h2 { margin: 0; font-size: clamp(24px, 3vw, 34px); font-weight: 500; line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
+.part-break + .chapter { padding-top: 40px; }
+.toc .toc-part { padding: 14px 0 4px; }

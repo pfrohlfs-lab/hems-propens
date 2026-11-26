@@ -23,12 +23,15 @@
   <aside class="toc" aria-label="Contents">
     <div class="lbl">Contents</div>
     <a href="#summary"><span class="no">0</span><span>Executive summary</span></a>
+    <div class="lbl toc-part">Part I · Market</div>
     <a href="#size"><span class="no">1</span><span>Market &amp; growth</span></a>
     <a href="#landscape"><span class="no">2</span><span>Competition &amp; prices</span></a>
-    <a href="#rivals"><span class="no">3</span><span>gridX vs. Consolinno vs. us</span></a>
-    <a href="#whitespace"><span class="no">4</span><span>Where we play</span></a>
-    <a href="#appendix"><span class="no">A</span><span>Method &amp; sources</span></a>
+    <a href="#whitespace"><span class="no">3</span><span>Where we play</span></a>
+    <div class="lbl toc-part">Part II · Competitors</div>
+    <a href="#rivals"><span class="no">4</span><span>gridX vs. Consolinno vs. us</span></a>
     <a href="mockups.html"><span class="no">→</span><span>App mock-ups</span></a>
+    <div class="lbl toc-part">Appendix</div>
+    <a href="#appendix"><span class="no">A</span><span>Method &amp; sources</span></a>
   </aside>
 
   <main class="main">
@@ -81,13 +84,13 @@
       <span class="k">2 · Competition</span>
       <span class="t">Base functions are a commodity; the field consolidates at a loss</span>
       <p><b>10 of 12</b> paid fees at €4–7/month · <b><span id="m0-loss">12 of 13</span></b> companies lost money</p>
-      <a class="m0-go" href="#landscape">Chapters 2–3</a>
+      <a class="m0-go" href="#landscape">Chapter 2</a>
     </div>
     <div>
       <span class="k">3 · White space</span>
       <span class="t">Nobody plans heat and power together or shares the plan with the grid</span>
       <p><b>4 of 16</b> show a forward schedule, <b>none</b> shares it · Consolinno home schedules announced, not shipped</p>
-      <a class="m0-go" href="#whitespace">Chapter 4</a>
+      <a class="m0-go" href="#whitespace">Chapter 3</a>
     </div>
   </div>
 
@@ -211,6 +214,11 @@
 .m1-brand img { display: block; height: 20px; width: auto; background: #fff; padding: 3px 5px; box-sizing: content-box; }
 </style>
 
+
+<div class="part-break part-1" id="part-market">
+  <span class="eyebrow">Part I · Market</span>
+  <h2>German HEMS market, competition and where we play</h2>
+</div>
 
 <section class="chapter" id="size">
   <header>
@@ -571,6 +579,246 @@ table.m2-sg tr.ours td.l b { font-weight: 600; }
 </style>
 
 <style>
+/* ---- m4: chapter 7 (white spaces) and appendix. All selectors prefixed m4- or scoped to #whitespace / #appendix ---- */
+#whitespace figure.exhibit, #appendix figure.exhibit { margin: 0; }
+.m4-legend { margin-bottom: 12px; }
+.m4-legend svg { display: inline-block; flex: none; }
+.m4-detail { margin-top: 14px; background: var(--bg); border: 1px solid var(--line); padding: 12px 14px; display: grid; gap: 6px; font-size: 13px; }
+.m4-detail.m4-empty { background: transparent; border: 0; padding: 0; margin-top: 8px; }
+.m4-detail .m4-dh { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.m4-detail b { font-weight: 500; font-size: 14px; }
+.m4-detail dl { margin: 0; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 4px 12px; }
+.m4-detail dt { color: var(--grey); font-size: 12px; }
+.m4-detail dd { margin: 0; color: var(--muted); }
+.m4-detail .m4-hint, .m4-note { font-size: 11.5px; color: var(--grey); }
+.m4-note { margin: 10px 0 0; }
+@media (max-width: 560px) { .m4-detail dl { grid-template-columns: minmax(0, 1fr); } .m4-detail dd { margin-bottom: 4px; } }
+.m4-chip { cursor: pointer; }
+.m4-chip:focus { outline: none; }
+.m4-chip:focus-visible rect.m4-hit { stroke: var(--ink); stroke-width: 1.5; }
+
+/* niche cards (default view): rank, verdict, name, one size figure, four score bars; evidence in tooltips and in the fold */
+.m4-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; }
+.m4-card { border-top: 2px solid var(--line); padding-top: 10px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.m4-card.m4-first { border-top-color: var(--accent); }
+.m4-ch { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); }
+.m4-rk { display: inline-grid; place-items: center; width: 22px; height: 22px; border: 1px solid var(--ink); font-size: 12px; font-weight: 500; color: var(--ink); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.m4-card.m4-first .m4-rk { background: var(--ink); color: var(--bg); }
+.m4-vk { color: var(--ink); font-weight: 600; cursor: default; }
+.m4-card h4 { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.3; cursor: default; }
+.m4-fig { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.m4-fig b { font-size: 19px; font-weight: 500; color: var(--ink); margin-right: 4px; font-variant-numeric: tabular-nums; }
+.m4-crs { list-style: none; margin: 2px 0 0; padding: 0; display: grid; }
+.m4-cr { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); padding: 4px 0; border-top: 1px solid var(--line); cursor: default; }
+.m4-cr svg { flex: none; }
+.m4-cr:focus { outline: none; }
+.m4-cr:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+@media (max-width: 560px) { .m4-cards { grid-template-columns: minmax(0, 1fr); } }
+
+/* niches evidence table (in the fold) */
+.m4-nt { min-width: 0; }
+.m4-nt th { white-space: nowrap; }
+.m4-nt td { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.m4-nt td.m4-nn { color: var(--ink); width: 19%; }
+.m4-nt td.m4-nn .m4-rk { margin-right: 8px; vertical-align: 1px; }
+.m4-nt tr.m4-first td.m4-nn .m4-rk { background: var(--ink); color: var(--bg); }
+.m4-nt td.m4-nn b { font-weight: 500; font-size: 13.5px; }
+.m4-nt .m4-role { display: block; margin: 6px 0 0 30px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.m4-nt .m4-hv { display: flex; gap: 8px; align-items: flex-start; }
+.m4-nt .m4-hv svg { flex: none; margin-top: 1px; }
+.m4-nt td.m4-vd { color: var(--ink); width: 19%; }
+.m4-nt td.m4-vd b { font-weight: 500; }
+.m4-est { font-size: 10.5px; padding: 0 4px; border: 1px dashed var(--grey); color: var(--muted); white-space: nowrap; margin-left: 4px; }
+.m4-reco { margin-top: 0; border-top: 1px solid var(--ink); padding-top: 10px; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; font-size: 14px; }
+.m4-reco span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); padding-top: 2px; }
+@media (max-width: 860px) {
+  .m4-nt thead { display: none; }
+  .m4-nt, .m4-nt tbody, .m4-nt tr, .m4-nt td { display: block; width: auto !important; }
+  .m4-nt tr { border-top: 1px solid var(--ink); padding: 10px 0 6px; }
+  .m4-nt td { border-bottom: 0; padding: 6px 0; }
+  .m4-nt td[data-l]::before { content: attr(data-l); display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); margin-bottom: 3px; }
+  .m4-reco { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+/* playbook: keywords visible, reasoning behind a per-item toggle */
+.m4-pb { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; }
+.m4-pb > div { padding: 0 18px; display: grid; gap: 10px; align-content: start; }
+.m4-pb > div:first-child { padding-left: 0; }
+.m4-pb > div + div { border-left: 1px solid var(--line); }
+.m4-pb h4 { margin: 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); font-weight: 500; }
+.m4-pb ol, .m4-pb ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.m4-pb li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.45; }
+.m4-pb li > i { font-style: normal; font-size: 12px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; border-top: 2px solid var(--ink); padding-top: 2px; height: fit-content; }
+.m4-pb li.m4-key > i { border-top-color: var(--accent); }
+.m4-pb li b { display: block; color: var(--ink); font-weight: 500; font-size: 13.5px; margin-bottom: 2px; }
+.m4-pb .m4-where li { grid-template-columns: minmax(0, 1fr); }
+.m4-pb .m4-where li > span { display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); }
+.m4-pb .m4-risk li > i { border-top-color: var(--bad); color: var(--bad); }
+.m4-pb .m4-sig { display: block; margin-top: 3px; font-size: 12px; color: var(--ink); }
+.m4-pb .m4-sig::before { content: "Watch: "; color: var(--grey); }
+.m4-x > summary { cursor: pointer; list-style: none; color: var(--ink); font-size: 13.5px; font-weight: 500; line-height: 1.35; }
+.m4-x > summary::-webkit-details-marker { display: none; }
+.m4-x > summary::after { content: "+"; display: inline-grid; place-items: center; width: 13px; height: 13px; margin-left: 6px; border: 1px solid var(--grey); font-size: 10px; font-weight: 400; line-height: 1; color: var(--grey); vertical-align: 1px; }
+.m4-x[open] > summary::after { content: "−"; }
+.m4-x > summary:hover { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.m4-pb li .m4-x > summary b { display: inline; margin: 0; }
+.m4-x > p { margin: 4px 0 0; }
+@media (max-width: 1000px) { .m4-pb { grid-template-columns: minmax(0, 1fr); gap: 22px; } .m4-pb > div, .m4-pb > div:first-child { padding: 0; } .m4-pb > div + div { border-left: 0; border-top: 1px solid var(--line); padding-top: 16px; } }
+
+/* questions (in a fold) */
+.m4-qs ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0; counter-reset: q; }
+.m4-qs li { counter-increment: q; padding: 10px 16px 12px 0; font-size: 13.5px; line-height: 1.45; border-top: 1px solid var(--line); }
+.m4-qs li::before { content: "Q" counter(q); display: block; font-size: 11px; color: var(--grey); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+.m4-qs li span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 4px; }
+
+/* appendix (all in folds except the fact-check exhibit) */
+.m4-intro { margin: 0; max-width: 72ch; font-size: 13.5px; color: var(--muted); }
+.m4-meth { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.m4-meth > div { padding: 14px 18px 16px 0; display: grid; gap: 6px; align-content: start; font-size: 13px; color: var(--muted); }
+.m4-meth > div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+.m4-meth h4 { margin: 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); font-weight: 500; }
+.m4-meth p { margin: 0; }
+.m4-meth ul { margin: 0; padding-left: 16px; display: grid; gap: 3px; }
+.m4-meth b { color: var(--ink); font-weight: 500; }
+@media (max-width: 860px) { .m4-meth { grid-template-columns: minmax(0, 1fr); } .m4-meth > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
+.m4-cav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 0; padding: 0; list-style: none; }
+.m4-cav li { border-top: 1px solid var(--line); padding: 10px 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+.m4-cav li b { color: var(--ink); font-weight: 500; display: block; font-size: 13.5px; margin-bottom: 2px; }
+@media (max-width: 860px) { .m4-cav { grid-template-columns: minmax(0, 1fr); } }
+.m4-src { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px 28px; }
+.m4-src section h4 { margin: 0 0 6px; font-size: 12px; font-weight: 500; color: var(--ink); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.m4-src ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 12px; color: var(--muted); line-height: 1.4; }
+.m4-src a { color: var(--ink); text-decoration-color: var(--line); overflow-wrap: anywhere; }
+.m4-src a:hover { text-decoration-color: var(--ink); }
+.m4-src li span { color: var(--grey); }
+.m4-mock { margin-top: 56px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--ink); padding: 16px 18px; font-size: 16px; font-weight: 500; text-decoration: none; }
+.m4-mock:hover { background: var(--ink); color: var(--bg); }
+</style>
+
+<section class="chapter" id="whitespace">
+  <header>
+    <span class="no">3</span>
+    <h2>Our opening is a 48-hour heat-side plan the grid operator can see</h2>
+    <p class="kick">Our cheapest schedule would have saved the reference house €4,281 in 2025 (our mock-up), many times what any HEMS costs a year.</p>
+  </header>
+
+  <figure class="exhibit split" id="x-positioning">
+    <div class="side">
+      <span class="xno"></span>
+      <h3>None of 16 products on sale plans CHP or a buffer tank</h3>
+      <p class="sub">HEMS products in Germany · Nov 2026 · our scoring</p>
+      <ul class="pts">
+        <li><b>4 of 16</b>show a forward schedule of 12 h or more</li>
+        <li><b>0 of 16</b>share their plan with the grid operator</li>
+        <li><b>FlexA</b>Consolinno, for homes: 24–48 h plans announced 01/2026, not shipped</li>
+      </ul>
+      <details class="more"><summary>Sources &amp; notes</summary>
+        <p>HEMS products in Germany, November 2026. Horizontal: breadth of assets optimised together against price. Vertical: grid orientation and transparency of the plan. Placement is our scoring from the research; tap or hover a product for the reasons and the source.</p>
+        <p class="src"><b>Source:</b> our scoring based on hems-finder.org (83 systems, vendor self-declarations, 20.11.2026), our product research (feature checks, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026); vendor sites and manuals as listed per product. <b>Note:</b> x for hems-finder systems follows the self-declared dynamic-tariff device fields; hems-finder has no CHP or buffer category, so the right column rests on our research. "Schedule shown" means a forward plan of 12 h or more in the user interface; Tibber, Viessmann and 1KOMMA5° plan ahead but a plan view is not documented. Consolinno FlexA for homes is announced (HEMS Vision 2026, 19.01.2026), not shipped. Emulate is not placed (no device features on hems-finder, interface not researched). Our Flexibility Manager is a student prototype; its plan export has not been tested with a grid operator.</p>
+      </details>
+    </div>
+    <div class="body">
+      <div class="legend m4-legend" id="m4-pos-legend"></div>
+      <div id="m4-pos" aria-label="Positioning matrix"></div>
+      <div class="m4-detail" id="m4-pos-detail" aria-live="polite"></div>
+    </div>
+  </figure>
+
+  <figure class="exhibit split" id="x-niches">
+    <div class="side">
+      <span class="xno"></span>
+      <h3>Heat-pump homes with a buffer tank are the best first segment</h3>
+      <p class="sub">4 niches · scores 0–4, 4 = most attractive · our judgement</p>
+      <ul class="pts">
+        <li><b>299,000</b>heat pumps sold in 2025 (+55 %); buffer share not sized</li>
+        <li><b>Prove</b>CHP hybrids: best fit, but under 1 % of homes (est.)</li>
+        <li><b>Test · Channel</b>grid operators as second customer; open platforms as route to market</li>
+      </ul>
+      <details class="more"><summary>Sources &amp; notes</summary>
+        <p>Four candidate niches, ranked. Each criterion scored 0–4, where 4 = most attractive (for competition: 4 = least crowded); scores are our judgement, the text is the evidence behind them.</p>
+        <p class="src"><b>Source:</b> UBA heat-pump chart (BWP/BDH, 02.06.2026); solarserver (01.12.2025, 06.08.2026); BCG, <i>Energy Management Systems</i> (Nov 2025), flex values and take rates; BNetzA Monitoringbericht 2025 (§14a counts) and AgNes press release (06.08.2026); RLI ErSiFlex (29.06.2026); hems-finder.org (20.11.2026); pv magazine (13.04.2026, 18.06.2026); niche list from our competitor analysis (20.11.2026). <b>Note:</b> the share of heat pumps with a buffer tank and the number of CHP homes are not sized; CHP under 1 % of households is a group estimate that we did not re-check (marked est.). 50–110 EUR/yr is our calculation (BCG 2030 take rate × flex value per house). No source shows grid operators paying for household schedules today. The §14a count (264,874 market locations, end 2024) comes from the Monitoringbericht 2025 and was not re-checked (marked est.).</p>
+      </details>
+    </div>
+    <div class="body">
+      <div id="m4-niches"></div>
+      <p class="m4-note">Filled squares = score out of 4; dashed = estimate. Hover a score or a niche for the evidence, or open the table below.</p>
+    </div>
+  </figure>
+
+  <details class="fold" id="m4-niches-fold">
+    <summary>Evidence per niche and criterion <span class="muted">· scores, evidence and verdicts</span></summary>
+    <div class="fold-body">
+      <div id="m4-niches-ev"></div>
+      <div class="m4-reco" id="m4-reco"></div>
+    </div>
+  </details>
+
+  <figure class="exhibit split" id="x-playbook">
+    <div class="side">
+      <span class="xno"></span>
+      <h3>We win by owning the 48-hour heat-side plan, sold through partners</h3>
+      <p class="sub">Where to play, how to win, risks · our recommendation, 25.11.2026</p>
+      <ul class="pts">
+        <li><b>€50–110</b>a year per house: 15–25 % share of flex value (own calc)</li>
+        <li><b>€25</b>a month is five times the median paid fee</li>
+        <li><b>250,000</b>gridX connected assets: plug into platforms, do not rebuild</li>
+      </ul>
+      <details class="more"><summary>Sources &amp; notes</summary>
+        <p>Where to play, how to win and what could close the window; our recommendation, 25.11.2026</p>
+        <p class="src"><b>Source:</b> chapters 1–6 of this report; BCG (Nov 2025) flex values and take rates; BNetzA Monitoringbericht 2025 (sales cost and margin 4.45 ct/kWh); pv magazine (13.04.2026, 18.06.2026); Consolinno HEMS Vision 2026 (19.01.2026) and annual accounts 2024; RLI ErSiFlex (29.06.2026); ZVEI/Neon short study (2024). <b>Note:</b> €178 per household = 4.45 ct/kWh × 4,000 kWh (own calculation, includes sales cost). Moves and risks are our interpretation of the evidence.</p>
+      </details>
+    </div>
+    <div class="body">
+      <div class="m4-pb">
+        <div class="m4-where">
+          <h4>Where to play</h4>
+          <ul>
+            <li><span>Segment</span><details class="m4-x"><summary>Heat-pump homes with a buffer tank</summary><p>Existing and new heat-pump homes with a buffer tank; CHP hybrids as lighthouse cases.</p></details></li>
+            <li><span>Customer who pays</span><details class="m4-x"><summary>Utility, Stadtwerk or heating OEM</summary><p>A utility, Stadtwerk or heating OEM that earns the retail sales and margin share of the tariff (about €178 per household and year, own calculation) and the flex revenue; the grid operator as a second customer to test.</p></details></li>
+            <li><span>Channel</span><details class="m4-x"><summary>Module on an existing gateway</summary><p>As a module on an existing gateway or platform via EEBUS or API, not as a new box for homeowners.</p></details></li>
+          </ul>
+        </div>
+        <div>
+          <h4>How to win</h4>
+          <ol>
+            <li class="m4-key"><i>1</i><details class="m4-x"><summary><b>Make the heat-side plan the product.</b></summary><p>Joint heat-pump, buffer and CHP scheduling over 48 h, shown as the start view. hems-finder does not even track CHP or buffer tanks, and BCG has no flex value for them yet: quantify it on our reference house.</p></details></li>
+            <li class="m4-key"><i>2</i><details class="m4-x"><summary><b>Turn the plan into a grid product.</b></summary><p>Share the 48 h plan with one grid operator in a pilot and measure whether it reduces simultaneous peaks; position it for the end of the §14a transition (31.12.2028) and AgNes (2029).</p></details></li>
+            <li><i>3</i><details class="m4-x"><summary><b>Plug in, do not rebuild.</b></summary><p>Use the open platforms (Heartbeat AI since 04/2026, Kiwigrid and Enpal VPPs since 06/2026) for device access and §14a instead of competing with gridX's 250,000 connected assets.</p></details></li>
+            <li><i>4</i><details class="m4-x"><summary><b>Price the outcome, not the app.</b></summary><p>Charge the partner per asset or a share of the flex value (15–25 % of €350–450 per house is about €50–110 a year), or the household €5–15 a month; €25 is five times the median paid fee.</p></details></li>
+          </ol>
+        </div>
+        <div class="m4-risk">
+          <h4>Risks</h4>
+          <ol>
+            <li><i>!</i><details class="m4-x"><summary><b>Commoditisation.</b></summary><p>Planning views spread (SMA, Podero, evcc already show one), fees sit at about €5 and utilities bundle HEMS for free. A schedule alone will not stay unique.<span class="m4-sig">platform release notes; free bundles from utilities</span></p></details></li>
+            <li><i>!</i><details class="m4-x"><summary><b>Consolinno FlexA.</b></summary><p>FlexA already schedules CHP, heat pumps and storage in industry and is announced for homes with 24–48 h plans; Consolinno already sells its HEMS through more than 28 wholesalers.<span class="m4-sig">Consolinno releases after 2.1 (08/2026)</span></p></details></li>
+            <li><i>!</i><details class="m4-x"><summary><b>Simultaneity and who pays for it.</b></summary><p>The RLI study sees a risk of new simultaneous peaks, ZVEI/Neon finds market flexibility relieves grids today. If grid operators solve it with §14a dimming and AgNes tariffs, nobody buys the plan.<span class="m4-sig">AgNes decision end 2026; grid-operator pilots</span></p></details></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+  <details class="fold m4-qs" id="m4-questions">
+    <summary>Questions for our supervisor <span class="muted">· 5 questions</span></summary>
+    <div class="fold-body">
+      <ol>
+        <li>Which niche should the prototype prove first: heat-pump homes with a buffer tank (volume) or CHP hybrids like our reference house (best fit, under 1 % of homes, est.)?<span>Decides what we optimise and simulate next.</span></li>
+        <li>Who would you bet on as the paying customer: the homeowner, a utility or Stadtwerk, a heating OEM or the grid operator?<span>Decides the price model and the interface we build.</span></li>
+        <li>Would a grid operator take a 48-hour household plan in advance today, and in which format (§14a EMS route, EEBUS, a portal)?<span>No source shows a grid operator buying such plans yet.</span></li>
+        <li>Can we get API access to one platform (gridX, Kiwigrid or Heartbeat AI) to run our optimiser on top of it?<span>Tests the plug-in route instead of building integrations.</span></li>
+        <li>Should the next deliverable quantify the extra flex value of CHP plus buffer on the reference house?<span>BCG gives values for battery, heat pump and EV only.</span></li>
+      </ol>
+    </div>
+  </details>
+
+  <aside class="sowhat"><span class="lbl">So what</span>
+    <p>Prove value, not integrations: price the 48 h plan in euros a year on the reference house and a heat-pump-with-buffer profile; take it to one utility or OEM and one grid operator. The lead lasts until FlexA for homes ships.</p>
+  </aside>
+</section>
+
+
+<style>
 /* deep-dive page only; every class carries the dd- prefix */
 .dd-page figure.exhibit { margin: 0; }
 .dd-page .exhibit { align-content: start; }
@@ -707,9 +955,14 @@ dialog.dd-dlg img { width: 100%; min-width: 900px; height: auto; display: block;
 .dd-ch { gap: 10px; }
 </style>
 
+<div class="part-break" id="part-competitors">
+  <span class="eyebrow">Part II · Competitor deep dive</span>
+  <h2>gridX vs. Consolinno vs. our Flexibility Manager</h2>
+</div>
+
 <section class="chapter" id="rivals">
   <header>
-    <span class="no">3</span>
+    <span class="no">4</span>
     <h2>gridX has scale, Consolinno the fuse box; neither plans ahead, which is our opening</h2>
   </header>
   <figure class="exhibit split" id="x-profile">
@@ -787,245 +1040,6 @@ dialog.dd-dlg img { width: 100%; min-width: 900px; height: auto; display: block;
     </div>
   </figure>
   <aside class="sowhat"><span class="lbl">So what</span><p>Partner with Consolinno on hardware, treat gridX as a channel risk and watch FlexA: 24–48&nbsp;h schedules in homes would attack exactly our lead.</p></aside>
-</section>
-
-<style>
-/* ---- m4: chapter 7 (white spaces) and appendix. All selectors prefixed m4- or scoped to #whitespace / #appendix ---- */
-#whitespace figure.exhibit, #appendix figure.exhibit { margin: 0; }
-.m4-legend { margin-bottom: 12px; }
-.m4-legend svg { display: inline-block; flex: none; }
-.m4-detail { margin-top: 14px; background: var(--bg); border: 1px solid var(--line); padding: 12px 14px; display: grid; gap: 6px; font-size: 13px; }
-.m4-detail.m4-empty { background: transparent; border: 0; padding: 0; margin-top: 8px; }
-.m4-detail .m4-dh { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
-.m4-detail b { font-weight: 500; font-size: 14px; }
-.m4-detail dl { margin: 0; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 4px 12px; }
-.m4-detail dt { color: var(--grey); font-size: 12px; }
-.m4-detail dd { margin: 0; color: var(--muted); }
-.m4-detail .m4-hint, .m4-note { font-size: 11.5px; color: var(--grey); }
-.m4-note { margin: 10px 0 0; }
-@media (max-width: 560px) { .m4-detail dl { grid-template-columns: minmax(0, 1fr); } .m4-detail dd { margin-bottom: 4px; } }
-.m4-chip { cursor: pointer; }
-.m4-chip:focus { outline: none; }
-.m4-chip:focus-visible rect.m4-hit { stroke: var(--ink); stroke-width: 1.5; }
-
-/* niche cards (default view): rank, verdict, name, one size figure, four score bars; evidence in tooltips and in the fold */
-.m4-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; }
-.m4-card { border-top: 2px solid var(--line); padding-top: 10px; display: grid; gap: 6px; align-content: start; min-width: 0; }
-.m4-card.m4-first { border-top-color: var(--accent); }
-.m4-ch { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); }
-.m4-rk { display: inline-grid; place-items: center; width: 22px; height: 22px; border: 1px solid var(--ink); font-size: 12px; font-weight: 500; color: var(--ink); letter-spacing: 0; font-variant-numeric: tabular-nums; }
-.m4-card.m4-first .m4-rk { background: var(--ink); color: var(--bg); }
-.m4-vk { color: var(--ink); font-weight: 600; cursor: default; }
-.m4-card h4 { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.3; cursor: default; }
-.m4-fig { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.35; }
-.m4-fig b { font-size: 19px; font-weight: 500; color: var(--ink); margin-right: 4px; font-variant-numeric: tabular-nums; }
-.m4-crs { list-style: none; margin: 2px 0 0; padding: 0; display: grid; }
-.m4-cr { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); padding: 4px 0; border-top: 1px solid var(--line); cursor: default; }
-.m4-cr svg { flex: none; }
-.m4-cr:focus { outline: none; }
-.m4-cr:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
-@media (max-width: 560px) { .m4-cards { grid-template-columns: minmax(0, 1fr); } }
-
-/* niches evidence table (in the fold) */
-.m4-nt { min-width: 0; }
-.m4-nt th { white-space: nowrap; }
-.m4-nt td { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
-.m4-nt td.m4-nn { color: var(--ink); width: 19%; }
-.m4-nt td.m4-nn .m4-rk { margin-right: 8px; vertical-align: 1px; }
-.m4-nt tr.m4-first td.m4-nn .m4-rk { background: var(--ink); color: var(--bg); }
-.m4-nt td.m4-nn b { font-weight: 500; font-size: 13.5px; }
-.m4-nt .m4-role { display: block; margin: 6px 0 0 30px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
-.m4-nt .m4-hv { display: flex; gap: 8px; align-items: flex-start; }
-.m4-nt .m4-hv svg { flex: none; margin-top: 1px; }
-.m4-nt td.m4-vd { color: var(--ink); width: 19%; }
-.m4-nt td.m4-vd b { font-weight: 500; }
-.m4-est { font-size: 10.5px; padding: 0 4px; border: 1px dashed var(--grey); color: var(--muted); white-space: nowrap; margin-left: 4px; }
-.m4-reco { margin-top: 0; border-top: 1px solid var(--ink); padding-top: 10px; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; font-size: 14px; }
-.m4-reco span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); padding-top: 2px; }
-@media (max-width: 860px) {
-  .m4-nt thead { display: none; }
-  .m4-nt, .m4-nt tbody, .m4-nt tr, .m4-nt td { display: block; width: auto !important; }
-  .m4-nt tr { border-top: 1px solid var(--ink); padding: 10px 0 6px; }
-  .m4-nt td { border-bottom: 0; padding: 6px 0; }
-  .m4-nt td[data-l]::before { content: attr(data-l); display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); margin-bottom: 3px; }
-  .m4-reco { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-}
-
-/* playbook: keywords visible, reasoning behind a per-item toggle */
-.m4-pb { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; }
-.m4-pb > div { padding: 0 18px; display: grid; gap: 10px; align-content: start; }
-.m4-pb > div:first-child { padding-left: 0; }
-.m4-pb > div + div { border-left: 1px solid var(--line); }
-.m4-pb h4 { margin: 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); font-weight: 500; }
-.m4-pb ol, .m4-pb ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-.m4-pb li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.45; }
-.m4-pb li > i { font-style: normal; font-size: 12px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; border-top: 2px solid var(--ink); padding-top: 2px; height: fit-content; }
-.m4-pb li.m4-key > i { border-top-color: var(--accent); }
-.m4-pb li b { display: block; color: var(--ink); font-weight: 500; font-size: 13.5px; margin-bottom: 2px; }
-.m4-pb .m4-where li { grid-template-columns: minmax(0, 1fr); }
-.m4-pb .m4-where li > span { display: block; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); }
-.m4-pb .m4-risk li > i { border-top-color: var(--bad); color: var(--bad); }
-.m4-pb .m4-sig { display: block; margin-top: 3px; font-size: 12px; color: var(--ink); }
-.m4-pb .m4-sig::before { content: "Watch: "; color: var(--grey); }
-.m4-x > summary { cursor: pointer; list-style: none; color: var(--ink); font-size: 13.5px; font-weight: 500; line-height: 1.35; }
-.m4-x > summary::-webkit-details-marker { display: none; }
-.m4-x > summary::after { content: "+"; display: inline-grid; place-items: center; width: 13px; height: 13px; margin-left: 6px; border: 1px solid var(--grey); font-size: 10px; font-weight: 400; line-height: 1; color: var(--grey); vertical-align: 1px; }
-.m4-x[open] > summary::after { content: "−"; }
-.m4-x > summary:hover { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
-.m4-pb li .m4-x > summary b { display: inline; margin: 0; }
-.m4-x > p { margin: 4px 0 0; }
-@media (max-width: 1000px) { .m4-pb { grid-template-columns: minmax(0, 1fr); gap: 22px; } .m4-pb > div, .m4-pb > div:first-child { padding: 0; } .m4-pb > div + div { border-left: 0; border-top: 1px solid var(--line); padding-top: 16px; } }
-
-/* questions (in a fold) */
-.m4-qs ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0; counter-reset: q; }
-.m4-qs li { counter-increment: q; padding: 10px 16px 12px 0; font-size: 13.5px; line-height: 1.45; border-top: 1px solid var(--line); }
-.m4-qs li::before { content: "Q" counter(q); display: block; font-size: 11px; color: var(--grey); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
-.m4-qs li span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 4px; }
-
-/* appendix (all in folds except the fact-check exhibit) */
-.m4-intro { margin: 0; max-width: 72ch; font-size: 13.5px; color: var(--muted); }
-.m4-meth { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
-.m4-meth > div { padding: 14px 18px 16px 0; display: grid; gap: 6px; align-content: start; font-size: 13px; color: var(--muted); }
-.m4-meth > div + div { padding-left: 18px; border-left: 1px solid var(--line); }
-.m4-meth h4 { margin: 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); font-weight: 500; }
-.m4-meth p { margin: 0; }
-.m4-meth ul { margin: 0; padding-left: 16px; display: grid; gap: 3px; }
-.m4-meth b { color: var(--ink); font-weight: 500; }
-@media (max-width: 860px) { .m4-meth { grid-template-columns: minmax(0, 1fr); } .m4-meth > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
-.m4-cav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 0; padding: 0; list-style: none; }
-.m4-cav li { border-top: 1px solid var(--line); padding: 10px 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
-.m4-cav li b { color: var(--ink); font-weight: 500; display: block; font-size: 13.5px; margin-bottom: 2px; }
-@media (max-width: 860px) { .m4-cav { grid-template-columns: minmax(0, 1fr); } }
-.m4-src { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px 28px; }
-.m4-src section h4 { margin: 0 0 6px; font-size: 12px; font-weight: 500; color: var(--ink); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
-.m4-src ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 12px; color: var(--muted); line-height: 1.4; }
-.m4-src a { color: var(--ink); text-decoration-color: var(--line); overflow-wrap: anywhere; }
-.m4-src a:hover { text-decoration-color: var(--ink); }
-.m4-src li span { color: var(--grey); }
-.m4-mock { margin-top: 56px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--ink); padding: 16px 18px; font-size: 16px; font-weight: 500; text-decoration: none; }
-.m4-mock:hover { background: var(--ink); color: var(--bg); }
-</style>
-
-<section class="chapter" id="whitespace">
-  <header>
-    <span class="no">4</span>
-    <h2>Our opening is a 48-hour heat-side plan the grid operator can see</h2>
-    <p class="kick">Our cheapest schedule would have saved the reference house €4,281 in 2025 (our mock-up), many times what any HEMS costs a year.</p>
-  </header>
-
-  <figure class="exhibit split" id="x-positioning">
-    <div class="side">
-      <span class="xno"></span>
-      <h3>None of 16 products on sale plans CHP or a buffer tank</h3>
-      <p class="sub">HEMS products in Germany · Nov 2026 · our scoring</p>
-      <ul class="pts">
-        <li><b>4 of 16</b>show a forward schedule of 12 h or more</li>
-        <li><b>0 of 16</b>share their plan with the grid operator</li>
-        <li><b>FlexA</b>Consolinno, for homes: 24–48 h plans announced 01/2026, not shipped</li>
-      </ul>
-      <details class="more"><summary>Sources &amp; notes</summary>
-        <p>HEMS products in Germany, November 2026. Horizontal: breadth of assets optimised together against price. Vertical: grid orientation and transparency of the plan. Placement is our scoring from the research; tap or hover a product for the reasons and the source.</p>
-        <p class="src"><b>Source:</b> our scoring based on hems-finder.org (83 systems, vendor self-declarations, 20.11.2026), our product research (feature checks, 20.11.2026) and the gridX and Consolinno deep dives (fact-checked 25.11.2026); vendor sites and manuals as listed per product. <b>Note:</b> x for hems-finder systems follows the self-declared dynamic-tariff device fields; hems-finder has no CHP or buffer category, so the right column rests on our research. "Schedule shown" means a forward plan of 12 h or more in the user interface; Tibber, Viessmann and 1KOMMA5° plan ahead but a plan view is not documented. Consolinno FlexA for homes is announced (HEMS Vision 2026, 19.01.2026), not shipped. Emulate is not placed (no device features on hems-finder, interface not researched). Our Flexibility Manager is a student prototype; its plan export has not been tested with a grid operator.</p>
-      </details>
-    </div>
-    <div class="body">
-      <div class="legend m4-legend" id="m4-pos-legend"></div>
-      <div id="m4-pos" aria-label="Positioning matrix"></div>
-      <div class="m4-detail" id="m4-pos-detail" aria-live="polite"></div>
-    </div>
-  </figure>
-
-  <figure class="exhibit split" id="x-niches">
-    <div class="side">
-      <span class="xno"></span>
-      <h3>Heat-pump homes with a buffer tank are the best first segment</h3>
-      <p class="sub">4 niches · scores 0–4, 4 = most attractive · our judgement</p>
-      <ul class="pts">
-        <li><b>299,000</b>heat pumps sold in 2025 (+55 %); buffer share not sized</li>
-        <li><b>Prove</b>CHP hybrids: best fit, but under 1 % of homes (est.)</li>
-        <li><b>Test · Channel</b>grid operators as second customer; open platforms as route to market</li>
-      </ul>
-      <details class="more"><summary>Sources &amp; notes</summary>
-        <p>Four candidate niches, ranked. Each criterion scored 0–4, where 4 = most attractive (for competition: 4 = least crowded); scores are our judgement, the text is the evidence behind them.</p>
-        <p class="src"><b>Source:</b> UBA heat-pump chart (BWP/BDH, 02.06.2026); solarserver (01.12.2025, 06.08.2026); BCG, <i>Energy Management Systems</i> (Nov 2025), flex values and take rates; BNetzA Monitoringbericht 2025 (§14a counts) and AgNes press release (06.08.2026); RLI ErSiFlex (29.06.2026); hems-finder.org (20.11.2026); pv magazine (13.04.2026, 18.06.2026); niche list from our competitor analysis (20.11.2026). <b>Note:</b> the share of heat pumps with a buffer tank and the number of CHP homes are not sized; CHP under 1 % of households is a group estimate that we did not re-check (marked est.). 50–110 EUR/yr is our calculation (BCG 2030 take rate × flex value per house). No source shows grid operators paying for household schedules today. The §14a count (264,874 market locations, end 2024) comes from the Monitoringbericht 2025 and was not re-checked (marked est.).</p>
-      </details>
-    </div>
-    <div class="body">
-      <div id="m4-niches"></div>
-      <p class="m4-note">Filled squares = score out of 4; dashed = estimate. Hover a score or a niche for the evidence, or open the table below.</p>
-    </div>
-  </figure>
-
-  <details class="fold" id="m4-niches-fold">
-    <summary>Evidence per niche and criterion <span class="muted">· scores, evidence and verdicts</span></summary>
-    <div class="fold-body">
-      <div id="m4-niches-ev"></div>
-      <div class="m4-reco" id="m4-reco"></div>
-    </div>
-  </details>
-
-  <figure class="exhibit split" id="x-playbook">
-    <div class="side">
-      <span class="xno"></span>
-      <h3>We win by owning the 48-hour heat-side plan, sold through partners</h3>
-      <p class="sub">Where to play, how to win, risks · our recommendation, 25.11.2026</p>
-      <ul class="pts">
-        <li><b>€50–110</b>a year per house: 15–25 % share of flex value (own calc)</li>
-        <li><b>€25</b>a month is five times the median paid fee</li>
-        <li><b>250,000</b>gridX connected assets: plug into platforms, do not rebuild</li>
-      </ul>
-      <details class="more"><summary>Sources &amp; notes</summary>
-        <p>Where to play, how to win and what could close the window; our recommendation, 25.11.2026</p>
-        <p class="src"><b>Source:</b> chapters 1–6 of this report; BCG (Nov 2025) flex values and take rates; BNetzA Monitoringbericht 2025 (sales cost and margin 4.45 ct/kWh); pv magazine (13.04.2026, 18.06.2026); Consolinno HEMS Vision 2026 (19.01.2026) and annual accounts 2024; RLI ErSiFlex (29.06.2026); ZVEI/Neon short study (2024). <b>Note:</b> €178 per household = 4.45 ct/kWh × 4,000 kWh (own calculation, includes sales cost). Moves and risks are our interpretation of the evidence.</p>
-      </details>
-    </div>
-    <div class="body">
-      <div class="m4-pb">
-        <div class="m4-where">
-          <h4>Where to play</h4>
-          <ul>
-            <li><span>Segment</span><details class="m4-x"><summary>Heat-pump homes with a buffer tank</summary><p>Existing and new heat-pump homes with a buffer tank; CHP hybrids as lighthouse cases.</p></details></li>
-            <li><span>Customer who pays</span><details class="m4-x"><summary>Utility, Stadtwerk or heating OEM</summary><p>A utility, Stadtwerk or heating OEM that earns the retail sales and margin share of the tariff (about €178 per household and year, own calculation) and the flex revenue; the grid operator as a second customer to test.</p></details></li>
-            <li><span>Channel</span><details class="m4-x"><summary>Module on an existing gateway</summary><p>As a module on an existing gateway or platform via EEBUS or API, not as a new box for homeowners.</p></details></li>
-          </ul>
-        </div>
-        <div>
-          <h4>How to win</h4>
-          <ol>
-            <li class="m4-key"><i>1</i><details class="m4-x"><summary><b>Make the heat-side plan the product.</b></summary><p>Joint heat-pump, buffer and CHP scheduling over 48 h, shown as the start view. hems-finder does not even track CHP or buffer tanks, and BCG has no flex value for them yet: quantify it on our reference house.</p></details></li>
-            <li class="m4-key"><i>2</i><details class="m4-x"><summary><b>Turn the plan into a grid product.</b></summary><p>Share the 48 h plan with one grid operator in a pilot and measure whether it reduces simultaneous peaks; position it for the end of the §14a transition (31.12.2028) and AgNes (2029).</p></details></li>
-            <li><i>3</i><details class="m4-x"><summary><b>Plug in, do not rebuild.</b></summary><p>Use the open platforms (Heartbeat AI since 04/2026, Kiwigrid and Enpal VPPs since 06/2026) for device access and §14a instead of competing with gridX's 250,000 connected assets.</p></details></li>
-            <li><i>4</i><details class="m4-x"><summary><b>Price the outcome, not the app.</b></summary><p>Charge the partner per asset or a share of the flex value (15–25 % of €350–450 per house is about €50–110 a year), or the household €5–15 a month; €25 is five times the median paid fee.</p></details></li>
-          </ol>
-        </div>
-        <div class="m4-risk">
-          <h4>Risks</h4>
-          <ol>
-            <li><i>!</i><details class="m4-x"><summary><b>Commoditisation.</b></summary><p>Planning views spread (SMA, Podero, evcc already show one), fees sit at about €5 and utilities bundle HEMS for free. A schedule alone will not stay unique.<span class="m4-sig">platform release notes; free bundles from utilities</span></p></details></li>
-            <li><i>!</i><details class="m4-x"><summary><b>Consolinno FlexA.</b></summary><p>FlexA already schedules CHP, heat pumps and storage in industry and is announced for homes with 24–48 h plans; Consolinno already sells its HEMS through more than 28 wholesalers.<span class="m4-sig">Consolinno releases after 2.1 (08/2026)</span></p></details></li>
-            <li><i>!</i><details class="m4-x"><summary><b>Simultaneity and who pays for it.</b></summary><p>The RLI study sees a risk of new simultaneous peaks, ZVEI/Neon finds market flexibility relieves grids today. If grid operators solve it with §14a dimming and AgNes tariffs, nobody buys the plan.<span class="m4-sig">AgNes decision end 2026; grid-operator pilots</span></p></details></li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </figure>
-
-  <details class="fold m4-qs" id="m4-questions">
-    <summary>Questions for our supervisor <span class="muted">· 5 questions</span></summary>
-    <div class="fold-body">
-      <ol>
-        <li>Which niche should the prototype prove first: heat-pump homes with a buffer tank (volume) or CHP hybrids like our reference house (best fit, under 1 % of homes, est.)?<span>Decides what we optimise and simulate next.</span></li>
-        <li>Who would you bet on as the paying customer: the homeowner, a utility or Stadtwerk, a heating OEM or the grid operator?<span>Decides the price model and the interface we build.</span></li>
-        <li>Would a grid operator take a 48-hour household plan in advance today, and in which format (§14a EMS route, EEBUS, a portal)?<span>No source shows a grid operator buying such plans yet.</span></li>
-        <li>Can we get API access to one platform (gridX, Kiwigrid or Heartbeat AI) to run our optimiser on top of it?<span>Tests the plug-in route instead of building integrations.</span></li>
-        <li>Should the next deliverable quantify the extra flex value of CHP plus buffer on the reference house?<span>BCG gives values for battery, heat pump and EV only.</span></li>
-      </ol>
-    </div>
-  </details>
-
-  <aside class="sowhat"><span class="lbl">So what</span>
-    <p>Prove value, not integrations: price the 48 h plan in euros a year on the reference house and a heat-pump-with-buffer profile; take it to one utility or OEM and one grid operator. The lead lasts until FlexA for homes ships.</p>
-  </aside>
 </section>
 
 <section class="chapter" id="appendix">
