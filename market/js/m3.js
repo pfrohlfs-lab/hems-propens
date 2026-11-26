@@ -117,12 +117,8 @@
     const pts = all.filter((d) => !(d.one === 0 && d.mon === 0));
     const paid = all.filter((d) => d.mon > 0).map((d) => d.mon);
     const med = median(paid);
-    const inBand = paid.filter((v) => v >= 3.99 && v <= 6.99).length;
-    const ttl = $('m3-land-title');
-    if (ttl) ttl.textContent = `${inBand} of ${paid.length} paid HEMS fees lie between 4 and 7 EUR/month`;
-    const lpts = $('m3-land-pts'); /* side points: the rest of the former long title */
-    if (lpts && med != null) lpts.innerHTML = `<li><b>${fmt(med, 2)} EUR</b>median paid fee per month (n = ${paid.length})</li>` +
-      `<li><b>${free.length} of ${all.length}</b>offers charge no separate HEMS fee</li>`;
+    const ttl = $('m3-land-title'); /* exhibit is full width: median and free offers go into the title, no side numbers */
+    if (ttl && med != null) ttl.textContent = `Paid HEMS fees cluster at a median of ${fmt(med, 2)} EUR/month, and ${free.length} of ${all.length} offers charge no separate fee at all`;
 
     // legend (models present)
     const lg = $('m3-land-legend');
@@ -136,7 +132,7 @@
     const w = widthOf(el), narrow = w < 560, fs = narrow ? 10 : 11;
     const lanes = 3, laneH = fs + 4;
     const m = { l: 30, r: 12, t: 30, b: 12 + lanes * laneH + 26 };
-    const h = narrow ? 400 : 460;
+    const h = narrow ? 400 : w > 900 ? 560 : 460;
     const x = d3.scaleLinear().domain([0, 1000]).range([m.l + 10, w - m.r]);
     const y = d3.scaleLinear().domain([0, 27]).range([h - m.b, m.t]);
     const y0 = y(0);
