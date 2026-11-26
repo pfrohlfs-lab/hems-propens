@@ -119,14 +119,19 @@
     const med = median(paid);
     const inBand = paid.filter((v) => v >= 3.99 && v <= 6.99).length;
     const ttl = $('m3-land-title');
-    if (ttl) ttl.textContent = `${inBand} of ${paid.length} paid HEMS fees lie between 4 and 7 EUR a month, about a fifth of our 25 EUR working assumption, and ${free.length} of ${all.length} offers charge no separate fee`;
+    if (ttl) ttl.textContent = `${inBand} of ${paid.length} paid HEMS fees lie between 4 and 7 EUR/month`;
+    const lpts = $('m3-land-pts'); /* side points: the rest of the former long title */
+    if (lpts && med != null) lpts.innerHTML = `<li><b>${fmt(med, 2)} EUR</b>median paid fee per month (n = ${paid.length})</li>` +
+      '<li><b>about 1/5</b>of our 25 EUR/month working assumption</li>' +
+      `<li><b>${free.length} of ${all.length}</b>offers charge no separate HEMS fee</li>`;
 
     // legend (models present)
     const lg = $('m3-land-legend');
     if (lg) {
       const used = [...new Set(pts.map((d) => d.model))];
       lg.innerHTML = used.map((k) => `<span><svg width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true"><path d="${d3.symbol().type(MODEL[k].sym).size(50)()}" fill="${C(MODEL[k].tok)}"></path></svg>${esc(MODEL[k].label)}</span>`).join('') +
-        `<span><svg width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true"><circle r="4" fill="${C('--bg')}" stroke="${C('--muted')}" stroke-width="1.3"></circle></svg>Low confidence</span>`;
+        `<span><svg width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true"><circle r="4" fill="${C('--bg')}" stroke="${C('--muted')}" stroke-width="1.3"></circle></svg>Low confidence</span>` +
+        `<span><svg width="18" height="12" viewBox="0 0 18 12" aria-hidden="true"><path d="M1,6H17M1,3.5V8.5M17,3.5V8.5" fill="none" stroke="${C('--muted')}" stroke-width="1.3"></path></svg>Published price band</span>`;
     }
 
     const w = widthOf(el), narrow = w < 560, fs = narrow ? 10 : 11;
@@ -269,7 +274,6 @@
     // free cluster strip
     const fr = $('m3-free');
     if (fr) {
-      const fees = free.map((d) => d.p.tariff_base_fee_eur).filter((v) => v != null);
       const how = (d) => {
         if (d.p.tariff_base_fee_eur != null) return `tariff fee ${fmt(d.p.tariff_base_fee_eur, 2)}/month`;
         if (d.p.hardware_bundled) return 'inside the battery price';
@@ -278,7 +282,8 @@
         return 'for power customers';
       };
       const subs = narrow ? `<div class="hd"><b>${zero.length} software subscriptions without a box</b><span>Drawn at a one-off price of 0.</span></div><div class="m3-chips">${zero.slice().sort((a, b) => b.mon - a.mon).map((d) => `<span class="m3-chip${d.low ? ' low' : ''}"><i style="background:${C(MODEL[d.model].tok)}"></i>${esc(d.name)} <small>${fmt(d.mon, 2)}/month${d.low ? ', unverified' : ''}</small></span>`).join('')}</div>` : '';
-      fr.innerHTML = subs + `<div class="hd"><b>${free.length} of ${all.length} offers charge no separate HEMS fee</b><span>The HEMS comes with a power tariff, the hardware or as open source${fees.length ? `; tariff base fees of ${fmt(d3.min(fees), 2)} to ${fmt(d3.max(fees), 2)} EUR/month can apply` : ''}.</span></div><div class="m3-chips m3-free-chips"></div>`;
+      /* the long explanation (tariff, hardware, open source; tariff base fees) is in the chips and in the exhibit's notes */
+      fr.innerHTML = subs + `<div class="hd"><b>${free.length} of ${all.length} offers charge no separate HEMS fee</b></div><div class="m3-chips m3-free-chips"></div>`;
       const chips = d3.select(fr).select('.m3-free-chips').selectAll('span').data(free).join('span')
         .attr('class', (d) => 'm3-chip' + (d.low ? ' low' : ''))
         .html((d) => `<i style="background:${C(MODEL[d.model].tok)}"></i>${esc(d.name)} <small>${esc(how(d))}${d.low ? ', unverified' : ''}</small>`);
@@ -294,11 +299,15 @@
     const arrow = { up: '↑', down: '↓', flat: '→' };
     P.forEach((p) => {
       const card = document.createElement('div'); card.className = 'card';
-      card.innerHTML = `<div class="top"><span class="nm">${esc(p.name)}</span><span class="tg">${arrow[p.dir] || ''} ${esc(p.tag)}</span></div><div class="tk">${esc(p.take)}</div><div class="m3-chart"></div>`;
+      /* compact: name + tag visible, the one-line take as tooltip on the card head */
+      card.innerHTML = `<div class="top"><span class="nm">${esc(p.name)}</span><span class="tg">${arrow[p.dir] || ''} ${esc(p.tag)}</span></div><div class="m3-chart"></div>`;
       hostEl.appendChild(card);
+      UI.bindTip(d3.select(card.querySelector('.top')).datum(p), (d) => `<b>${esc(d.name)}</b><br>${esc(d.take)}`);
     });
     [...hostEl.children].forEach((card, i) => drawPanel(card.querySelector('.m3-chart'), P[i]));
     drawSample();
+    const fold = $('m3-why-fold'); /* the sample chart sits in a closed fold: draw it at its real width when opened */
+    if (fold && !fold.dataset.bound) { fold.dataset.bound = '1'; fold.addEventListener('toggle', () => { if (fold.open) drawSample(); }); }
   }
   function drawPanel(el, p) {
     const hasM = p.series.some((s) => s.kind !== 'oneoff' && s.pts.length);
@@ -441,7 +450,9 @@
     sys.sort((a, b) => order.indexOf(a.cls) - order.indexOf(b.cls));
     const cnt = Object.fromEntries(order.map((k) => [k, sys.filter((d) => d.cls === k).length]));
     const sub = $('m3-ch-sub');
-    if (sub) sub.textContent = `${cnt.b2b + cnt.none} of ${sys.length} systems do not list direct sales to households; ${cnt.none} list no channel at all. One square = one system.`;
+    if (sub) sub.textContent = 'One square = one system.';
+    const pt = $('m3-pt-ch'); /* side point of the exhibit */
+    if (pt) pt.innerHTML = `<b>${cnt.b2b + cnt.none} of ${sys.length}</b>systems do not list direct sales to households`;
     const w = widthOf(el);
     const cols = w >= 430 ? 28 : w >= 330 ? 21 : 17;
     const cell = Math.min(15, Math.floor((w - 2) / cols)), gapc = 2;
@@ -483,15 +494,15 @@
     const max = d3.max(PC, (c) => c.players.length);
     el.innerHTML = '<div class="m3-prows"></div>';
     const rows = d3.select(el).select('.m3-prows').selectAll('div.m3-prow').data(PC).join('div').attr('class', 'm3-prow');
-    rows.append('div').attr('class', 'lb').html((c) => `${esc(c.label)} <b>${c.players.length}</b>`);
+    const lb = rows.append('div').attr('class', 'lb').html((c) => `${esc(c.label)} <b>${c.players.length}</b>`);
+    UI.bindTip(lb, (c) => `<b>${esc(c.label)}</b><br>${esc(c.players.map(shortP).join(', '))}`); /* player names: tooltip instead of a visible list */
     const units = rows.append('div').attr('class', 'units').style('--max', max);
     const u = units.selectAll('span').data((c) => c.players.map((n) => ({ n, c, p: byName[n] }))).join('span')
       .attr('class', 'u').style('background', (d) => `var(${PAYTOK[d.c.id] || '--grey'})`)
       .html((d) => (isFlex(d.p) ? '<i></i>' : ''));
     UI.bindTip(u, (d) => `<b>${esc(d.n)}</b><br>Payer: ${esc(d.p ? d.p.payer : '')}<br>Revenue: ${esc(d.p ? d.p.revenue_model.join('; ') : '')}<br>Channel: ${esc(d.p ? d.p.channel.join(', ') : '')}`);
-    rows.append('div').attr('class', 'nm').text((c) => c.players.map(shortP).join(', '));
     const nf = BM.players.filter(isFlex).length;
-    d3.select(el).append('p').attr('class', 'm3-note').style('margin-top', '8px').html(`<span class="m3-dot"></span> ${nf} of ${BM.players.length} players also earn flexibility revenue (VPP, Grid Rewards, trading).`);
+    d3.select(el).append('p').attr('class', 'm3-note').style('margin-top', '8px').html(`<span class="m3-dot"></span> also earns flexibility revenue (VPP, Grid Rewards, trading): ${nf} of ${BM.players.length}`);
   }
   function drawValue() {
     const el = $('m3-value'); const BM = R.business_models; if (!el || !BM) return;
@@ -656,7 +667,11 @@
     const lgEl = $('m3-con-legend');
     if (lgEl) {
       const used = UI.ARCH.filter((a) => E.some((e) => e.arch === a.id));
-      lgEl.innerHTML = used.map((a) => `<span><i style="background:${C(a.tok)}"></i>${esc(a.short)}</span>`).join('');
+      /* colour = strategic group; symbol keys replace the former long subtitle */
+      const sym = (t, s, hollow) => `<svg width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true"><path d="${d3.symbol().type(t).size(s)()}" fill="${hollow ? bg : muted}" stroke="${muted}" stroke-width="${hollow ? 1.3 : 0}"${hollow ? ' stroke-dasharray="2 1.5"' : ''}></path></svg>`;
+      lgEl.innerHTML = used.map((a) => `<span><i style="background:${C(a.tok)}"></i>${esc(a.short)}</span>`).join('') +
+        `<span>${sym(d3.symbolCircle, 90)}Area = size, m</span><span>${sym(d3.symbolSquare, 50)}Undisclosed</span>` +
+        `<span>${sym(d3.symbolDiamond, 60)}Stop or insolvency</span><span>${sym(d3.symbolCircle, 60, true)}Low confidence</span>`;
     }
   }
 
@@ -687,9 +702,14 @@
     const and = (a) => a.join(', ').replace(/, ([^,]*)$/, ' and $1');
     const pv = prof.filter((r) => !r.low).sort((a, b) => b.v - a.v).map((r) => r.name);
     const pu = prof.filter((r) => r.low).sort((a, b) => b.v - a.v).map((r) => r.name);
+    /* title must keep starting with "N of M": m4.js reads it for the summary count */
+    if (t) t.textContent = `${loss.length} of ${rows.length} HEMS-relevant companies with available results are loss-making`;
+    const pp = $('m3-pr-pts'), worst = loss[0]; /* rows are sorted ascending: loss[0] = largest loss */
+    const ptWorst = worst ? `<li><b>${fmt(worst.v, 0).replace('-', '−')} m ${esc(worst.n.currency)}</b>largest loss: ${esc(worst.name)}, ${esc(worst.n.year)}</li>` : '';
+    const ptProf = pv.length ? `<li><b>${esc(and(pv))}</b>the only verified profit${pv.length > 1 ? 's' : ''}</li>` : '<li><b>None</b>posted a verified profit</li>';
     
     
-    if (t) t.textContent = `${loss.length} of ${rows.length} HEMS-relevant companies with available results lost money in their latest year; ` + (pv.length ? `only ${and(pv)} posted a verified profit` : 'none posted a verified profit') + (pu.length ? `, ${and(pu)} an unverified one` : '');
+    if (pp) pp.innerHTML = ptWorst + ptProf + (pu.length ? `<li><b>${esc(pu.join(', '))}</b>unverified profit</li>` : '');
     
     drawBars($('m3-pr-big'), big, 'Groups and large entities, millions');
     drawBars($('m3-pr-small'), small, 'Specialists and start-ups, millions (separate scale)');
@@ -743,21 +763,45 @@
       });
     }
     const DIR = { up: ['↑', 'Rising'], flat: ['→', 'Flat'], contested: ['↕', 'Rising, contested'] };
-    const IMP = { opportunity: 'Opportunity', threat: 'Threat', both: 'Both' };
+    /* matrix: columns = implication for us, rows = strength of evidence (both fields from the data) */
+    const COLS = [['opportunity', 'Opportunity for us'], ['both', 'Both'], ['threat', 'Threat for us']];
+    const STR = [[3, 'Strong'], [2, 'Medium'], [1, 'Weak']];
     const rows = T.filter((t) => trFilter === 'all' || t.impact === trFilter || t.impact === 'both');
-    el.innerHTML = '<div class="row hd"><div>Trend</div><div>Signal</div><div>Evidence</div><div>For us</div></div>' + rows.map((t) => `
-      <div class="row">
-        <div><div class="nm">${esc(t.trend)}</div><div class="hz">${esc(t.horizon)}</div></div>
-        <div class="sig">
-          <span class="d"><b style="font-size:15px;color:var(--ink)">${DIR[t.dir][0]}</b>${DIR[t.dir][1]}</span>
-          <span class="d"><span class="bars" aria-label="strength ${t.strength} of 3">${[1, 2, 3].map((i) => `<i class="${i <= t.strength ? 'on' : ''}"></i>`).join('')}</span>${['', 'weak', 'medium', 'strong'][t.strength]}</span>
-          <span class="imp ${t.impact}">${IMP[t.impact]}</span>
-        </div>
-        <div><ul>${((window.MD_PUBLIC && t.ev_pub) || t.ev).map(([f, c]) => `<li>${esc(f)}${c === 'low' ? ' ' + UI.conf('unverified').replace('class="conf ', 'class="conf low ') : ''}</li>`).join('')}</ul>${t.spark ? `<div class="spk" data-s="${esc(t.spark)}" data-l="${esc(t.spark_label || '')}"></div>` : ''}</div>
-        <div class="fu"><b>For us: </b>${esc(t.for_us)}</div>
-      </div>`).join('');
+    const open = new Set([...el.querySelectorAll('details[open]')].map((d) => d.dataset.id)); /* keep open evidence across redraws */
+    const bars = (s) => `<span class="bars" aria-label="strength ${s} of 3">${[1, 2, 3].map((i) => `<i class="${i <= s ? 'on' : ''}"></i>`).join('')}</span>`;
+    const card = (t) => {
+      const k = TR_KEY[t.id];
+      return `<div class="m3-tc">
+        <div class="mt"><b title="${DIR[t.dir][1]}" aria-label="${DIR[t.dir][1]}">${DIR[t.dir][0]}</b>${esc(t.horizon)}</div>
+        <div class="nm">${esc(t.trend)}</div>
+        ${k ? `<div class="kf"><b>${esc(k[0])}</b>${esc(k[1])}</div>` : ''}
+        <details data-id="${esc(t.id)}"${open.has(t.id) ? ' open' : ''}><summary>Evidence</summary>
+          <ul>${((window.MD_PUBLIC && t.ev_pub) || t.ev).map(([f, c]) => `<li>${esc(f)}${c === 'low' ? ' ' + UI.conf('unverified').replace('class="conf ', 'class="conf low ') : ''}</li>`).join('')}</ul>
+          ${t.spark ? `<div class="spk" data-s="${esc(t.spark)}" data-l="${esc(t.spark_label || '')}"></div>` : ''}
+          <p class="fu"><b>For us:</b> ${esc(t.for_us)}</p>
+        </details>
+      </div>`;
+    };
+    el.innerHTML = '<div class="ch"></div>' + COLS.map(([k, l]) => `<div class="ch ${k}">${l}</div>`).join('') +
+      STR.map(([s, sl]) => `<div class="rh">${bars(s)}<span>${sl} evidence</span></div>` + COLS.map(([k, l]) => {
+        const cs = rows.filter((t) => t.strength === s && t.impact === k);
+        return `<div class="cell${cs.length ? '' : ' empty'}" data-lab="${l}">${cs.map(card).join('')}</div>`;
+      }).join('')).join('');
     el.querySelectorAll('.spk').forEach(drawSpark);
   }
+  /* one headline figure per trend, quoted from its evidence lines (data/m3_trends.json); the full evidence sits behind "Evidence" */
+  const TR_KEY = {
+    flex: ['1 GW', 'shiftable at 1KOMMA5° Heartbeat (05/2026)'],
+    spreads: ['157 EUR/MWh', 'average daily spread, 2026 to 24.11.'],
+    commod: ['94 %', 'of 83 listed HEMS claim PV surplus to battery'],
+    bundle: ['No fee', 'EnBW Mavi (initially), Intelligent Octopus control'],
+    consol: ['sonnen', 'insolvency reported 22.10.2026'],
+    platforms: ['> 60,000', 'Heartbeat AI systems; sold to third parties since 04/2026'],
+    simult: ['RLI 06/2026', 'warns of new simultaneity peaks'],
+    interop: ['77 %', 'of HEMS receive §14a commands (early 2025)'],
+    ai: ['> 100 m EUR', '1KOMMA5° Heartbeat investment planned for 2027'],
+    heat: ['+40 %', 'heat-pump sales H1 2026, about 195,000 units'],
+  };
   function drawSpark(el) {
     const S = (R.regulation_trends || {}).series || []; const s = S.find((q) => q.id === el.dataset.s); if (!s) return;
     const pts = s.points.filter((p) => p.value != null);

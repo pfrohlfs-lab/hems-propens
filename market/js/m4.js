@@ -49,7 +49,7 @@
   const SHORT = { 'Consolinno Leaflet': 'Consolinno', 'gridX XENON': 'gridX', 'Kiwigrid KiwiOS': 'Kiwigrid', 'SMA Sunny Home Manager': 'SMA SHM',
     'Intelligent Octopus': 'Octopus', '1KOMMA5° Heartbeat': '1KOMMA5°', 'Solar Manager': 'Solar Mgr.', 'thermondo smart': 'thermondo',
     'Consolinno FlexA for homes': 'FlexA (ann.)', 'Flexibility Manager': 'Flex Manager' };
-  let selId = 'ours';
+  let selId = null; // no product selected at first: the detail panel shows only a hint (compact default view)
 
   function posLegend(P) {
     const el = $('m4-pos-legend'); if (!el) return;
@@ -66,7 +66,9 @@
 
   function posDetail(P) {
     const el = $('m4-pos-detail'); if (!el) return;
-    const p = P.players.find((q) => q.id === selId) || P.players.find((q) => q.ours);
+    const p = selId ? P.players.find((q) => q.id === selId) : null;
+    el.classList.toggle('m4-empty', !p);
+    if (!p) { el.innerHTML = '<span class="m4-hint">Click or tap a product for the reasons and the source.</span>'; return; }
     const conf = p.confidence === 'prototype' ? '<span class="conf">prototype</span>' : UI.conf(p.confidence);
     const tag = p.announced ? ' <span class="conf low">announced 2026</span>' : '';
     el.innerHTML = `<div class="m4-dh"><b>${esc(p.name)}</b>${conf}${tag}<span class="muted" style="font-size:12px">${esc(P.axes.x[p.x - 1])} · ${esc(P.axes.y[p.y - 1])}</span></div>
@@ -243,7 +245,25 @@
     posDetail(P);
   }
 
-  /* ================= Exhibit: niches table ================= */
+  /* ================= Exhibit: niches (cards + evidence table in a fold) ================= */
+  /* one size figure per card: [bold figure, rest]; the bold part must occur verbatim in the niche's size text,
+     otherwise the line is left out (guards against the data changing under this display text) */
+  const FIG = {
+    hp: ['~2 M', 'heat pumps installed (2025)'],
+    chp: ['under 1 %', 'of households have CHP'],
+    dso: ['264,874', '§14a market locations (end 2024)'],
+    open: ['1.1–1.9 M', 'HEMS installed (2023–2024, broad definitions)'],
+  };
+  /* score as four squares: filled = score (0–4); dashed outline = the score rests on an estimate */
+  function squares(score, low) {
+    const ink = C('--ink'), bg = C('--bg');
+    const s = Math.max(0, Math.min(4, Math.round(score || 0)));
+    let r = '';
+    for (let i = 0; i < 4; i++) {
+      r += `<rect x="${i * 13 + 0.5}" y="0.5" width="10" height="10" fill="${i < s ? ink : bg}" stroke="${ink}" stroke-width="1"${low ? ' stroke-dasharray="2 1.5"' : ''}/>`;
+    }
+    return `<svg width="51" height="11" viewBox="0 0 51 11" role="img" aria-label="${s} of 4${low ? ', estimate' : ''}">${r}</svg>`;
+  }
   function harvey(score, low) {
     const ink = C('--ink'), bg = C('--bg');
     const r = 7, cx = 8, cy = 8; const f = Math.max(0, Math.min(4, score)) / 4;
@@ -259,8 +279,39 @@
     const el = $('m4-niches'); const N = X.m4_niches;
     if (!el || !N) return;
     const crit = N.criteria;
+    const sorted = N.niches.slice().sort((a, b) => a.rank - b.rank);
+    const byId = Object.fromEntries(sorted.map((n) => [n.id, n]));
+    const critById = Object.fromEntries(crit.map((c) => [c.id, c]));
+
+    /* default view: one card per niche */
+    el.innerHTML = `<div class="m4-cards">${sorted.map((n, i) => {
+      const vd = String(n.verdict || ''); const ix = vd.indexOf(':');
+      const vk = ix > 0 && ix <= 12 ? vd.slice(0, ix) : '';
+      const f = FIG[n.id]; const sz = n.size || {};
+      const fig = f && String(sz.text || '').includes(f[0])
+        ? `<p class="m4-fig"><b>${esc(f[0])}</b>${esc(f[1])}${sz.low ? '<span class="m4-est">est.</span>' : ''}</p>` : '';
+      const rows = crit.map((c) => {
+        const v = n[c.id] || {};
+        return `<li class="m4-cr" tabindex="0" data-n="${esc(n.id)}" data-c="${esc(c.id)}"><span>${esc(c.label)}</span>${squares(v.score, v.low)}</li>`;
+      }).join('');
+      return `<article class="m4-card${i === 0 ? ' m4-first' : ''}" aria-label="${esc(n.name)}">
+        <div class="m4-ch"><span class="m4-rk">${n.rank}</span>${vk ? `<span class="m4-vk" data-n="${esc(n.id)}">${esc(vk)}</span>` : ''}<span>${esc(n.role)}</span></div>
+        <h4 data-n="${esc(n.id)}">${esc(n.name)}</h4>${fig}<ul class="m4-crs">${rows}</ul></article>`;
+    }).join('')}</div>`;
+    const root = d3.select(el);
+    const crs = root.selectAll('.m4-cr').datum(function () { return { n: byId[this.dataset.n], c: critById[this.dataset.c] }; });
+    UI.bindTip(crs, (d) => {
+      const v = (d.n && d.c && d.n[d.c.id]) || {};
+      return `<b>${esc(d.c ? d.c.label : '')}: ${v.score ?? '–'} of 4</b>${v.low ? ' (est.)' : ''}<br>${esc(v.text)}`;
+    });
+    const vds = root.selectAll('.m4-vk, .m4-card h4').datum(function () { return byId[this.dataset.n]; });
+    UI.bindTip(vds, (n) => (n ? `<b>${esc(n.name)}</b><br>${esc(n.verdict)}` : ''));
+
+    /* evidence table (inside the fold below the exhibit) */
+    const ev = $('m4-niches-ev');
+    if (!ev) return;
     const head = `<thead><tr><th>Niche (priority)</th>${crit.map((c) => `<th>${esc(c.label)}</th>`).join('')}<th>Verdict</th></tr></thead>`;
-    const rows = N.niches.slice().sort((a, b) => a.rank - b.rank).map((n, i) => {
+    const rows = sorted.map((n, i) => {
       const cells = crit.map((c) => {
         const v = n[c.id] || {};
         return `<td data-l="${esc(c.label)}"><div class="m4-hv">${harvey(v.score, v.low)}<span>${esc(v.text)}${v.low ? '<span class="m4-est">est.</span>' : ''}</span></div></td>`;
@@ -269,7 +320,7 @@
       const verdict = ix > 0 ? `<b>${esc(vd.slice(0, ix))}:</b>${esc(vd.slice(ix + 1))}` : esc(vd);
       return `<tr class="${i === 0 ? 'm4-first' : ''}"><td class="m4-nn"><span class="m4-rk">${n.rank}</span><b>${esc(n.name)}</b><span class="m4-role">${esc(n.role)}</span></td>${cells}<td class="m4-vd" data-l="Verdict">${verdict}</td></tr>`;
     }).join('');
-    el.innerHTML = `<table class="t m4-nt">${head}<tbody>${rows}</tbody></table>`;
+    ev.innerHTML = `<table class="t m4-nt">${head}<tbody>${rows}</tbody></table>`;
     const r = $('m4-reco');
     if (r) r.innerHTML = `<span>Recommendation</span><div>${esc(N.recommendation)}</div>`;
   }
@@ -289,7 +340,7 @@
     ];
     const rows = F.streams.slice().sort((a, b) => b.confirmed / b.n - a.confirmed / a.n);
     rows.push({ label: 'All streams', used_in: '', ...F.total, total: true });
-    const LW = narrow ? 0 : 190, RW = 48, bh = 16, gap = narrow ? 34 : 12, top = 30;
+    const LW = narrow ? 0 : 215, RW = 48, bh = 16, gap = narrow ? 34 : 12, top = 30;
     const H = top + rows.length * (bh + gap) + 8 + 6;
     const svg = mkSvg(el, W, H, 'Fact-check verdicts per research stream');
     const maxN = d3.max(rows.filter((r) => !r.total), (r) => r.n);

@@ -78,7 +78,8 @@
     };
     const rows = ['What it does', 'How it earns', 'Value capture', 'Key number', 'Example players'];
     let h = '<div class="m1-vcg">';
-    h += '<div class="m1-card m1-rlcol"><div class="m1-rl" style="border-top:0"></div>' + rows.map((t) => `<div class="m1-rl">${t}</div>`).join('') + '</div>';
+    const rcls = ['m1-r-does', 'm1-r-earns', 'm1-r-cap', 'm1-r-kpi', 'm1-r-players'];
+    h += '<div class="m1-card m1-rlcol"><div class="m1-rl" style="border-top:0"></div>' + rows.map((t, k) => `<div class="m1-rl ${rcls[k]}">${t}</div>`).join('') + '</div>';
     L.forEach((l, i) => {
       const ar = arrows[l.trend] || arrows.flat;
       const chips = l.players.map((p) => {
@@ -90,10 +91,10 @@
       const lowK = l.kpi.conf === 'low' ? ' <span class="conf low">low</span>' : '';
       h += `<div class="m1-card${i === 0 ? ' m1-first' : ''}${l.id === 'flex' ? ' m1-flexl' : ''}" data-layer="${l.id}">
         <div class="m1-chev"><span class="m1-no">${i + 1}</span><b>${esc(l.label)}</b></div>
-        <div class="m1-cell"><span class="m1-il">${rows[0]}</span>${esc(l.does)}${l.ours ? '<br><span class="m1-ours">◆ Our Flexibility Manager</span>' : ''}</div>
-        <div class="m1-cell"><span class="m1-il">${rows[1]}</span>${esc(l.earns)}</div>
-        <div class="m1-cell"><span class="m1-il">${rows[2]}</span>${esc(l.captures)}<br><span class="m1-trend ${l.trend}"><span class="m1-ar" aria-hidden="true">${ar[0]}</span>${ar[1]}</span></div>
-        <div class="m1-cell"><span class="m1-il">${rows[3]}</span><span class="m1-kpi">${esc(l.kpi.value)}</span><span class="m1-kpi-t">${esc(l.kpi.text)}${lowK}</span></div>
+        <div class="m1-cell m1-c-does"><span class="m1-il">${rows[0]}</span>${esc(l.does)}</div>
+        <div class="m1-cell m1-c-earns"><span class="m1-il">${rows[1]}</span>${esc(l.earns)}</div>
+        <div class="m1-cell"><span class="m1-il">${rows[2]}</span><span class="m1-cap-t">${esc(l.captures)}<br></span><span class="m1-trend ${l.trend}"><span class="m1-ar" aria-hidden="true">${ar[0]}</span>${ar[1]}</span></div>
+        <div class="m1-cell"><span class="m1-il">${rows[3]}</span><span class="m1-kpi">${esc(l.kpi.value)}</span><span class="m1-kpi-t">${esc(l.kpi.text)}${lowK}</span>${l.ours ? '<span class="m1-ours">◆ Our Flexibility Manager</span>' : ''}</div>
         <div class="m1-cell m1-c-players"><span class="m1-il">${rows[4]}</span><div class="m1-chips">${chips}</div><span class="m1-pooltag">${esc(poolTag[l.id] || '')}</span></div>
       </div>`;
     });
@@ -107,6 +108,15 @@
       <div class="m1-pool m1-out" style="grid-column:8">EMS installation is in the traditional pool</div>
     </div>`;
     host.innerHTML = h;
+    const more = $('m1-vc-more');
+    if (more && !more.dataset.bound) {
+      more.dataset.bound = '1';
+      more.onclick = () => {
+        const on = host.classList.toggle('m1-compact') === false;
+        more.setAttribute('aria-pressed', String(on));
+        more.textContent = on ? 'Hide descriptions' : 'Show descriptions';
+      };
+    }
   }
   reg(drawValueChain);
 
@@ -266,7 +276,7 @@
     ];
     panels.forEach((p) => {
       const div = document.createElement('div');
-      div.innerHTML = `<p class="m1-panel-h">${esc(p.h)} <span class="grey" style="font-weight:400">· ${esc(p.unit)}</span></p><p class="m1-panel-t">${esc(p.t)}</p><div class="m1-pc"></div>`;
+      div.innerHTML = `<p class="m1-panel-h" title="${esc(p.t)}">${esc(p.h)} <span class="grey" style="font-weight:400">· ${esc(p.unit)}</span></p><div class="m1-pc" title="${esc(p.t)}"></div>`;
       host.appendChild(div);
       p.el = div.querySelector('.m1-pc');
     });
@@ -277,8 +287,7 @@
       <div><svg width="16" height="12"><rect x="1" y="1" width="14" height="10" fill="${ink}"/></svg>Reported value</div>
       <div><svg width="16" height="12"><rect x="1" y="1" width="14" height="10" fill="none" stroke="${ink}" stroke-dasharray="3 2"/></svg>Forecast or low-confidence value</div>
       <div><svg width="16" height="12"><defs><pattern id="m1keyh" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" stroke="${ink}" stroke-width="1.4"/></pattern></defs><rect x="1" y="1" width="14" height="10" fill="url(#m1keyh)" stroke="${ink}"/></svg>Year to date (2026)</div>
-      <div><svg width="16" height="12"><circle cx="8" cy="6" r="4" fill="${C('--panel')}" stroke="${ink}" stroke-width="2"/></svg>Hollow marker = estimate</div>
-      <p style="margin:4px 0 0">All five drivers matter for HEMS because each adds a controllable load or a price signal. Unit and scale differ by panel.</p>`;
+      <div><svg width="16" height="12"><circle cx="8" cy="6" r="4" fill="${C('--panel')}" stroke="${ink}" stroke-width="2"/></svg>Hollow marker = estimate</div>`;
     host.appendChild(key);
 
     const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
@@ -480,13 +489,13 @@
       { lab: 'PV-suitable homes', tag: '', v: U[1].value, yr: '2024', conf: U[1].confidence },
       { lab: 'Homes with rooftop PV', tag: '', ...rng(st('pv_homes_2025e')), yr: 'end 2025 est. (3.97 M end 2024)' },
       { lab: 'PV + battery, heat pump or EV', tag: 'TAM', ...rng(st('tam_pv_plus_flex')), yr: '2025, own estimate' },
-      { lab: 'PV prosumers with a smart meter (iMSys)', tag: 'SAM today', ...rng(st('sam_dynamic_ready')), yr: '2025, own estimate' },
+      { lab: 'PV homes with smart meter', tag: 'SAM today', ...rng(st('sam_dynamic_ready')), yr: '2025, own estimate' },
     ];
     function rng(s) { return { v: s.value, lo: s.low, hi: s.high, conf: s.confidence, est: true, logic: s.logic }; }
     const comp = [
       { lab: 'Homes with any EMS (EUPD, 2024 est.)', v: st('hems_installed_vs_tam').value },
-      { lab: 'Dynamic-price-capable HEMS (BCG, 2025)', v: ser('hems_dynamic_capable_bcg').points.find((p) => p.year === 2025).value },
-      { lab: 'Sites with a §14a device, new regime (end 2024)', v: st('sam_par14a').value },
+      { lab: 'Price-capable HEMS (BCG, 2025)', v: ser('hems_dynamic_capable_bcg').points.find((p) => p.year === 2025).value },
+      { lab: '§14a sites, new regime (end 2024)', v: st('sam_par14a').value },
     ];
     const w = width(el);
     const narrow = w < 600;

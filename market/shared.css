@@ -150,3 +150,82 @@ svg .lab-strong { fill: var(--ink); font-size: 12px; font-weight: 600; }
 .conf.low { border-style: dashed; }
 
 footer.foot { margin-top: 72px; border-top: 1px solid var(--ink); padding-top: 18px; font-size: 12px; color: var(--grey); display: grid; gap: 6px; }
+
+/* =====================================================================
+   Compact layout (26.11.2026, team member: "text overload").
+   Rule: every exhibit = chart + a short side text (title, unit line, 2-3 points).
+   Sources and method notes are folded into <details class="more">.
+   Markup:
+     <figure class="exhibit split" id="x-…">          (chart left, text right)
+     <figure class="exhibit wide"  id="x-…">          (text strip on top, chart full width)
+       <div class="side">
+         <span class="xno"></span>
+         <h3>Takeaway in ≤ 12 words</h3>
+         <p class="sub">unit · basis (≤ 12 words)</p>
+         <ul class="pts"><li><b>+55 %</b>heat-pump sales 2025</li>…</ul>
+         <details class="more"><summary>Sources &amp; notes</summary><p class="src">…</p></details>
+       </div>
+       <div class="body">…chart…</div>
+     </figure>
+   ===================================================================== */
+.chapter { padding-block: 64px 0; gap: 28px; }
+.chapter > header { gap: 6px; }
+.chapter h2 { max-width: 40ch; }
+.chapter > header .kick { margin: 0; max-width: 72ch; color: var(--muted); font-size: 14px; }
+
+.exhibit.split, .exhibit.wide { gap: 16px 32px; padding-top: 16px; }
+.exhibit.split { grid-template-columns: minmax(0, 1fr) minmax(240px, 290px); align-items: start; }
+.exhibit.split > .side { grid-column: 2; grid-row: 1; position: sticky; top: calc(var(--head) + 16px); }
+.exhibit.split > .body { grid-column: 1; grid-row: 1; }
+.exhibit.split > .body, .exhibit.wide > .body { background: transparent; padding: 0; }
+.side { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.side h3 { font-size: 19px; line-height: 1.25; letter-spacing: -0.005em; text-wrap: balance; }
+.side .sub { font-size: 12px; color: var(--grey); }
+.pts { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 0; }
+.pts li { display: grid; gap: 1px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.38; color: var(--muted); }
+.pts li b { display: block; font-size: 21px; font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pts li b.ours { justify-self: start; box-shadow: inset 0 -0.3em 0 var(--accent); }
+.pts li.txt { color: var(--ink); }
+/* wide: title + points as a strip above a full-width chart */
+.exhibit.wide > .side { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); column-gap: 32px; }
+.exhibit.wide > .side > :not(.pts) { grid-column: 1; }
+.exhibit.wide > .side > .pts { grid-column: 2; grid-row: 1 / span 4; margin: 0; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); column-gap: 20px; align-self: start; }
+.exhibit.wide > .side > .pts li { border-top: 0; border-left: 1px solid var(--line); padding: 2px 0 2px 14px; }
+
+/* folded sources and notes */
+details.more { font-size: 12px; color: var(--grey); border-top: 1px solid var(--line); padding-top: 8px; }
+details.more > summary { cursor: pointer; list-style: none; display: inline-flex; gap: 6px; align-items: center; color: var(--muted); user-select: none; }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary::before { content: "+"; display: inline-grid; place-items: center; width: 14px; height: 14px; border: 1px solid var(--grey); font-size: 11px; line-height: 1; }
+details.more[open] > summary::before { content: "−"; }
+details.more > summary:hover { color: var(--ink); }
+details.more > :not(summary) { margin: 8px 0 0; }
+details.more .src, details.more p { font-size: 11.5px; line-height: 1.45; color: var(--grey); }
+
+/* fold for long secondary content (tables, lists) inside a chapter */
+details.fold { border-top: 1px solid var(--line); }
+details.fold > summary { cursor: pointer; list-style: none; padding: 12px 0; font-size: 13px; font-weight: 500; display: flex; gap: 8px; align-items: center; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before { content: "+"; display: inline-grid; place-items: center; width: 16px; height: 16px; border: 1px solid var(--ink); font-size: 12px; line-height: 1; }
+details.fold[open] > summary::before { content: "−"; }
+details.fold > summary .muted { font-weight: 400; }
+details.fold > .fold-body { padding-bottom: 16px; display: grid; gap: 20px; }
+
+/* so-what: one or two sentences in a slim accent bar */
+.sowhat { grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 16px; padding: 12px 16px; max-width: none; }
+.sowhat p { font-size: 14.5px; line-height: 1.45; }
+
+@media (max-width: 1080px) {
+  .exhibit.split { grid-template-columns: minmax(0, 1fr); }
+  .exhibit.split > .side { grid-column: 1; grid-row: 1; position: static; }
+  .exhibit.split > .body { grid-column: 1; grid-row: 2; }
+  .exhibit.split .pts, .exhibit.wide > .side > .pts { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); column-gap: 20px; }
+  .exhibit.split .pts li { border-top: 0; border-left: 1px solid var(--line); padding: 2px 0 2px 14px; }
+  .exhibit.wide > .side { grid-template-columns: minmax(0, 1fr); }
+  .exhibit.wide > .side > .pts { grid-column: 1; grid-row: auto; }
+}
+@media (max-width: 560px) {
+  .sowhat { grid-template-columns: minmax(0, 1fr); }
+  .exhibit.split .pts, .exhibit.wide > .side > .pts { grid-template-columns: minmax(0, 1fr); }
+  .exhibit.split .pts li, .exhibit.wide > .side > .pts li { border-left: 0; border-top: 1px solid var(--line); padding: 8px 0; }
+}

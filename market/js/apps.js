@@ -1,6 +1,28 @@
-/* 06 App-Dummies: ein simuliertes Haus, drei Darstellungen (schematischer Nachbau, keine Originale) */
+/* Exhibit #x-apps: one simulated home, three app views (schematic mock-ups, not originals).
+   Ported from the team's competitor page (section 06, apps.js). Runs in its own IIFE and does NOT touch window.UI:
+   the helpers the original took from that page's window.UI (el, fmt, tip, r) are provided by a local shim below.
+   Changes against the original: scoped to #x-apps, .body -> .ap-body in the phones, SVG text attributes are
+   turned into inline styles (the page-wide `svg text` rule would override them), day chart colours follow the
+   page tokens (dark mode), tooltip rows use inline styles because the tooltip lives outside #x-apps. */
 (function(){
-  const {el, fmt, tip, r} = window.UI;
+  const root = document.getElementById('x-apps');
+  if (!root) return;
+
+  /* ---------- local shim for the source page's window.UI ---------- */
+  const el = id => document.getElementById(id);
+  // fmt: copied from the source page (page.js)
+  const fmt = (n, d = 0) => n.toLocaleString('en-GB', {minimumFractionDigits: d, maximumFractionDigits: d});
+  // tip: our page's UI.tip(html, ev) has the same signature (empty html hides it)
+  const tip = (html, e) => { const T = window.UI && window.UI.tip; if (T) T(html == null ? null : html, e); };
+  // r: one tooltip row (key, value, optional swatch); same output as the source, styled inline
+  const r = (k, v, col) => `<div style="display:flex;justify-content:space-between;gap:16px"><span style="display:inline-flex;align-items:center;gap:6px;opacity:.75">${col ? `<i style="width:8px;height:8px;display:inline-block;background:${col};outline:1px solid currentColor;outline-offset:-1px"></i>` : ''}${k}</span><span>${v}</span></div>`;
+  // SVG <text> attributes -> inline style, so the page-wide `svg text {fill; font-size}` cannot override the mock-ups
+  const fixT = h => h.replace(/<text\b([^>]*)>/g, (m, a) => {
+    const g = k => (a.match(new RegExp('\\s' + k + '="([^"]*)"')) || [])[1];
+    const fs = g('font-size'), fi = g('fill'), fw = g('font-weight'), st = [];
+    if (fs) st.push('font-size:' + fs + 'px'); if (fi) st.push('fill:' + fi); if (fw) st.push('font-weight:' + fw);
+    return st.length ? `<text${a} style="${st.join(';')}">` : m;
+  });
   const N = 96, dt = .25;
   const bump = (h, c, w, a) => a * Math.exp(-(((h - c) / w) ** 2));
   const hhmm = i => { const m = ((i % N) + N) % N * 15; return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
@@ -144,7 +166,7 @@
       <div class="cardg r12"><div class="h"><span>Push notifications</span></div><div class="li"><span>§14a restrictions</span><span class="sw-t rf"></span></div><div class="li"><span>Surplus periods</span><span class="sw-t rf"></span></div></div>`;
     }
     const nav = (k, icon, label) => `<span class="${view.g === k ? 'on' : ''}">${ic(icon, 15)}${label}</span>`;
-    el('scr-g').innerHTML = sbar() + `<div class="body">${body}</div><div class="nav">${nav('home', 'home', 'Home')}${nav('report', 'chart', 'Report')}${nav('manager', 'bolt', 'Manager')}</div>`;
+    el('scr-g').innerHTML = fixT(sbar() + `<div class="ap-body">${body}</div><div class="nav">${nav('home', 'home', 'Home')}${nav('report', 'chart', 'Report')}${nav('manager', 'bolt', 'Manager')}</div>`);
   }
 
   /* ---------- Consolinno-Nachbau (Aufbau wie die App zum Leaflet HEMS) ---------- */
@@ -206,7 +228,7 @@
         <svg viewBox="0 0 ${w} 48" width="100%"><path d="${area(pvU, 7, z)}" fill="#c9cec6"/><path d="${area(dis, 7, b1)}" fill="#8d968b"/><path d="${area(imp, 7, b2)}" fill="#2e3a2e"/></svg>
         <div style="display:flex;gap:8px;justify-content:center;font-size:7.5px;color:#6b746b"><span>■ PV</span><span>■ Battery</span><span style="color:#2e3a2e">■ Grid</span></div></div>`;
     }
-    el('scr-c').innerHTML = sbar() + head + `<div class="body">${body}</div><div class="nav"><span class="${view.c === 'home' ? 'on' : ''}">${ic('home', 14)}</span><span class="${view.c === 'stats' ? 'on' : ''}">${ic('chart', 14)}</span></div>`;
+    el('scr-c').innerHTML = fixT(sbar() + head + `<div class="ap-body">${body}</div><div class="nav"><span class="${view.c === 'home' ? 'on' : ''}">${ic('home', 14)}</span><span class="${view.c === 'stats' ? 'on' : ''}">${ic('chart', 14)}</span></div>`);
   }
 
   /* ---------- Flexibility Manager ---------- */
@@ -272,7 +294,7 @@
       <div class="crd r12"><div class="h"><span>CO₂ avoided</span></div><div class="big">${fmt(co2, 1)}<small>kg</small></div></div>
       <div class="crd r12"><div class="h"><span>Donation from feed-in earnings</span><span>50 %</span></div><div class="big">€${fmt(don, 2)}<small>to a biochar project</small></div></div>`;
     }
-    el('scr-o').innerHTML = sbar() + `<div class="body">${body}</div><div class="nav"><span class="${view.o === 'plan' ? 'on' : ''}">Plan</span><span class="${view.o === 'overview' ? 'on' : ''}">Overview</span><span class="${view.o === 'impact' ? 'on' : ''}">Impact</span><span>Comfort</span></div>`;
+    el('scr-o').innerHTML = fixT(sbar() + `<div class="ap-body">${body}</div><div class="nav"><span class="${view.o === 'plan' ? 'on' : ''}">Plan</span><span class="${view.o === 'overview' ? 'on' : ''}">Overview</span><span class="${view.o === 'impact' ? 'on' : ''}">Impact</span><span>Comfort</span></div>`);
   }
 
   /* ---------- Tagesverlauf über den Handys ---------- */
@@ -280,43 +302,44 @@
     const host = el('ap-day'), Wd = Math.max(320, host.clientWidth), H = 120, m = {t: 10, r: 40, b: 20, l: 34};
     const iw = Wd - m.l - m.r, ih = H - m.t - m.b, X = i => m.l + i / N * iw, Y = v => m.t + ih - v / 7 * ih;
     const pmn = 10, pmx = 45, YP = v => m.t + ih - (v - pmn) / (pmx - pmn) * ih;
-    let s = `<svg width="${Wd}" height="${H}" role="img" aria-label="Daily profile of the simulated home">`;
-    [0, 2, 4, 6].forEach(v => s += `<line x1="${m.l}" x2="${Wd - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e1e1e1"/><text x="${m.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`);
+    let s = `<svg width="${Wd}" height="${H}" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Daily profile of the simulated home">`;
+    [0, 2, 4, 6].forEach(v => s += `<line x1="${m.l}" x2="${Wd - m.r}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)"/><text x="${m.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`);
     [20, 30, 40].forEach(v => s += `<text x="${Wd - m.r + 6}" y="${YP(v) + 4}">${v} ct</text>`);
     let a = `M${X(0)},${Y(0)}`; D.S.forEach((x, i) => a += `L${X(i + .5).toFixed(1)},${Y(x.pv).toFixed(1)}`); a += `L${X(N)},${Y(0)}Z`;
-    s += `<path d="${a}" fill="#ffcf22" opacity=".85"/>`;
+    s += `<path d="${a}" style="fill:var(--accent)" opacity=".85"/>`;
     let c = ''; D.S.forEach((x, i) => c += (i ? 'L' : 'M') + X(i + .5).toFixed(1) + ',' + Y(x.load + x.ev).toFixed(1));
-    s += `<path d="${c}" fill="none" stroke="#000" stroke-width="1.5"/>`;
-    s += `<g transform="translate(${m.l},${m.t})"><path d="${stepPath(D.price, iw, ih, pmn, pmx)}" fill="none" stroke="#8f8f8f" stroke-width="1.2" stroke-dasharray="4 3"/></g>`;
+    s += `<path d="${c}" fill="none" style="stroke:var(--ink)" stroke-width="1.5"/>`;
+    s += `<g transform="translate(${m.l},${m.t})"><path d="${stepPath(D.price, iw, ih, pmn, pmx)}" fill="none" style="stroke:var(--grey)" stroke-width="1.2" stroke-dasharray="4 3"/></g>`;
     for (let hh = 0; hh <= 24; hh += 3) s += `<text x="${X(hh * 4)}" y="${H - 4}" text-anchor="middle">${hh}</text>`;
-    s += `<line x1="${m.l}" x2="${Wd - m.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="#000"/>`;
-    s += `<line x1="${X(t + .5)}" x2="${X(t + .5)}" y1="${m.t - 4}" y2="${m.t + ih}" stroke="#000" stroke-width="1.5"/><rect x="${X(t + .5) - 4}" y="${m.t - 8}" width="8" height="8" fill="#000"/>`;
+    s += `<line x1="${m.l}" x2="${Wd - m.r}" y1="${Y(0)}" y2="${Y(0)}" style="stroke:var(--ink)"/>`;
+    s += `<line x1="${X(t + .5)}" x2="${X(t + .5)}" y1="${m.t - 4}" y2="${m.t + ih}" style="stroke:var(--ink)" stroke-width="1.5"/><rect x="${X(t + .5) - 4}" y="${m.t - 8}" width="8" height="8" style="fill:var(--ink)"/>`;
     s += `<text class="dl" x="${m.l + 4}" y="${m.t + 8}">kW</text>`;
     s += `<rect class="hit" x="${m.l}" y="0" width="${iw}" height="${H}" fill="transparent" style="cursor:ew-resize"/></svg>`;
     host.innerHTML = s;
     const hit = host.querySelector('.hit');
-    const pick = e => { const bx = host.getBoundingClientRect().left; setT(Math.max(0, Math.min(N - 1, Math.floor((e.clientX - bx - m.l) / iw * N)))); };
+    const at = e => { const b = host.querySelector('svg').getBoundingClientRect(), k = b.width / Wd || 1; return Math.max(0, Math.min(N - 1, Math.floor(((e.clientX - b.left) / k - m.l) / iw * N))); };
+    const pick = e => setT(at(e));
     hit.addEventListener('pointerdown', e => { hit.setPointerCapture(e.pointerId); pick(e); });
     hit.addEventListener('pointermove', e => {
       if (e.buttons) pick(e);
-      const bx = host.getBoundingClientRect().left, i = Math.max(0, Math.min(N - 1, Math.floor((e.clientX - bx - m.l) / iw * N))), x = D.S[i];
-      tip(`<div class="h">${hhmm(i)}</div>` + r('PV', kw(x.pv), '#ffcf22') + r('Consumption', kw(x.load + x.ev), '#000') + r('Power price', fmt(x.p) + ' ct/kWh', '#8f8f8f') + r('Battery', fmt(x.soc * 100) + ' %') + '<div class="note">Click or drag to set the time.</div>', e);
+      const i = at(e), x = D.S[i];
+      tip(`<b>${hhmm(i)}</b>` + r('PV', kw(x.pv), '#ffcf22') + r('Consumption', kw(x.load + x.ev), '#000') + r('Power price', fmt(x.p) + ' ct/kWh', '#8f8f8f') + r('Battery', fmt(x.soc * 100) + ' %') + '<div style="opacity:.7;margin-top:4px">Click or drag to set the time.</div>', e);
     });
-    hit.addEventListener('pointerleave', () => tip());
+    hit.addEventListener('pointerleave', () => tip(null));
   }
 
   function renderAll(){ el('ap-time').textContent = hhmm(t); renderG(); renderC(); renderO(); drawDay(); }
   function setT(v){ t = v; el('ap-t').value = v; renderAll(); }
 
   el('ap-t').addEventListener('input', e => setT(+e.target.value));
-  document.querySelectorAll('.ph-tabs').forEach(g => g.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+  root.querySelectorAll('.ph-tabs').forEach(g => g.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
     view[g.dataset.app] = b.dataset.v;
     g.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
     renderAll();
   })));
-  document.querySelectorAll('[data-wx]').forEach(b => b.addEventListener('click', () => {
+  root.querySelectorAll('[data-wx]').forEach(b => b.addEventListener('click', () => {
     D = sims[b.dataset.wx]; st.ok = false;
-    document.querySelectorAll('[data-wx]').forEach(x => x.setAttribute('aria-pressed', x === b));
+    root.querySelectorAll('[data-wx]').forEach(x => x.setAttribute('aria-pressed', x === b));
     renderAll();
   }));
   // Klicks im Handy: Live/Heute, Heute/Morgen, Copilot bestätigen
@@ -331,5 +354,5 @@
     timer = setInterval(() => { setT((t + 1) % N); if (t === N - 1) { clearInterval(timer); timer = null; play.textContent = '▶ Play day'; } }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 400 : 160);
   });
   renderAll();
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(drawDay, 120); });
+  let rt, lastW = el('ap-day').clientWidth; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { const w = el('ap-day').clientWidth; if (w !== lastW) { lastW = w; drawDay(); } }, 120); });
 })();

@@ -66,7 +66,7 @@
   const ET = MD.r.entrants_timeline || { providers: [], events: [] };
   const MOVES = (X.m2_moves && X.m2_moves.moves) || [];
   const YEARS = d3.range(2011, 2027);
-  const state = { year: 2026, filter: new Set(ARCH_IDS), playing: false, timer: null, hi: null };
+  const state = { year: 2026, filter: new Set(ARCH_IDS), playing: false, timer: null, hi: null, unkOpen: false };
   const provs = ET.providers.map((p, i) => Object.assign({ i }, p));
   const movesBy = d3.group(MOVES.filter((m) => m.provider), (m) => m.provider);
   const zolar = MOVES.filter((m) => !m.provider);
@@ -131,8 +131,8 @@
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'm2-chip';
       b.setAttribute('aria-pressed', String(state.filter.has(a.id) && state.filter.size !== ARCH_IDS.length ? true : state.filter.has(a.id)));
-      b.innerHTML = `<i style="background:var(${a.tok})"></i>${esc(window.innerWidth < 600 ? a.short : a.label)} <span class="grey">${n}</span>`;
-      b.title = 'Click to show only this group; click again to add or remove';
+      b.innerHTML = `<i style="background:var(${a.tok})"></i>${esc(a.short)} <span class="grey">${n}</span>`;
+      b.title = `${a.label}. Click to show only this group; click again to add or remove`;
       b.onclick = () => {
         if (state.filter.size === ARCH_IDS.length) state.filter = new Set([a.id]);
         else if (state.filter.has(a.id)) { state.filter.delete(a.id); if (!state.filter.size) state.filter = new Set(ARCH_IDS); }
@@ -247,8 +247,7 @@
     const cum = dated.filter((p) => p.hems_start <= y && inF(p)).length;
     const nw = dated.filter((p) => p.hems_start === y && inF(p));
     const exits = MOVES.filter((m) => m.type !== 'acquired' && m.year <= y && state.filter.has(m.archetype || (provs.find((p) => p.name === m.provider) || {}).archetype)).length;
-    const off = dated.filter((p) => !onMap(p) && inF(p));
-    const regions = d3.group(off.sort((a, b) => a.hems_start - b.hems_start), region);
+    const off = dated.filter((p) => !onMap(p) && inF(p)).sort((a, b) => a.hems_start - b.hems_start);
     const li = (p) => {
       const tok = archTok(p.archetype), dim = p.hems_start > y;
       const dotStyle = p.hems_start_flag === 'min' ? `color:var(${tok});background:var(--bg)` : `color:var(${tok});background:var(${tok})`;
@@ -257,21 +256,24 @@
     el.innerHTML = `
       <div class="m2-big"><span class="y">${y}</span><span class="muted">${y === 2026 ? 'state at 25.11.2026' : 'state at year end'}</span></div>
       <div class="m2-kpis">
-        <div><b>${cum}</b><span>dated HEMS launches so far</span></div>
+        <div><b>${cum}</b><span>dated launches so far</span></div>
         <div><b>+${nw.length}</b><span>new in ${y}</span></div>
-        <div><b class="${exits ? 'm2-x' : ''}">${exits}</b><span>insolvent or stopped sales</span></div>
+        <div><b class="${exits ? 'm2-x' : ''}">${exits}</b><span>insolvent or sales stop</span></div>
       </div>
-      <div><p class="m2-h">New in ${y}</p>${nw.length ? `<ul class="m2-list">${nw.map(li).join('')}</ul>` : '<p class="m2-note">No dated launch in this year.</p>'}</div>
-      <div><p class="m2-h">Not on the map (${off.length})</p>${[...regions].map(([k, v]) => `<p class="m2-note" style="margin:6px 0 3px">${esc(k)}</p><ul class="m2-list">${v.map(li).join('')}</ul>`).join('')}</div>
+      <div><p class="m2-h">New in ${y}</p>${nw.length ? `<ul class="m2-list">${nw.map(li).join('')}</ul>` : '<p class="m2-note">None dated.</p>'}</div>
+      <div><p class="m2-h" title="HQ outside the map or no HQ (community projects); hover a name for the region">Not on the map (${off.length})</p><ul class="m2-list">${off.map(li).join('')}</ul></div>
       <div class="m2-marks" aria-label="Marks">
-        <span><svg viewBox="-7 -7 14 14"><circle r="5" fill="${C('--grey')}"/></svg>launch year documented</span>
-        <span><svg viewBox="-7 -7 14 14"><circle r="4.4" fill="${C('--bg')}" stroke="${C('--grey')}" stroke-width="1.8"/></svg>launched this year or earlier</span>
-        <span><svg viewBox="-9 -9 18 18"><circle r="8" fill="none" stroke="${C('--ink')}" stroke-width="1.1"/><circle r="5" fill="${C('--grey')}"/></svg>taken over by a larger group</span>
-        <span><svg viewBox="-7 -7 14 14"><circle r="5" fill="${C('--grey')}"/><path d="M-4.5,-4.5L4.5,4.5M-4.5,4.5L4.5,-4.5" stroke="${C('--bad')}" stroke-width="2.2"/></svg>insolvent or stopped new sales</span>
-        <span><svg viewBox="-7 -7 14 14"><circle r="5" fill="${C('--grey')}" stroke="${C('--ink')}" stroke-width="1.3" stroke-dasharray="2 1.5"/></svg>launch year low confidence</span>
+        <span title="Launch year documented"><svg viewBox="-7 -7 14 14"><circle r="5" fill="${C('--grey')}"/></svg>documented</span>
+        <span title="Launched this year or earlier (oldest source found)"><svg viewBox="-7 -7 14 14"><circle r="4.4" fill="${C('--bg')}" stroke="${C('--grey')}" stroke-width="1.8"/></svg>this year or earlier</span>
+        <span title="Taken over by a larger group"><svg viewBox="-9 -9 18 18"><circle r="8" fill="none" stroke="${C('--ink')}" stroke-width="1.1"/><circle r="5" fill="${C('--grey')}"/></svg>taken over</span>
+        <span title="Insolvent or stopped new sales"><svg viewBox="-7 -7 14 14"><circle r="5" fill="${C('--grey')}"/><path d="M-4.5,-4.5L4.5,4.5M-4.5,4.5L4.5,-4.5" stroke="${C('--bad')}" stroke-width="2.2"/></svg>insolvent / sales stop</span>
+        <span title="Launch year low confidence"><svg viewBox="-7 -7 14 14"><circle r="5" fill="${C('--grey')}" stroke="${C('--ink')}" stroke-width="1.3" stroke-dasharray="2 1.5"/></svg>low confidence</span>
       </div>`;
     const sel = d3.select(el).selectAll('li[data-n]');
-    sel.on('mouseenter mousemove', function (ev) { const p = provs.find((q) => q.name === this.dataset.n); if (p) UI.tip(provTip(p), ev); }).on('mouseleave', () => UI.tip(null));
+    sel.on('mouseenter mousemove', function (ev) {
+      const p = provs.find((q) => q.name === this.dataset.n);
+      if (p) UI.tip(provTip(p) + (onMap(p) ? '' : `<br><span style="opacity:.75">Not on the map: ${esc(region(p))}</span>`), ev);
+    }).on('mouseleave', () => UI.tip(null));
   }
 
   function drawTimeline() {
@@ -311,7 +313,7 @@
     svg.append('text').attr('class', 'lab-strong').attr('x', xc(state.year) + (state.year > 2019 ? -7 : 7)).attr('y', yC(selC.c) - 5)
       .attr('text-anchor', state.year > 2019 ? 'end' : 'start').text(selC.c);
     // panel 2: new per year
-    lbl(m.l, yB0 - 8, phone ? 'New launches per year' : 'New launches per year (hollow = launched this year or earlier)');
+    lbl(m.l, yB0 - 8, 'New launches per year');
     const gy = svg.append('g').attr('class', 'ax');
     yU.ticks(3).forEach((t) => {
       gy.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', yU(t)).attr('y2', yU(t)).attr('stroke', C('--line'));
@@ -353,7 +355,7 @@
       });
     });
     svg.append('text').attr('x', m.l - 6).attr('y', y0 + 11).style('fill', C('--bad')).style('font-size', '10px').attr('text-anchor', 'end').text('out');
-    if (!phone) lbl(x(2011) + 2, y0 + hDn - 6, 'Below the line: solid = insolvency or sales stop, hollow = takeover', 'start', '--muted');
+    if (!phone) lbl(x(2011) + 2, y0 + hDn - 6, 'Below: exits (solid), takeovers (hollow)', 'start', '--muted');
     const gx = svg.append('g').attr('class', 'ax');
     YEARS.forEach((yr) => {
       if (phone && !(yr % 5 === 1 || yr === 2026 || yr === state.year)) return;
@@ -370,10 +372,13 @@
   function drawUnknown() {
     const el = document.getElementById('m2-unknown'); if (!el) return;
     const us = undated.filter(inF).sort((a, b) => d3.ascending(ARCH_IDS.indexOf(a.archetype), ARCH_IDS.indexOf(b.archetype)) || d3.ascending(a.short, b.short));
-    el.innerHTML = `<p class="m2-h">Launch year not found (${us.length} of ${undated.filter(inF).length + dated.filter(inF).length}), hover to locate</p><ul class="m2-list">${us.map((p) => {
+    // folded by default; open state survives the redraws on year and filter changes
+    el.innerHTML = `<details class="more"${state.unkOpen ? ' open' : ''}><summary>Launch year not found: ${us.length} of ${undated.filter(inF).length + dated.filter(inF).length} providers</summary><p class="m2-note">Hover a name to locate it on the map.</p><ul class="m2-list">${us.map((p) => {
       const ex = exitYear(p);
       return `<li data-n="${esc(p.name)}" tabindex="0"><span class="m2-dot" style="color:var(${archTok(p.archetype)});background:var(${archTok(p.archetype)})"></span>${esc(p.short)}${ex ? ' <span class="m2-x">×</span>' : ''}</li>`;
-    }).join('')}</ul>`;
+    }).join('')}</ul></details>`;
+    const det = el.querySelector('details');
+    if (det) det.addEventListener('toggle', () => { state.unkOpen = det.open; });
     d3.select(el).selectAll('li[data-n]')
       .on('mouseenter focus', function (ev) { const p = provs.find((q) => q.name === this.dataset.n); state.hi = p && onMap(p) ? p.name : null; drawMap(); if (p) UI.tip(provTip(p) + (onMap(p) ? '' : '<br><i>HQ not on the map</i>'), ev.clientX ? ev : { clientX: 40, clientY: 40 }); })
       .on('mousemove', function (ev) { const p = provs.find((q) => q.name === this.dataset.n); if (p) UI.tip(provTip(p), ev); })
@@ -416,12 +421,15 @@
   const fund = (c) => (c.funding ? c.funding.eur_m : 0);
   const pbTag = (o, sep) =>  '';
   const ND = PUB ? 'no public figure' : 'not disclosed';
-  function bubTitle() {
+  function bubTitle() { // short action title (side text); the size span goes to a key point, see bubSpan()
     const core = COMP.filter((c) => c.hems_role === 'core' && c.ni), loss = core.filter((c) => c.ni.eur_m < 0);
+    const head = loss.length === core.length ? `All ${core.length}` : `${loss.length} of the ${core.length}`;
+    return `${head} HEMS-focused companies with known results lose money`;
+  }
+  function bubSpan() {
     const lo = d3.min(COMP, (c) => c.employees), hi = d3.max(COMP, (c) => c.employees);
     const ord = ['less than one order', 'one order', 'two orders', 'three orders', 'four orders', 'five orders'][Math.floor(Math.log10(hi / lo))];
-    const head = loss.length === core.length ? `All ${core.length}` : `${loss.length} of the ${core.length}`;
-    return `${head} HEMS-focused companies with known results lose money, and company size spans ${ord} of magnitude, from ${fmt(lo)} to ${fmt(hi)} employees`;
+    return `<b>${fmt(lo)}–${fmt(hi)}</b>employees: size spans ${ord} of magnitude`;
   }
   let bubMode = 'rev';
   function drawBubble() {
@@ -525,7 +533,11 @@
         `<span><svg viewBox="-7 -7 14 14"><circle r="5" fill="none" stroke="${C('--muted')}" stroke-width="1.8"/></svg>no funding recorded</span>`) +
         `<span><svg viewBox="-7 -7 14 14"><circle r="5" fill="none" stroke="${C('--ink')}" stroke-dasharray="3 2" stroke-width="1.4"/></svg>low confidence</span>`;
     }
-    const sub = document.getElementById('m2-bub-sub');
+    // short unit line in the side text; the full explanation sits in "Sources & notes"
+    const subS = document.getElementById('m2-bub-sub');
+    if (subS) subS.textContent = isRev ? `Employees vs revenue (M EUR), log scales · ${COMP.length} companies`
+      : `Employees vs net income (M EUR) · ${has.length} with a known result`;
+    const sub = document.getElementById('m2-bub-sub-long');
     if (sub && PUB) sub.textContent = isRev
       ? `Employees (log scale) against latest annual revenue in M EUR (log scale), coloured by strategic group; ${COMP.length} companies with a headcount from a public source.`
       : `Employees (log scale) against latest annual net income in M EUR (symmetric log scale, losses below zero); ${has.length} companies with a known result.`;
@@ -536,6 +548,7 @@
   function initBubble() {
     if (!document.getElementById('m2-bubble')) return;
     const t = document.getElementById('m2-bub-title'); if (t && COMP.length) t.textContent = bubTitle();
+    const sp = document.getElementById('m2-bub-span'); if (sp && COMP.length) sp.innerHTML = bubSpan();
     segBind(document.getElementById('m2-bub-mode'), (v) => { bubMode = v; drawBubble(); });
     drawBubble(); UI.onTheme(drawBubble);
   }
@@ -664,16 +677,21 @@
   function drawSG() {
     const host = document.getElementById('m2-sg'); if (!host) return;
     host.innerHTML = '';
-    const sub = document.getElementById('m2-sg-sub');
+    // short unit line in the side text; the full explanation sits in "Sources & notes"
+    const subS = document.getElementById('m2-sg-sub');
+    const sub = document.getElementById('m2-sg-sub-long');
     const ps = players();
+    const VC = SG.value_capture || {};
     if (sgMode === 'matrix') {
+      if (subS) subS.textContent = `Share of players per group active in each layer · n = ${ps.length}`;
       if (sub) sub.textContent = `Share of profiled players per strategic group that are active in each value-chain layer; n = ${ps.length} players; circle area = share, label = players active / players in group.`;
       const wrap = document.createElement('div'); wrap.className = 'm2-sgwrap'; host.appendChild(wrap);
       const maxD = 30;
-      let h = '<table class="m2-sg"><thead><tr><th class="l">Strategic group<span class="vc">Players profiled</span></th>';
+      // compact: value capture per layer and player names per group are shown on hover, not as cell text
+      let h = '<table class="m2-sg"><thead><tr><th class="l">Strategic group</th>';
       LAYERS.forEach((l) => {
         const n = ps.filter((p) => p.layers.includes(l)).length;
-        h += `<th class="${l === 'flex' ? 'flex' : ''}">${esc(LAYER_LAB[l] || l)} <span class="grey" style="font-weight:400">${n}</span><span class="vc">${esc((SG.value_capture || {})[l] || '')}</span></th>`;
+        h += `<th class="${l === 'flex' ? 'flex' : ''}" data-l="${l}"><span class="lb">${esc(LAYER_LAB[l] || l)}</span> <span class="grey" style="font-weight:400">${n}</span></th>`;
       });
       h += '</tr></thead><tbody>';
       const cell = (k, n, tok, l) => {
@@ -681,29 +699,42 @@
         return `<td class="${l === 'flex' ? 'flex' : ''}" data-l="${l}"><span class="cv">${k ? `<i style="width:${d.toFixed(1)}px;height:${d.toFixed(1)}px;background:var(${tok})"></i>` : '<i style="width:4px;height:1px;background:var(--line)"></i>'}<small>${k ? k + '/' + n : ''}</small></span></td>`;
       };
       if (SG.ours) {
-        h += `<tr class="ours"><td class="l"><b>${esc(SG.ours.short)}</b><small>${esc(SG.ours.note)}</small></td>`;
+        h += `<tr class="ours"><td class="l"><b>${esc(SG.ours.short)}</b></td>`;
         LAYERS.forEach((l) => { h += SG.ours.layers.includes(l) ? cell(1, 1, '--ink', l) : cell(0, 1, '--ink', l); });
         h += '</tr>';
       }
       UI.ARCH.forEach((a) => {
         const g = ps.filter((p) => p.archetype === a.id); if (!g.length) return;
-        h += `<tr data-a="${a.id}"><td class="l"><b><i style="display:inline-block;width:9px;height:9px;margin-right:7px;background:var(${a.tok})"></i>${esc(a.label)}</b><small>${g.map((p) => esc(p.short)).join(', ')}</small></td>`;
+        h += `<tr data-a="${a.id}"><td class="l"><b><i style="display:inline-block;width:9px;height:9px;margin-right:7px;background:var(${a.tok})"></i>${esc(a.label)}</b></td>`;
         LAYERS.forEach((l) => { h += cell(g.filter((p) => p.layers.includes(l)).length, g.length, a.tok, l); });
         h += '</tr>';
       });
       h += '</tbody></table>';
       wrap.innerHTML = h;
       wrap.onmousemove = (ev) => {
+        const th = ev.target.closest('th[data-l]');
+        if (th) { // layer header: players active + value capture
+          const l = th.dataset.l, n = ps.filter((p) => p.layers.includes(l)).length;
+          UI.tip(`<b>${esc(LAYER_LAB[l] || l)}</b><br>${n} of ${ps.length} players active<br><span style="opacity:.75">${esc(VC[l] || '')}</span>`, ev); return;
+        }
+        const tl = ev.target.closest('td.l');
+        if (tl) { // row label: players in the group, or the note on our prototype
+          const tr = tl.closest('tr');
+          if (tr.classList.contains('ours')) { UI.tip(`<b>${esc(SG.ours.short)}</b><br>${esc(SG.ours.note)}`, ev); return; }
+          const a = tr.dataset.a, g = ps.filter((p) => p.archetype === a);
+          UI.tip(`<b>${esc(archLabel(a))}</b><br>${g.length} profiled: ${g.map((p) => esc(p.short)).join(', ')}`, ev); return;
+        }
         const td = ev.target.closest('td[data-l]'); if (!td) { UI.tip(null); return; }
         const tr = td.closest('tr'), l = td.dataset.l;
         if (tr.classList.contains('ours')) { UI.tip(`<b>Flexibility Manager, ${esc(LAYER_LAB[l])}</b><br>${SG.ours.layers.includes(l) ? 'covered (prototype)' : 'not covered'}`, ev); return; }
         const a = tr.dataset.a, g = ps.filter((p) => p.archetype === a), inL = g.filter((p) => p.layers.includes(l));
-        UI.tip(`<b>${esc(archLabel(a))}, ${esc(LAYER_LAB[l])}</b><br>${inL.length} of ${g.length}: ${inL.map((p) => esc(p.short)).join(', ') || 'none'}<br><span style="opacity:.75">${esc((SG.value_capture || {})[l] || '')}</span>`, ev);
+        UI.tip(`<b>${esc(archLabel(a))}, ${esc(LAYER_LAB[l])}</b><br>${inL.length} of ${g.length}: ${inL.map((p) => esc(p.short)).join(', ') || 'none'}<br><span style="opacity:.75">${esc(VC[l] || '')}</span>`, ev);
       };
       wrap.onmouseleave = () => UI.tip(null);
       return;
     }
     // positioning map
+    if (subS) subS.textContent = `Layers covered vs revenue-model index (own classification) · n = ${ps.length}`;
     if (sub) sub.textContent = `Each profiled player by number of value-chain layers covered (x) and revenue-model index (y: 0 = hardware and installation, 1 = tariff, flex and trading; own classification); n = ${ps.length}.`;
     const w = Math.max(300, host.clientWidth || 800), phone = w < 560;
     const m = { t: 22, r: 16, b: 44, l: phone ? 36 : 48 }, hP = phone ? 360 : 440, h = m.t + hP + m.b;
@@ -774,4 +805,15 @@
     try { initSG(); } catch (e) { console.error('m2 strategic', e); }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+/* heatmap: first rows only, button shows all vendors (compact layout, 26.11.2026) */
+(function () {
+  const w = document.getElementById('m2-heatmap'), b = document.getElementById('m2-hm-all');
+  if (!w || !b) return;
+  b.addEventListener('click', () => {
+    const open = w.classList.toggle('m2-clip') === false;
+    b.setAttribute('aria-expanded', String(open));
+    b.textContent = open ? 'Show fewer vendors' : 'Show all 80 vendors';
+  });
 })();

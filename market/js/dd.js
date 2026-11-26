@@ -43,7 +43,31 @@
   }
   function svgIn(el) { return d3.select(el).html('').append('svg').attr('width', '100%').attr('role', 'img'); }
   function size(svg, w, h) { svg.attr('viewBox', `0 0 ${w} ${Math.ceil(h)}`); }
-  const widthOf = (el) => Math.max(280, Math.floor(el.clientWidth || el.getBoundingClientRect().width || 600));
+  const widthOf = (el) => Math.max(240, Math.floor(el.clientWidth || el.getBoundingClientRect().width || 600));
+
+  /* ---------- compact view: detail text on demand ----------
+     .dd-x = detail text, hidden until its exhibit is opened via a .dd-tg button ("Show notes"),
+     .dd-tt = hover target whose full content is shown as a tooltip while the exhibit is closed. */
+  function tipOn(el, html) {
+    el.dataset.ddTip = '1';
+    const show = (ev) => { if (el.closest('.dd-open')) { UI.tip(null); return; } UI.tip(typeof html === 'function' ? html() : html, ev); };
+    el.addEventListener('mouseenter', show); el.addEventListener('mousemove', show);
+    el.addEventListener('mouseleave', () => UI.tip(null));
+  }
+  function proseTips() {
+    document.querySelectorAll('.dd-tt').forEach((el) => { if (el.dataset.ddTip !== '1') tipOn(el, () => el.innerHTML); });
+  }
+  function toggles() {
+    document.querySelectorAll('.dd-tg').forEach((b) => {
+      if (b.dataset.bound) return; b.dataset.bound = '1';
+      const fig = b.closest('.exhibit'); if (!fig) return;
+      const off = b.textContent, on = b.dataset.on || 'Hide details';
+      b.addEventListener('click', () => {
+        const open = !fig.classList.contains('dd-open');
+        fig.classList.toggle('dd-open', open); b.setAttribute('aria-pressed', String(open)); b.textContent = open ? on : off; UI.tip(null);
+      });
+    });
+  }
 
   /* ---------- data helpers ---------- */
   function fin(stream, metric, year, currency) {
@@ -255,7 +279,7 @@
     let y = 1;
     let h = boxAt(g, { x: bx, y, w: bw, title: 'E.ON SE', sub: 'Essen; listed (ETR: EOAN)' }); y += h;
     
-    edge(g, bx + 30, y, bx + 30, y + 40, '100 %', { note: W > 380 ? 'majority 09/2021, rest 12/2022' : '' }); y += 40;
+    edge(g, bx + 30, y, bx + 30, y + 40, '100 %', { note: W > 300 ? 'majority 09/2021, rest 12/2022' : '' }); y += 40;
     
     h = boxAt(g, { x: bx, y, w: bw, title: 'gridX GmbH', sub: 'Aachen · HRB 20494 · ~190 staff (2024 avg.) · part of E.ON One since 12/2022', stroke: c.gx, sw: 2.5, bar: c.gx }); y += h + 22;
     y += boxAt(g, { x: 1, y, w: W - 2, title: 'Earlier shareholders, all exited by 12/2022', sub: 'RWE/innogy (in the register 2019–2020) and the investors of a 2018 Series A in the mid-single-digit € millions', stroke: c.grey, dash: '4 3', fill: 'none' });
@@ -446,7 +470,7 @@
     g.append('text').attr('class', 'lab').attr('x', m.l).attr('y', 12).style('font-weight', 600).style('fill', c.ink).text('▮ Revenue');
     g.append('text').attr('class', 'lab').attr('x', m.l + 78).attr('y', 12).style('font-weight', 600).style('fill', c.bad).text('▮ Net income');
     const d24 = data.find((d) => d.y === 2024), d23 = data.find((d) => d.y === 2023);
-    if (d24 && d23 && W > 380) g.append('text').attr('class', 'lab').attr('x', x(2024) + sub('rev') + sub.bandwidth() / 2).attr('y', y(d24.rev) - 20).attr('text-anchor', 'middle').style('fill', c.muted).text('+294 %');
+    if (d24 && d23 && W > 320) g.append('text').attr('class', 'lab').attr('x', x(2024) + sub('rev') + sub.bandwidth() / 2).attr('y', y(d24.rev) - 20).attr('text-anchor', 'middle').style('fill', c.muted).text('+294 %');
     svg.attr('aria-label', 'Consolinno revenue 2022 to 2024: 1.00, 0.72, 2.84 million euros; net income minus 0.81 and minus 1.31; 2025 forecast 3.5 and minus 2.0');
   }
 
@@ -666,8 +690,10 @@
       const rows = ch[key] || [];
       el.innerHTML = `<div class="dd-tilehd"><i class="dd-sw ${key === 'gridx' ? 'gx' : 'cn'}"></i>${nm}</div><div class="dd-ch">` + rows.map((r) => {
         const n = r.p.length;
-        return `<div class="row"><div><div class="n">${esc(r.ch)}</div><div class="bar" style="width:${(n / max) * 100}%;background:var(${tok})"></div></div><div class="c">${n}</div><div class="p">${r.p.map((p) => `<span class="dd-chip">${esc(p)}</span>`).join('')}</div></div>`;
+        return `<div class="row dd-tt"><div><div class="n">${esc(r.ch)}</div><div class="bar" style="width:${(n / max) * 100}%;background:var(${tok})"></div></div><div class="c">${n}</div><div class="p dd-x">${r.p.map((p) => `<span class="dd-chip">${esc(p)}</span>`).join('')}</div></div>`;
       }).join('') + '</div>';
+      // partner names: hidden by default ("Show partners"), on hover as a tooltip
+      el.querySelectorAll('.dd-ch .row').forEach((row, i) => { const r = rows[i]; tipOn(row, `<b>${nm} · ${esc(r.ch)}</b> (${r.p.length})<br>${r.p.map(esc).join(', ')}`); });
     });
   }
 
@@ -845,7 +871,16 @@
     const rows = bmRows().filter((r) => bmFilter === 'all' || r.st === bmFilter);
     t.innerHTML = '<thead><tr><th style="width:22%">Criterion</th><th class="gx dd-gxh">gridX</th><th class="cn dd-cnh">Consolinno</th><th class="us dd-ush">Flexibility Manager</th></tr></thead><tbody>' +
       rows.map((r) => `<tr class="${r.st}"><td class="crit">${esc(r.k)}</td>` +
-        [['gx', r.gx], ['cn', r.cn], ['us', r.us]].map(([k, v]) => `<td class="${k}">${score(v[0], k)}<div class="txt">${esc(v[1])}</div></td>`).join('') + '</tr>').join('') + '</tbody>';
+        [['gx', r.gx], ['cn', r.cn], ['us', r.us]].map(([k, v]) => `<td class="${k} dd-tt">${score(v[0], k)}<div class="txt dd-x">${esc(v[1])}</div></td>`).join('') + '</tr>').join('') + '</tbody>';
+    // reasons behind each score: hidden by default ("Show notes"), on hover as a tooltip
+    const NM = { gx: 'gridX', cn: 'Consolinno', us: 'Flexibility Manager' };
+    t.querySelectorAll('tbody tr').forEach((tr, i) => {
+      const r = rows[i];
+      tr.querySelectorAll('td.dd-tt').forEach((td, j) => {
+        const k = ['gx', 'cn', 'us'][j], v = r[k];
+        tipOn(td, `<b>${NM[k]} · ${esc(r.k)}</b><br>${v[0] == null ? 'n/a' : v[0] + ' of 4'}: ${esc(v[1])}`);
+      });
+    });
   }
 
   /* ============ dialog ============ */
@@ -872,6 +907,7 @@
   const tlN = $('dd-tl-n'); if (tlN) tlN.textContent = EV.gridx.length + EV.consolinno.length; // count of the (filtered) data
   tlSeg(); priceSeg(); bmSeg(); dialog();
   all();
+  toggles(); proseTips();
   draws.forEach((f) => UI.onTheme(f));
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(all);
 })();
