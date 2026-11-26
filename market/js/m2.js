@@ -609,7 +609,7 @@
     };
     // our row on top
     const ours = missBy.ours;
-    if (ours) h += rowHtml({ short: ours.short, arch: 'ours', n: null, prod: '' }, 'ours', flat.map(() => '<td class="c"><span class="nl"></span></td>').join(''), ours);
+    if (ours && false) h += rowHtml(  /* prototype row hidden: market view only (26.11.2026) */ { short: ours.short, arch: 'ours', n: null, prod: '' }, 'ours', flat.map(() => '<td class="c"><span class="nl"></span></td>').join(''), ours);
     let lastArch = null;
     order.forEach((r) => {
       if (hmSort === 'arch' && r.arch !== lastArch) {
@@ -656,8 +656,7 @@
     if (key) key.innerHTML = `<span><em style="background:var(--ink);opacity:.82"></em>claimed</span><span><em style="box-shadow:inset 0 0 0 1px var(--line)"></em>not claimed</span>` +
       `<span><em style="box-shadow:inset 0 0 0 1.5px var(--muted)"></em>no (our research)</span>` +
       `<span><em style="background:linear-gradient(90deg,var(--ink) 50%,transparent 50%);box-shadow:inset 0 0 0 1px var(--ink)"></em>partly</span>` +
-      `<span><em style="outline:1px dashed var(--ink);outline-offset:-1px;background:repeating-linear-gradient(135deg,transparent 0 2px,var(--line) 2px 3px)"></em>announced</span>` +
-      `<span><em style="background:color-mix(in srgb,var(--accent) 40%,transparent)"></em>our prototype</span>`;
+      `<span><em style="outline:1px dashed var(--ink);outline-offset:-1px;background:repeating-linear-gradient(135deg,transparent 0 2px,var(--line) 2px 3px)"></em>announced</span>`;
   }
   function initHeatmap() {
     if (!document.getElementById('m2-heatmap')) return;

@@ -122,7 +122,6 @@
     if (ttl) ttl.textContent = `${inBand} of ${paid.length} paid HEMS fees lie between 4 and 7 EUR/month`;
     const lpts = $('m3-land-pts'); /* side points: the rest of the former long title */
     if (lpts && med != null) lpts.innerHTML = `<li><b>${fmt(med, 2)} EUR</b>median paid fee per month (n = ${paid.length})</li>` +
-      '<li><b>about 1/5</b>of our 25 EUR/month working assumption</li>' +
       `<li><b>${free.length} of ${all.length}</b>offers charge no separate HEMS fee</li>`;
 
     // legend (models present)
@@ -162,10 +161,6 @@
 
     const obstacles = [];
     // reference lines
-    svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(25)).attr('y2', y(25)).attr('stroke', acc).attr('stroke-width', 2.5);
-    const r25 = narrow ? 'Our working assumption: 25 EUR/month' : 'Our working assumption: 25 EUR/month (300 EUR/yr)';
-    svg.append('text').attr('x', m.l + 12).attr('y', y(25) - 6).attr('class', 'lab-strong').style('font-size', fs + 'px').text(r25);
-    obstacles.push({ x0: m.l, x1: w - m.r, y0: y(25) - 2, y1: y(25) + 2 }, boxFor(m.l + 12, y(25) - 6, r25, fs, 'start'));
     if (med != null) {
       svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(med)).attr('y2', y(med)).attr('stroke', ink).attr('stroke-dasharray', '4 3').attr('stroke-width', 1);
       const t = narrow ? `Median ${fmt(med, 2)}` : `Median paid fee ${fmt(med, 2)} (n = ${paid.length})`;

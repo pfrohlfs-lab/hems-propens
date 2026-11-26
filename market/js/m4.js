@@ -60,8 +60,7 @@
     el.innerHTML = arch.map((a) => `<span><i style="background:${C(a.tok)}"></i>${esc(a.short)}</span>`).join('') +
       `<span>${dot(grey, 'none', `<circle cx="8" cy="8" r="7" fill="none" stroke="${ink}" stroke-width="1"/>`)}Ring: acts on §14a or VPP signals</span>` +
       `<span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="${ink}" stroke-width="1"/><path d="M8 3 A5 5 0 0 1 8 13 Z" fill="${ink}"/></svg>Heat side only partly</span>` +
-      `<span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="${ink}" stroke-width="1.2" stroke-dasharray="2 2"/></svg>Announced, not shipped</span>` +
-      `<span><i style="background:${C('--accent')};outline:1px solid ${ink}"></i>Our prototype</span>`;
+      `<span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="${ink}" stroke-width="1.2" stroke-dasharray="2 2"/></svg>Announced, not shipped</span>`;
   }
 
   function posDetail(P) {
@@ -77,7 +76,8 @@
   }
 
   function drawPositioning() {
-    const el = $('m4-pos'); const P = X.m4_positioning;
+    const el = $('m4-pos'); const P0 = X.m4_positioning;
+    const P = P0 && { ...P0, players: P0.players.filter((p) => !p.ours) }; /* market view only, without our prototype (26.11.2026) */
     if (!el || !P) return;
     posLegend(P);
     const W = widthOf(el);
